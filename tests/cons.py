@@ -1,7 +1,7 @@
 def run(self):
     from system.objspace import W_Int, s_type, Integer, s_unwrap_int
     from clojure.lang.Cons import Cons
-    from clojure.core import first, next
+    from clojure.rt import first, next
     c = Cons(W_Int(1), None, None)
     f = first(c)
     tp = s_type(f)

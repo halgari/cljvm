@@ -62,46 +62,9 @@ def s_fget(obj, name):
 def s_with(obj, name, val):
     return obj.withField(name, val)
 
-
-
-class ProtocolFn(Object):
-    def __init__(self, name):
-        self._name = name
-        self.methods = {}
-
-    def extend(self, tp, w_fn):
-        self.methods[tp] = w_fn
-
-    def invoke(self, *args):
-        return self.methods[s_type(args[0])](*args)
-
-    def __call__(self, *args):
-        return self.invoke(*args)
-
-class PolyadicFn(Object):
-    def __init__(self, _meta):
-        self._meta = meta
-        self.arities = []
-
-    def addArity(self, w_argc, w_fn):
-        self.arities[w_argc] = w_fn
-
-    def invoke(self, *args):
-        return self.arities[len(args)](*args)
-
-    def __call__(self, *args):
-        return self.invoke(*args)
-
-class W_NFunc(Object):
-    def __init__(self, fn):
-        self._fn = fn
-
-    def invoke(self, *args):
-        return self._fn(*args)
-
-    def __call__(self, *args):
-        return self._fn(*args)
-
+def s_wrap_func(fn):
+    from system.functions import WrappedFn
+    return WrappedFn(fn, None)
 
 class extend(object):
     def __init__(self, tp, proto):
@@ -109,11 +72,12 @@ class extend(object):
         self._proto = proto
 
     def __call__(self, fn):
-        w_func = W_NFunc(fn)
+        from system.functions import PolymorphicFn
+        w_func = s_wrap_func(fn)
         name = fn.func_name
 
         if name not in protofns:
-            pfn = ProtocolFn(name)
+            pfn = PolymorphicFn(name)
             protofns[name] = pfn
             setattr(clojure.core, name, pfn)
 
