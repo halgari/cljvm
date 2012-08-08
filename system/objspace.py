@@ -1,4 +1,4 @@
-import clojure.core
+import doctest
 
 types = {}
 protofns = {}
@@ -104,8 +104,27 @@ class W_Int(Object):
         return str(self.int_value)
 
 def s_unwrap_int(w_int):
+    """
+    Returns a unwrapped (unboxed) int
+
+    >>> s_unwrap_int(W_Int(42))
+    42
+    """
     return w_int.getIntValue()
 
+def s_add(w_arg1, w_arg2):
+    """
+    >>> s_unwrap_int(s_add(W_Int(21), W_Int(21)))
+    42
+    """
+    return W_Int(s_unwrap_int(w_arg1) + s_unwrap_int(w_arg2))
+
+def s_sub(w_arg1, w_arg2):
+    """
+    >>> s_unwrap_int(s_sub(W_Int(21), W_Int(21)))
+    0
+    """
+    return W_Int(s_unwrap_int(w_arg1) - s_unwrap_int(w_arg2))
 
 
 def invoke0(w_fn, arg1):
