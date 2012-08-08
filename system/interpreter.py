@@ -64,7 +64,7 @@ class Stack(object):
         self.stack_w = [None] * size if init is None else init
         self.ptr = -1 if init is None else len(self.stack_w)
 
-    def __len__(self):
+    def length(self):
         return self.ptr
         
     def append(self, obj):
@@ -101,7 +101,7 @@ class Stack(object):
 
 class Interpreter(object):
     def __init__(self, bcode = None, stack = None, ip = 0, frame = None):
-        self._bcode = array("H", bcode)
+        self._bcode = bcode
         self._ip = ip
         self._stack = Stack(size = 64) if stack is None else stack
         self._frame = frame
@@ -122,31 +122,28 @@ class Interpreter(object):
         stack = self._stack
         while self._ip < len(self._bcode):
             b = self.get_bcode()
-            print b
             if b == BINARY_ADD:
                 stack.append(s_add(stack.pop(), stack.pop()))
             if b == BINARY_SUB:
                 stack.append(s_sub(stack.pop(), stack.pop()))
 
-        print len(stack)
-        assert len(stack) == 1
+        assert stack.length() == 1
         return stack.pop()
 
 
 def to_stack(*stk):
-    stk = list(reversed(stk))
-    return Stack(stk)
+    stk = Stack(list(stk))
+    return stk
 
 def to_bcode(*lst):
     """
      Converts a list of bytecodes to a bytestream
     """
-    from struct import pack
-    io = StringIO()
+    arr = []
     for x in lst:
-        io.write(pack("=H", x))
+        arr.append(x)
 
-    return io.getvalue()
+    return arr
 
 
 
