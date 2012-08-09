@@ -65,7 +65,7 @@ class Interpreter(object):
         self._ip = 0
         self._stack = []
         self._call_stack = [f]
-        self._stack_frame = []
+        self._arg_stack = []
 
     def get_bcode(self):
         c = ord(self._bcode[self._ip])
@@ -87,18 +87,28 @@ class Interpreter(object):
     def top_func(self):
         return self._call_stack[len(self._call_stack) - 1]
 
-    def mark_stack_frame(self):
-        self._stack_frame.append(len(self._stack))
+    def make_stack_frame(self, f, alen):
+        args = []
+        assert alen == len(f._args)
+        for x in range(alen):
+            args.append(self.pop())
+        self._arg_stack.append(args)
+
+    def cur_arg_stack(self):
+        return self._arg_stack[len(self._arg_stack) - 1]
 
     def get_arg(self, offset):
-        lst = self._stack_frame[len(self._stack_frame) - 1]
-        st = self._stack[lst - offset]
+        return self.cur_arg_stack()[offset]
+
+    def remove_stack_frame(self, f, alen):
+        return self._arg_stack.pop()
+
 
     def main_loop(self, *args):
         for x in range(len(args) - 1, -1, -1):
             self.push(args[x])
 
-        self.mark_stack_frame()
+        self.make_stack_frame(self.top_func(), len(args))
 
         while self._ip < len(self._bcode):
             b = self.get_bcode()
@@ -112,6 +122,11 @@ class Interpreter(object):
             elif b == LOAD_ARG:
                 c = self.get_bcode()
                 self.push(self.get_arg(c))
+            elif b == CALL_FUNCTION:
+                args = self.get_bcode()
+                func = self.pop()
+                self._call_stack.append(func)
+
             else:
                 raise Exception("Unknown bytecode " + ord(b))
 
@@ -124,6 +139,7 @@ class Function(object):
         self._bcode = bcode
         self._args = args
         self._consts = consts
+
 
 
 
