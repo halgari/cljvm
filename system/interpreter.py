@@ -57,57 +57,18 @@ class SlotFrame(object):
         assert level > 0
         assert self._prev is not None
         return self._prev.get_slot(level - 1, slot)
-            
-class Stack(object):
-    def __init__(self, init = None, size = 64):
-        self.size = size
-        self.stack_w = [None] * size if init is None else init
-        self.ptr = -1 if init is None else len(self.stack_w)
 
-    def length(self):
-        return self.ptr
-        
-    def append(self, obj):
-
-        if self.ptr > len(self.stack_w):
-            self.stack_w.extend([None] * 64)
-            
-        self.stack_w[self.ptr] = obj
-        self.ptr += 1
-
-
-    def pop(self):
-        self.ptr -= 1
-        val = self.stack_w[self.ptr]
-        self.stack_w[self.ptr] = None
-        assert self.ptr >= -1
-        return val
-    
-    def tos(self):
-        assert self.ptr >= 0
-        return self.stack_w[self.ptr]
-        
-    def tos1(self):
-        assert self.ptr >= 1
-        return self.stack_w[self.ptr - 1]
-
-    def tos2(self):
-        assert self.ptr >= 2
-        return self.stack_w[self.ptr - 2]
-
-    def tos3(self):
-        assert self.ptr >= 3
-        return self.stack_w[self.ptr - 3]
 
 class Interpreter(object):
-    def __init__(self, bcode = None, stack = None, ip = 0, frame = None):
-        self._bcode = bcode
-        self._ip = ip
-        self._stack = Stack(size = 64) if stack is None else stack
-        self._frame = frame
+    def __init__(self, f = None):
+        self._bcode = f._bcode
+        self._ip = 0
+        self._stack = []
+        self._call_stack = [f]
+        self._stack_frame = []
 
     def get_bcode(self):
-        c = self._bcode[self._ip]
+        c = ord(self._bcode[self._ip])
         self._ip += 1
         return c
     
@@ -117,18 +78,53 @@ class Interpreter(object):
         val = self._frame.get_slot(frame, slot)
         self._stack.append(val)
 
+    def push(self, val):
+        self._stack.append(val)
 
-    def main_loop(self):
-        stack = self._stack
+    def pop(self):
+        return self._stack.pop()
+
+    def top_func(self):
+        return self._call_stack[len(self._call_stack) - 1]
+
+    def mark_stack_frame(self):
+        self._stack_frame.append(len(self._stack))
+
+    def get_arg(self, offset):
+        lst = self._stack_frame[len(self._stack_frame) - 1]
+        st = self._stack[lst - offset]
+
+    def main_loop(self, *args):
+        for x in range(len(args) - 1, -1, -1):
+            self.push(args[x])
+
+        self.mark_stack_frame()
+
         while self._ip < len(self._bcode):
             b = self.get_bcode()
             if b == BINARY_ADD:
-                stack.append(s_add(stack.pop(), stack.pop()))
-            if b == BINARY_SUB:
-                stack.append(s_sub(stack.pop(), stack.pop()))
+                self.push(s_add(self.pop(), self.pop()))
+            elif b == BINARY_SUB:
+                self.push(s_sub(self.pop(), self.pop()))
+            elif b == LOAD_CONST:
+                c = self.get_bcode()
+                self.push(self.top_func()._consts[c])
+            elif b == LOAD_ARG:
+                c = self.get_bcode()
+                self.push(self.get_arg(c))
+            else:
+                raise Exception("Unknown bytecode " + ord(b))
 
-        assert stack.length() == 1
-        return stack.pop()
+        assert len(self._stack) == 1
+        return self.pop()
+
+class Function(object):
+    """Defines a native function"""
+    def __init__(self, bcode, args = None, consts = None):
+        self._bcode = bcode
+        self._args = args
+        self._consts = consts
+
 
 
 def to_stack(*stk):
