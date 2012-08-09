@@ -88,6 +88,19 @@ class BinaryOp(AExpression):
         self._b.emit(ctx)
         self._a.emit(ctx)
         ctx._bcode.append(chr(self._op))
+        
+class Call(AExpression):
+    def __init__(self, fn, *args):
+        self._args = args
+        self._fn = fn
+    
+    def emit(self, ctx):
+        for x in self._args:
+            x.emit(ctx)
+        self._fn.emit(ctx)
+        ctx._bcode.append(chr(CALL_FUNCTION))
+        ctx._bcode.append(chr(len(self._args)))
+
 
 class Add(BinaryOp):
     def __init__(self, a, b):

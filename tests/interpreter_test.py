@@ -2,7 +2,7 @@ import unittest
 
 from system.interpreter import *
 from system.objspace import *
-from system.ast import Const, Add, Subtract, Argument, Func
+from system.ast import Const, Add, Subtract, Argument, Func, Call
 
 
 class InterpTests(unittest.TestCase):
@@ -33,4 +33,13 @@ class InterpTests(unittest.TestCase):
         f = Func([a, b], Add(a, b))
         val = Interpreter(f.toFunction()).main_loop(W_Int(1), W_Int(2))
         self.assertEqual(s_unwrap_int(val), 3)
+        
+    def test_CALL_FUNCTION(self):
+        a = Const(W_Int(42))
+        b = Func([], a)
+        f = Call(b)
+        val = Interpreter(f.toFunction()).main_loop()
+        self.assertEqual(s_unwrap_int(val), 42)
+        
+        
 

@@ -66,9 +66,10 @@ class Interpreter(object):
         self._stack = []
         self._call_stack = [f]
         self._arg_stack = []
+        self._ip_stack = []
 
     def get_bcode(self):
-        c = ord(self._bcode[self._ip])
+        c = ord(self.top_func()._bcode[self._ip])
         self._ip += 1
         return c
     
@@ -87,7 +88,7 @@ class Interpreter(object):
     def top_func(self):
         return self._call_stack[len(self._call_stack) - 1]
 
-    def make_stack_frame(self, f, alen):
+    def make_arg_stack(self, f, alen):
         args = []
         assert alen == len(f._args)
         for x in range(alen):
@@ -108,30 +109,39 @@ class Interpreter(object):
         for x in range(len(args) - 1, -1, -1):
             self.push(args[x])
 
-        self.make_stack_frame(self.top_func(), len(args))
+        self.make_arg_stack(self.top_func(), len(args))
 
-        while self._ip < len(self._bcode):
-            b = self.get_bcode()
-            if b == BINARY_ADD:
-                self.push(s_add(self.pop(), self.pop()))
-            elif b == BINARY_SUB:
-                self.push(s_sub(self.pop(), self.pop()))
-            elif b == LOAD_CONST:
-                c = self.get_bcode()
-                self.push(self.top_func()._consts[c])
-            elif b == LOAD_ARG:
-                c = self.get_bcode()
-                self.push(self.get_arg(c))
-            elif b == CALL_FUNCTION:
-                args = self.get_bcode()
-                func = self.pop()
-                self._call_stack.append(func)
+        while True:
+            while self._ip < len(self.top_func()._bcode):
+                b = self.get_bcode()
+                if b == BINARY_ADD:
+                    self.push(s_add(self.pop(), self.pop()))
+                elif b == BINARY_SUB:
+                    self.push(s_sub(self.pop(), self.pop()))
+                elif b == LOAD_CONST:
+                    c = self.get_bcode()
+                    self.push(self.top_func()._consts[c])
+                elif b == LOAD_ARG:
+                    c = self.get_bcode()
+                    self.push(self.get_arg(c))
+                elif b == CALL_FUNCTION:
+                    args = self.get_bcode()
+                    func = self.pop()
+                    self._call_stack.append(func)
+                    self._ip_stack.append(self._ip)
+                    self._ip = 0
+                    self.make_arg_stack(self.top_func(), args)
+    
+                else:
+                    raise Exception("Unknown bytecode " + ord(b))
 
-            else:
-                raise Exception("Unknown bytecode " + ord(b))
-
-        assert len(self._stack) == 1
-        return self.pop()
+            self._arg_stack.pop()
+            if len(self._arg_stack) == 0: 
+                assert len(self._stack) == 1
+                return self.pop()
+            else: #jump back to caller
+                self._call_stack.pop()
+                self._ip = self._ip_stack.pop()
 
 class Function(object):
     """Defines a native function"""
