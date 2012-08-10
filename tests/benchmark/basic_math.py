@@ -1,14 +1,18 @@
 from system.interpreter import *
 from system.objspace import *
+from system.ast import *
+
 
 def run_benchmark(times):
     code = to_bcode(BINARY_ADD)
 
-    accum = 0
-    for x in range(times):
-        interp = Interpreter(code, to_stack(W_Int(1), W_Int(0)))
-        val = s_unwrap_int(interp.main_loop())
-        accum += val
+    max = Argument("max")
+    cur = Argument("cur")
+    ast = If(Equal(max, cur), cur, Call(CurFunc(), Add(cur, Const(W_Int(1))), max))
+    f = Func([cur, max], ast)
 
-    return accum
+    value = Interpreter(f.toFunction()).main_loop(W_Int(0), W_Int(10))
+
+
+    return value
 

@@ -115,7 +115,9 @@ class Interpreter(object):
         disassembler.dis(self.top_func())
 
         while True:
+            print self.cur_arg_stack
             while self._ip < len(self.top_func()._bcode):
+                disassembler.trace(self.top_func(), self._ip, self.cur_arg_stack())
                 b = self.get_bcode()
                 if b == BINARY_ADD:
                     self.push(s_add(self.pop(), self.pop()))
@@ -152,6 +154,8 @@ class Interpreter(object):
                 elif b == JUMP:
                     offset = self.get_bcode()
                     self._ip += offset
+                elif b == CUR_FUNC:
+                    self.push(self.top_func())
     
                 else:
                     raise Exception("Unknown bytecode " + ord(b))

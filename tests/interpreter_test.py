@@ -2,7 +2,7 @@ import unittest
 
 from system.interpreter import *
 from system.objspace import *
-from system.ast import Const, Add, Subtract, Argument, Func, Call, Equal, If
+from system.ast import Const, Add, Subtract, Argument, Func, Call, Equal, If, CurFunc
 
 
 class InterpTests(unittest.TestCase):
@@ -60,3 +60,10 @@ class InterpTests(unittest.TestCase):
 
         val = Interpreter(a.toFunction()).main_loop()
         self.assertEqual(s_unwrap_int(val), -1)
+
+    def test_CUR_FUNC(self):
+        a = CurFunc()
+        f = a.toFunction()
+
+        val = Interpreter(f).main_loop()
+        self.assertEquals(f, val)

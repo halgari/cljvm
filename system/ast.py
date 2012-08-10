@@ -115,6 +115,12 @@ class Equal(BinaryOp):
     def __init__(self, a, b):
         BinaryOp.__init__(self, IS_EQ, a, b)
 
+class CurFunc(AExpression):
+    def __init__(self):
+        pass
+    def emit(self, ctx, tc):
+        ctx._bcode.append(chr(CUR_FUNC))
+
 
 class If(AExpression):
     def __init__(self, cond, then, elsethen):

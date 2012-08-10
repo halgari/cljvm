@@ -11,7 +11,8 @@ bytecodes = [
 "TAIL_CALL",
 "JUMP_IF_FALSE",
 "IS_EQ",
-"JUMP"]
+"JUMP",
+"CUR_FUNC"]
 
 
 for x in range(len(bytecodes)):
