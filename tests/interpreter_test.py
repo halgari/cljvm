@@ -2,7 +2,7 @@ import unittest
 
 from system.interpreter import *
 from system.objspace import *
-from system.ast import Const, Add, Subtract, Argument, Func, Call, Equal
+from system.ast import Const, Add, Subtract, Argument, Func, Call, Equal, If
 
 
 class InterpTests(unittest.TestCase):
@@ -50,3 +50,13 @@ class InterpTests(unittest.TestCase):
         val = Interpreter(a.toFunction()).main_loop()
         self.assertEqual(s_unwrap_bool(val), False)
 
+    def test_IF(self):
+        a = If(Equal(Const(W_Int(42)), Const(W_Int(42))), Const(W_Int(1)), Const(W_Int(-1)))
+
+        val = Interpreter(a.toFunction()).main_loop()
+        self.assertEqual(s_unwrap_int(val), 1)
+
+        a = If(Equal(Const(W_Int(42)), Const(W_Int(43))), Const(W_Int(1)), Const(W_Int(-1)))
+
+        val = Interpreter(a.toFunction()).main_loop()
+        self.assertEqual(s_unwrap_int(val), -1)

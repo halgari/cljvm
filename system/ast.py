@@ -115,3 +115,33 @@ class Equal(BinaryOp):
     def __init__(self, a, b):
         BinaryOp.__init__(self, IS_EQ, a, b)
 
+
+class If(AExpression):
+    def __init__(self, cond, then, elsethen):
+        self._cond = cond
+        self._then = then
+        self._else = elsethen
+
+    def emit(self, ctx, tc):
+        self._cond.emit(ctx, False)
+        org_bcode = ctx._bcode
+        ctx._bcode = []
+
+        self._then.emit(ctx, tc)
+
+        then_bcode = ctx._bcode
+        ctx._bcode = []
+
+        self._else.emit(ctx, tc)
+
+        else_bcode = ctx._bcode
+
+        ctx._bcode = org_bcode
+
+        ctx._bcode.append(chr(JUMP_IF_FALSE))
+        ctx._bcode.append(chr(len(then_bcode) + 2))
+        ctx._bcode.extend(then_bcode)
+        ctx._bcode.append(chr(JUMP))
+        ctx._bcode.append(chr(len(else_bcode)))
+        ctx._bcode.extend(else_bcode)
+

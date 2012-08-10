@@ -111,6 +111,9 @@ class Interpreter(object):
 
         self.make_arg_stack(self.top_func(), len(args))
 
+        import disassembler
+        disassembler.dis(self.top_func())
+
         while True:
             while self._ip < len(self.top_func()._bcode):
                 b = self.get_bcode()
@@ -141,11 +144,14 @@ class Interpreter(object):
                     self.make_arg_stack(self.top_func(), args)
                 elif b == IS_EQ:
                     self.push(s_eq(self.pop(), self.pop()))
-                elif b == JUMP_IF_TRUE:
+                elif b == JUMP_IF_FALSE:
                     offset = self.get_bcode()
                     a = self.pop()
-                    if isinstance(a, W_Bool) and s_unwrap_bool(a):
+                    if isinstance(a, W_Bool) and not s_unwrap_bool(a):
                         self._ip += offset
+                elif b == JUMP:
+                    offset = self.get_bcode()
+                    self._ip += offset
     
                 else:
                     raise Exception("Unknown bytecode " + ord(b))
@@ -158,12 +164,14 @@ class Interpreter(object):
                 self._call_stack.pop()
                 self._ip = self._ip_stack.pop()
 
-class Function(object):
+class Function(Object):
     """Defines a native function"""
     def __init__(self, bcode, args = None, consts = None):
         self._bcode = bcode
         self._args = args
         self._consts = consts
+    def toString(self):
+        return "Function"
 
 
 
