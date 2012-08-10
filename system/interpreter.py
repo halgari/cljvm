@@ -131,6 +131,21 @@ class Interpreter(object):
                     self._ip_stack.append(self._ip)
                     self._ip = 0
                     self.make_arg_stack(self.top_func(), args)
+                elif b == TAIL_CALL:
+                    args = self.get_bcode()
+                    func = self.pop()
+                    self._call_stack.pop()
+                    self._call_stack.append(func)
+                    self._ip = 0
+                    self._arg_stack.pop()
+                    self.make_arg_stack(self.top_func(), args)
+                elif b == IS_EQ:
+                    self.push(s_eq(self.pop(), self.pop()))
+                elif b == JUMP_IF_TRUE:
+                    offset = self.get_bcode()
+                    a = self.pop()
+                    if isinstance(a, W_Bool) and s_unwrap_bool(a):
+                        self._ip += offset
     
                 else:
                     raise Exception("Unknown bytecode " + ord(b))

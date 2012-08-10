@@ -1,10 +1,17 @@
 
+bytecodes = [
+"BINARY_ADD",
+"BINARY_SUB",
+"BINARY_MUL",
+"BINARY_DIV",
+"BINARY_MOD",
+"LOAD_ARG",
+"LOAD_CONST",
+"CALL_FUNCTION",
+"TAIL_CALL",
+"JUMP_IF_TRUE",
+"IS_EQ"]
 
-BINARY_ADD = 0x01
-BINARY_SUB = 0x02
-BINARY_MUL = 0x03
-BINARY_DIV = 0x04
-BINARY_MOD = 0x05
-LOAD_ARG = 0x06
-LOAD_CONST = 0x07
-CALL_FUNCTION = 0x08
+
+for x in range(len(bytecodes)):
+    globals()[bytecodes[x]] = x

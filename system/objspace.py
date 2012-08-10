@@ -89,6 +89,8 @@ class extend(object):
 
 
 Integer = TypeDef("Integer", [])
+NilType = TypeDef("NilType", [])
+BoolType = TypeDef("BoolType", [])
 
 class W_Int(Object):
     def __init__(self, v):
@@ -103,6 +105,23 @@ class W_Int(Object):
     def toString(self):
         return str(self.int_value)
 
+class W_Bool(Object):
+    def __init__(self, v):
+        self.bool_value = v
+
+    def getBoolValue(self):
+        return self.bool_value
+
+    def getType(self):
+        return BoolType
+
+    def toString(self):
+        return "true" if self.bool_value else "false"
+
+w_true = W_Bool(True)
+w_false = W_Bool(False)
+
+
 def s_unwrap_int(w_int):
     """
     Returns a unwrapped (unboxed) int
@@ -111,6 +130,17 @@ def s_unwrap_int(w_int):
     42
     """
     return w_int.getIntValue()
+
+def s_unwrap_bool(w_bool):
+    """
+    Returns a unwrapped bool
+
+    >>> s_unwrap_bool(w_true)
+    True
+    >>> s_unwrap_bool(w_false)
+    False
+    """
+    return w_bool.getBoolValue()
 
 def s_add(w_arg1, w_arg2):
     """
@@ -125,6 +155,15 @@ def s_sub(w_arg1, w_arg2):
     0
     """
     return W_Int(s_unwrap_int(w_arg1) - s_unwrap_int(w_arg2))
+
+def s_eq(w_arg1, w_arg2):
+    """
+    >>> s_unwrap_bool(s_eq(W_Int(42), W_Int(42)))
+    True
+    >>> s_unwrap_bool(s_eq(W_Int(42), W_Int(41)))
+    False
+    """
+    return w_true if s_unwrap_int(w_arg1) == s_unwrap_int(w_arg2) else w_false
 
 
 def invoke0(w_fn, arg1):

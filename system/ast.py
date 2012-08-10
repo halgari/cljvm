@@ -15,7 +15,7 @@ class AExpression(object):
 
         ctx = Context()
 
-        expr._body.emit(ctx)
+        expr._body.emit(ctx, True)
 
         consts = [None] * len(ctx._consts)
         for k in ctx._consts:
@@ -45,7 +45,7 @@ class Argument(AExpression):
     def tag(self, idx):
         self._idx = idx
 
-    def emit(self, ctx):
+    def emit(self, ctx, tc):
         ctx._bcode.append(chr(LOAD_ARG))
         ctx._bcode.append(chr(self._idx))
 
@@ -53,7 +53,7 @@ class Const(AExpression):
     def __init__(self, val):
         self._value = val
 
-    def emit(self, ctx):
+    def emit(self, ctx, tc):
         if self not in ctx._consts:
             ctx._consts[self] = len(ctx._consts)
 
@@ -72,11 +72,11 @@ class Func(AExpression):
         self._body = body
         self._value = None
 
-    def emit(self, ctx):
+    def emit(self, ctx, tc):
         if self._value is None:
             self._value = Const(self.toFunction())
 
-        self._value.emit(ctx)
+        self._value.emit(ctx, tc)
 
 class BinaryOp(AExpression):
     def __init__(self, op, a, b):
@@ -84,9 +84,9 @@ class BinaryOp(AExpression):
         self._b = b
         self._op = op
 
-    def emit(self, ctx):
-        self._b.emit(ctx)
-        self._a.emit(ctx)
+    def emit(self, ctx, tc):
+        self._b.emit(ctx, False)
+        self._a.emit(ctx, False)
         ctx._bcode.append(chr(self._op))
         
 class Call(AExpression):
@@ -94,12 +94,13 @@ class Call(AExpression):
         self._args = args
         self._fn = fn
     
-    def emit(self, ctx):
+    def emit(self, ctx, tc):
         for x in self._args:
-            x.emit(ctx)
-        self._fn.emit(ctx)
-        ctx._bcode.append(chr(CALL_FUNCTION))
+            x.emit(ctx, False)
+        self._fn.emit(ctx, False)
+        ctx._bcode.append(chr(TAIL_CALL if tc else CALL_FUNCTION))
         ctx._bcode.append(chr(len(self._args)))
+
 
 
 class Add(BinaryOp):
@@ -109,3 +110,8 @@ class Add(BinaryOp):
 class Subtract(BinaryOp):
     def __init__(self, a, b):
         BinaryOp.__init__(self, BINARY_SUB, a, b)
+
+class Equal(BinaryOp):
+    def __init__(self, a, b):
+        BinaryOp.__init__(self, IS_EQ, a, b)
+
