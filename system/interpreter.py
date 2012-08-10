@@ -3,60 +3,10 @@ from StringIO import StringIO
 from consts import *
 from array import array
 from objspace import *
+from pypy.rlib.jit import JitDriver
 
-class SlotFrame(object):
-    def __init__(self, w_slots, prev = None):
-        self._prev = prev
-        self._slots = [None] * s_unwrap_int(w_slots)
-        
-    def set_slot(self, slot, w_value):
-        """
-        Sets the value of a slot
+jitdriver = JitDriver(greens=['ip', 'code', 'args', 'func'], reds=['stack'])
 
-        >>> from objspace import *
-        >>> s = SlotFrame(W_Int(2))
-        >>> s.set_slot(0, W_Int(42))
-        >>> s_unwrap_int(s._slots[0])
-        42
-        """
-
-        assert self._slots[slot] is None
-        
-        self._slots[slot] = w_value
-        
-    def get_slot_fast(self, slot):
-        """
-        Gets the value of a slot
-
-        >>> from objspace import *
-        >>> s = SlotFrame(W_Int(2))
-        >>> s.set_slot(0, W_Int(21))
-        >>> s_unwrap_int(s.get_slot_fast(0))
-        21
-        """
-        assert slot >= 0 and slot < len(self._slots)
-        return self._slots[slot]
-        
-    def get_slot(self, level, slot):
-        """
-        Gets the value of a slot
-
-        >>> from objspace import *
-        >>> s = SlotFrame(W_Int(2))
-        >>> s2 = SlotFrame(W_Int(2), s)
-        >>> s.set_slot(0, W_Int(21))
-        >>> s2.set_slot(1, W_Int(42))
-        >>> s_unwrap_int(s2.get_slot(1, 0))
-        21
-        >>> s_unwrap_int(s2.get_slot(0, 1))
-        42
-        """
-        if level == 0:
-            return self._slots[slot]
-            
-        assert level > 0
-        assert self._prev is not None
-        return self._prev.get_slot(level - 1, slot)
 
 
 class Interpreter(object):
@@ -91,8 +41,9 @@ class Interpreter(object):
     def make_arg_stack(self, f, alen):
         args = []
         assert alen == len(f._args)
-        for x in range(alen):
-            args.append(self.pop())
+        args = [None] * alen
+        for x in range(alen -1, -1, -1):
+            args[x] = self.pop()
         self._arg_stack.append(args)
 
     def cur_arg_stack(self):
@@ -106,18 +57,26 @@ class Interpreter(object):
 
 
     def main_loop(self, *args):
-        for x in range(len(args) - 1, -1, -1):
+        args = list(args)
+        for x in range(len(args)):
             self.push(args[x])
 
         self.make_arg_stack(self.top_func(), len(args))
 
-        import disassembler
-        disassembler.dis(self.top_func())
+        #import disassembler
+        #disassembler.dis(self.top_func())
 
         while True:
-            print self.cur_arg_stack
+            #print self.cur_arg_stack
             while self._ip < len(self.top_func()._bcode):
-                disassembler.trace(self.top_func(), self._ip, self.cur_arg_stack())
+                #disassembler.trace(self.top_func(), self._ip, self.cur_arg_stack())
+
+                jitdriver.jit_merge_point(ip = self._ip,
+                                          code = self.top_func()._bcode,
+                                          args = self.cur_arg_stack(),
+                                          func = self.top_func(),
+                                          stack = self._stack)
+
                 b = self.get_bcode()
                 if b == BINARY_ADD:
                     self.push(s_add(self.pop(), self.pop()))
@@ -157,8 +116,8 @@ class Interpreter(object):
                 elif b == CUR_FUNC:
                     self.push(self.top_func())
     
-                else:
-                    raise Exception("Unknown bytecode " + ord(b))
+                #else:
+                #    raise Exception("Unknown bytecode " + ord(b))
 
             self._arg_stack.pop()
             if len(self._arg_stack) == 0: 

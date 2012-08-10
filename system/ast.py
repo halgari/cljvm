@@ -10,8 +10,9 @@ class AExpression(object):
             expr = Func([], self)
 
 
-
-        argnames = map(lambda x: x._name, expr._args)
+        argnames = []
+        for x in expr._args:
+            argnames.append(x._name)
 
         ctx = Context()
 
@@ -91,7 +92,7 @@ class BinaryOp(AExpression):
         
 class Call(AExpression):
     def __init__(self, fn, *args):
-        self._args = args
+        self._args = list(args)
         self._fn = fn
     
     def emit(self, ctx, tc):

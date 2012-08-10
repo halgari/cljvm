@@ -2,6 +2,11 @@ import sys
 
 sys.path.append('/home/tim/pypy')
 
+def jitpolicy(driver):
+    from pypy.jit.codewriter.policy import JitPolicy
+    return JitPolicy()
+
+
 def benchmark_fn(name):
     if name == "basic_math":
         import tests.benchmark.basic_math
@@ -10,7 +15,7 @@ def benchmark_fn(name):
 fn = benchmark_fn("basic_math")
 
 def entry_point(argv):
-    print fn(1000000)
+    print fn(argv[1])
     return 0
 
 # _____ Define and setup target ___

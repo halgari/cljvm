@@ -11,7 +11,8 @@ def run_benchmark(times):
     ast = If(Equal(max, cur), cur, Call(CurFunc(), Add(cur, Const(W_Int(1))), max))
     f = Func([cur, max], ast)
 
-    value = Interpreter(f.toFunction()).main_loop(W_Int(0), W_Int(10))
+    #value = Interpreter(f.toFunction()).main_loop(W_Int(0), W_Int(2147483648))
+    value = Interpreter(f.toFunction()).main_loop(W_Int(0), W_Int(int(times)))
 
 
     return value

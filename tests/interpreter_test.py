@@ -30,9 +30,9 @@ class InterpTests(unittest.TestCase):
     def test_ARGs(self):
         a = Argument("a")
         b = Argument("b")
-        f = Func([a, b], Add(a, b))
+        f = Func([a, b], b)
         val = Interpreter(f.toFunction()).main_loop(W_Int(1), W_Int(2))
-        self.assertEqual(s_unwrap_int(val), 3)
+        self.assertEqual(s_unwrap_int(val), 2)
         
     def test_CALL_FUNCTION(self):
         a = Const(W_Int(42))
