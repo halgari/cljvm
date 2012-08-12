@@ -1,4 +1,5 @@
 import doctest
+from pypy.rlib.jit import elidable
 
 types = {}
 protofns = {}
@@ -93,6 +94,7 @@ NilType = TypeDef("NilType", [])
 BoolType = TypeDef("BoolType", [])
 
 class W_Int(Object):
+    __immutable_fields_ = ['int_value']
     def __init__(self, v):
         self.int_value = v
 
@@ -109,14 +111,71 @@ class W_Bool(Object):
     def __init__(self, v):
         self.bool_value = v
 
+#    @elidable
     def getBoolValue(self):
         return self.bool_value
 
+#    @elidable
     def getType(self):
         return BoolType
 
+#    @elidable
     def toString(self):
         return "true" if self.bool_value else "false"
+
+class W_Nil(Object):
+    def __init__(self):
+        pass
+
+    def getType(self):
+        return NilType
+
+    def getString(self):
+        return "nil"
+
+nil = W_Nil()
+
+InternalListType = TypeDef("InternalList", [])
+
+class W_InternalList(Object):
+#    @elidable
+    def __init__(self, w_head, w_tail):
+        self._w_head = w_head
+        self._w_tail = w_tail
+
+    @elidable
+    def getFirst(self):
+        return self._w_head
+
+    @elidable
+    def getNext(self):
+        return self._w_tail
+
+    def getType(self):
+        return InternalListType
+
+ArrayType = TypeDef("Array", [])
+
+class W_Array(Object):
+    def __init__(self, items_w):
+        self._items_w = items_w
+
+    @elidable
+    def getNth(self, nth):
+        return self._items_w[s_unwrap_int(nth)]
+
+    @elidable
+    def getCount(self):
+        return W_Int(len(self._items_w))
+
+    @elidable
+    def getType(self):
+        return ArrayType
+
+
+
+def s_cons(newhead, rest):
+    return W_InternalList(newhead, rest)
 
 w_true = W_Bool(True)
 w_false = W_Bool(False)
