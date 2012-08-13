@@ -26,7 +26,7 @@ def get_location(ip, func, interp):
 
 
 jitdriver = JitDriver(greens=['ip', 'func', 'interp'],
-                      reds=['stack', 'args'],
+                      reds=['stack', 'stack1', 'args'],
                       get_printable_location = get_location
 )
 
@@ -77,7 +77,7 @@ class Interpreter(object):
         return self._arg_stack.getFirst()
 
     def get_arg(self, offset):
-        return self.cur_arg_stack().getNth(W_Int(offset))
+        return self.cur_arg_stack().getNthInterp(offset)
 
     def pop_arg_stack(self):
         self._arg_stack = self._arg_stack.getNext()
@@ -121,7 +121,8 @@ class Interpreter(object):
                 jitdriver.jit_merge_point(ip = self._ip,
                                           func = self.top_func(),
                                           args = self.cur_arg(),
-                                          stack = self._sp,
+                                          stack = self._stack[self._sp - 1],
+                                          stack1 = self._stack[self._sp - 2],
                                           interp = self)
 
                 b = self.get_bcode()
@@ -131,7 +132,7 @@ class Interpreter(object):
                     self.push(s_sub(self.pop(), self.pop()))
                 elif b == LOAD_CONST:
                     c = self.get_bcode()
-                    self.push(self.top_func()._consts[c])
+                    self.push(self.top_func()._consts.getNthInterp(c))
                 elif b == LOAD_ARG:
                     c = self.get_bcode()
                     self.push(self.get_arg(c))
@@ -179,7 +180,7 @@ class Function(Object):
     def __init__(self, bcode, args = None, consts = None):
         self._bcode = bcode
         self._args = args
-        self._consts = consts
+        self._consts = W_Array(consts)
     def toString(self):
         return "Function"
 

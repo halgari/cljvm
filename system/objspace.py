@@ -161,8 +161,12 @@ class W_Array(Object):
         self._items_w = items_w
 
     @elidable
-    def getNth(self, nth):
-        return self._items_w[s_unwrap_int(nth)]
+    def getNth(self, w_nth):
+        return self._items_w[s_unwrap_int(w_nth)]
+
+    @elidable
+    def getNthInterp(self, nth):
+        return self._items_w[nth]
 
     @elidable
     def getCount(self):
