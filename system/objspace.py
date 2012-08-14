@@ -94,7 +94,7 @@ NilType = TypeDef("NilType", [])
 BoolType = TypeDef("BoolType", [])
 
 class W_Int(Object):
-    __immutable_fields_ = ['int_value']
+    _immutable_fields_ = ['int_value']
     def __init__(self, v):
         self.int_value = v
 
@@ -138,6 +138,7 @@ nil = W_Nil()
 InternalListType = TypeDef("InternalList", [])
 
 class W_InternalList(Object):
+    _immutable_fields_ = ['_w_head', '_w_tail']
 #    @elidable
     def __init__(self, w_head, w_tail):
         self._w_head = w_head

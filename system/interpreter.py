@@ -3,7 +3,7 @@ from StringIO import StringIO
 from consts import *
 from array import array
 from objspace import *
-from pypy.rlib.jit import JitDriver
+from pypy.rlib.jit import JitDriver, promote
 
 
 
@@ -116,7 +116,7 @@ class Interpreter(object):
 
         while True:
             #print self.cur_arg_stack
-            while self._ip < len(self.top_func()._bcode):
+            while self._ip < promote(len(self.top_func()._bcode)):
                 #print get_location(self._ip, self.top_func(), self)
                 jitdriver.jit_merge_point(ip = self._ip,
                                           func = self.top_func(),
@@ -143,6 +143,9 @@ class Interpreter(object):
                     self.push_ip(self._ip)
                     self._ip = 0
                     self.push_arg_stack(self.top_func(), args)
+
+
+
                 elif b == TAIL_CALL:
                     args = self.get_bcode()
                     func = self.pop()
@@ -151,6 +154,14 @@ class Interpreter(object):
                     self._ip = 0
                     self.pop_arg_stack()
                     self.push_arg_stack(self.top_func(), args)
+
+                    jitdriver.can_enter_jit(ip = 0,
+                        func = func,
+                        args = self.cur_arg(),
+                        stack = self._stack[self._sp - 1],
+                        stack1 = self._stack[self._sp - 2],
+                        interp = self)
+
                 elif b == IS_EQ:
                     self.push(s_eq(self.pop(), self.pop()))
                 elif b == JUMP_IF_FALSE:
