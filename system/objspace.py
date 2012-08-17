@@ -53,8 +53,8 @@ class Equals(Expr):
 
 class Add(Expr):
     def apply_to(self, frame, args_w, can_tail_call):
-        accum = args_w[0]
-        for x in range(1, len(args_w)):
+        accum = W_Int(0)
+        for x in range(0, len(args_w)):
             accum = s_add(accum, args_w[x])
         return accum
 
@@ -70,7 +70,7 @@ class W_Trampoline(Object):
     def apply(self):
         if isinstance(self._func_w, FExpr):
             return self._func_w.apply_fexpr(nil, self._args_w, True)
-        return self._func_w.apply_to(args_w)
+        return self._func_w.apply_to(nil, self._args_w, True)
 
 def interpret_seq(frame, sym, args_w, can_tail_call):
     if sym is sym_if:
@@ -182,7 +182,7 @@ class W_Cons(Object):
         s = self.next()
         for x in range(argc):
             if isinstance(fn, Expr):
-                args_w[x] = s.first().eval()
+                args_w[x] = s.first().eval(args_w, can_tail_call)
             elif isinstance(fn, FExpr):
                 args_w[x] = s.first()
             s = s.next()

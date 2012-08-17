@@ -3,6 +3,7 @@ from system.util import data_to_app
 from system.objspace import symbol, eval, w_true, w_false, s_eq
 
 if_ = symbol("if")
+add_ = symbol("+")
 
 
 class RunTest(unittest.TestCase):
@@ -19,4 +20,8 @@ class RunTest(unittest.TestCase):
 data = [
     [(if_, True, 1, 2), 1],
     [(if_, False, 1, 2), 2],
+    [(add_, 1), 1],
+    [(add_, 1, 2), 3],
+    [(add_, 1, 2, 3), 6],
+    [(add_,), 0],
 ]
