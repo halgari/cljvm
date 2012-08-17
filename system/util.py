@@ -23,4 +23,5 @@ def data_to_app(form):
 mappers = {int: W_Int,
            tuple: tuple_to_app,
            Symbol: symbol_to_app,
-           bool: bool_to_app}
+           bool: bool_to_app,
+           list: tuple_to_app}

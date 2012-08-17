@@ -4,7 +4,9 @@ from system.objspace import symbol, eval, w_true, w_false, s_eq
 
 if_ = symbol("if")
 add_ = symbol("+")
-
+fn_ = symbol("fn")
+tmp = symbol("tmp")
+x = symbol("x")
 
 class RunTest(unittest.TestCase):
     def test_data(self):
@@ -24,4 +26,5 @@ data = [
     [(add_, 1, 2), 3],
     [(add_, 1, 2, 3), 6],
     [(add_,), 0],
+    [((fn_, tmp, [x], x), 1), 1]
 ]

@@ -70,7 +70,7 @@ class W_Trampoline(Object):
     def apply(self):
         if isinstance(self._func_w, FExpr):
             return self._func_w.apply_fexpr(nil, self._args_w, True)
-        return self._func_w.apply_to(nil, self._args_w, True)
+        return self._func_w.apply_to(None, self._args_w, True)
 
 def interpret_seq(frame, sym, args_w, can_tail_call):
     if sym is sym_if:
@@ -191,6 +191,8 @@ class W_Cons(Object):
             tramp = W_Trampoline(fn, args_w)
             return tramp
         else:
+            if isinstance(fn, FExpr):
+                return fn.apply_fexpr(frame, args_w, can_tail_call)
             return fn.apply_to(frame, args_w, can_tail_call)
 
 
@@ -236,7 +238,7 @@ def s_unwrap_bool(w_bool):
     >>> s_unwrap_bool(w_false)
     False
     """
-    return w_bool.getBoolValue()
+    return w_bool.bool()
 
 def s_add(w_arg1, w_arg2):
     """
@@ -261,14 +263,48 @@ def s_eq(w_arg1, w_arg2):
     """
     return w_true if s_unwrap_int(w_arg1) == s_unwrap_int(w_arg2) else w_false
 
+class FuncInstance(Expr):
+    def __init__(self, name, args, body):
+        self._name = name
+        self._args = args
+        self._body = body
+
+    def apply_to(self, frame, args_w, can_tail_call):
+        assert len(args_w) == self._args.count()
+        locals = {}
+        s = self._args
+        for x in range(len(args_w)):
+            locals[s.first()] = args_w[x]
+            s = s.next()
+
+
+        frame = ResolveFrame(locals, frame)
+        ret = nil
+        for x in range(len(self._body)):
+            form = self._body[x]
+            ret = eval(form, frame)
+        return ret
+
+class Func(FExpr):
+    def __init__(self):
+        pass
+    def apply_fexpr(self, frame, args_w, can_tail_call):
+        nm = args_w[0]
+        args = args_w[1]
+        body = args_w[2:]
+
+        return FuncInstance(nm, args, body)
 
 
 builtins = ResolveFrame({symbol("if"): IfExpr(),
-            symbol("+"): Add()})
+            symbol("+"): Add(),
+            symbol("fn"): Func()})
 
 
-def eval(form_w, env_w = builtins):
-    frame = ResolveFrame(env_w, None)
+def eval(form_w, env_w = None):
+    if env_w == None:
+        env_w = builtins
+
     res = form_w.eval(env_w, True)
 
     while isinstance(res, W_Trampoline):
