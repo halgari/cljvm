@@ -1,5 +1,5 @@
 import doctest
-from pypy.rlib.jit import elidable
+#from pypy.rlib.jit import elidable
 
 types = {}
 protofns = {}
@@ -8,179 +8,211 @@ protofns = {}
 class Object(object):
     pass
 
-class TypeDef(Object):
-    def __init__(self, name, fields):
-        self.fields = list(fields)
 
-    def getFieldOffset(self, fname):
-        for x in range(len(self.fields)):
-            if self.fields[x] == fname:
-                return x
-        assert False
+class ResolveFrame(object):
+    def __init__(self, dict_w, prev = None):
+        self._dict_w = dict_w
+        self._prev = prev
 
+    def resolve(self, sym):
+        if sym in self._dict_w:
+            return self._dict_w[sym]
+        if self._prev:
+            return self._prev.resolve(sym)
+        else:
+            return unknown
 
-class PersistentObject(Object):
-    __immutable_fields_ = ["_tdef", "_data"]
-    def __init__(self, tdef, data):
-        self._tdef = tdef
-        self._data = data
+class FExpr(Object):
+    """ An expression who's arguments are not evaluated """
+    def apply_fexpr(self, frame, args_w, can_tail_call):
+        return nil
 
-    def getField(self, name):
-        off = self._tdef.getFieldOffset(name)
-        return self._data[off]
+class Expr(Object):
+    """ An expression who's arguments are evaluated"""
+    def apply_to(self, frame, args_w, can_tail_call):
+        return nil
 
-    def withField(self, name, newval):
-        off = self._tdef.getFieldOffset(name)
-        newdat = self._data[:]
-        newdat[off] = newval
-        return PersistentObject(self._tdef, newdat)
+class IfExpr(FExpr):
+    def apply_fexpr(self, frame, args_w, can_tail_call):
+        cond = args_w[0]
 
-    def getType(self):
-        return self._tdef
+        if cond.eval(frame, False) is w_true:
+            return args_w[1].eval(frame, can_tail_call)
+        elif len(args_w) == 3:
+            return args_w[2].eval(frame, can_tail_call)
+        else:
+            return nil
 
+class Equals(Expr):
+    def apply_to(self, frame, args_w, can_tail_call):
+        fst = args_w[0]
+        for x in range(1, len(args_w)):
+            if s_eq(fst, args_w[x]) is w_false:
+                return w_false
+        return w_true
 
+class Add(Expr):
+    def apply_to(self, frame, args_w, can_tail_call):
+        accum = args_w[0]
+        for x in range(1, len(args_w)):
+            accum = s_add(accum, args_w[x])
+        return accum
 
+class W_Unknown(Object):
+    def __init__(self):
+        pass
 
+class W_Trampoline(Object):
+    def __init__(self, func_w, args_w):
+        self._func_w = func_w
+        self._args_w = args_w
 
+    def apply(self):
+        if isinstance(self._func_w, FExpr):
+            return self._func_w.apply_fexpr(nil, self._args_w, True)
+        return self._func_w.apply_to(args_w)
 
-
-def typedef(fn):
-    name = fn.func_name
-    fields = fn.func_code.co_varnames[:fn.func_code.co_argcount]
-
-    types[name] = TypeDef(name, fields)
-    print("Registered Type " + name)
-    return fn
-
-
-def s_type(obj):
-    assert obj is not None
-    return obj.getType()
-
-def s_fget(obj, name):
-    return obj.getField(name)
-
-def s_with(obj, name, val):
-    return obj.withField(name, val)
-
-def s_wrap_func(fn):
-    from system.functions import WrappedFn
-    return WrappedFn(fn, None)
-
-class extend(object):
-    def __init__(self, tp, proto):
-        self._tp = tp
-        self._proto = proto
-
-    def __call__(self, fn):
-        from system.functions import PolymorphicFn
-        w_func = s_wrap_func(fn)
-        name = fn.func_name
-
-        if name not in protofns:
-            pfn = PolymorphicFn(name)
-            protofns[name] = pfn
-            setattr(clojure.core, name, pfn)
-
-        protofns[name].extend(types[self._tp.func_name], w_func)
-
-        print "Registered " + self._proto + " : " + name
-
-        return fn
+def interpret_seq(frame, sym, args_w, can_tail_call):
+    if sym is sym_if:
+        return interpret_if(frame, args_w, can_tail_call)
 
 
-Integer = TypeDef("Integer", [])
-NilType = TypeDef("NilType", [])
-BoolType = TypeDef("BoolType", [])
 
-class W_Int(Object):
-    _immutable_fields_ = ['int_value']
+unknown = W_Unknown()
+
+class SelfEvaluating(Object):
+    """Defines a object that evals to itself"""
+    def eval(self, frame, can_tail_call):
+        return self
+
+class Symbol(Object):
+    def __init__(self, name):
+        self._name = name
+
+    def eval(self, frame, can_tail_call):
+        r = frame.resolve(self)
+        if r is unknown:
+            assert False
+        return r
+
+    def __eq__(self, other):
+        if not isinstance(other, Symbol):
+            return False
+        if self._name == other._name:
+            return True
+        return False
+
+
+class SymbolCache(object):
+    def __init__(self):
+        self._cache = {}
+
+    def intern(self, s):
+        if s in self._cache:
+            return self._cache[s]
+
+        sym = Symbol(s)
+        self._cache[s] = sym
+
+        return sym
+
+_sym_cache = SymbolCache()
+
+def symbol(s):
+    return _sym_cache.intern(s)
+
+
+
+
+sym_if = Symbol("if")
+sym_fn = Symbol("fn")
+
+class W_Int(SelfEvaluating):
     def __init__(self, v):
         self.int_value = v
 
-    def getIntValue(self):
+    def int(self):
         return self.int_value
 
-    def getType(self):
-        return Integer
-
-    def toString(self):
+    def string(self):
         return str(self.int_value)
 
-class W_Bool(Object):
+class W_Bool(SelfEvaluating):
     def __init__(self, v):
         self.bool_value = v
 
-#    @elidable
-    def getBoolValue(self):
+    def bool(self):
         return self.bool_value
 
-#    @elidable
-    def getType(self):
-        return BoolType
-
-#    @elidable
-    def toString(self):
+    def string(self):
         return "true" if self.bool_value else "false"
 
 class W_Nil(Object):
     def __init__(self):
         pass
 
-    def getType(self):
-        return NilType
-
-    def getString(self):
+    def to_string(self):
         return "nil"
 
 nil = W_Nil()
 
-InternalListType = TypeDef("InternalList", [])
-
-class W_InternalList(Object):
-    _immutable_fields_ = ['_w_head', '_w_tail']
-#    @elidable
+class W_Cons(Object):
     def __init__(self, w_head, w_tail):
         self._w_head = w_head
         self._w_tail = w_tail
 
-    @elidable
-    def getFirst(self):
+    def first(self):
         return self._w_head
 
-    @elidable
-    def getNext(self):
+    def next(self):
         return self._w_tail
 
-    def getType(self):
-        return InternalListType
+    def count(self):
+        i = 0
+        s = self
+        while s is not nil and s is not None:
+            i += 1
+            s = s.next()
+        return i
 
-ArrayType = TypeDef("Array", [])
+    def eval(self, frame, can_tail_call):
+        fn = self.first().eval(frame, False)
+        argc = self.count() - 1
+        args_w = [None] * argc
+        s = self.next()
+        for x in range(argc):
+            if isinstance(fn, Expr):
+                args_w[x] = s.first().eval()
+            elif isinstance(fn, FExpr):
+                args_w[x] = s.first()
+            s = s.next()
+
+        if can_tail_call:
+            tramp = W_Trampoline(fn, args_w)
+            return tramp
+        else:
+            return fn.apply_to(frame, args_w, can_tail_call)
+
 
 class W_Array(Object):
     def __init__(self, items_w):
         self._items_w = items_w
 
-    @elidable
-    def getNth(self, w_nth):
+    def app_nth(self, w_nth):
         return self._items_w[s_unwrap_int(w_nth)]
 
-    @elidable
-    def getNthInterp(self, nth):
+    def nth(self, nth):
         return self._items_w[nth]
 
-    @elidable
-    def getCount(self):
+    def count(self):
         return W_Int(len(self._items_w))
 
-    @elidable
-    def getType(self):
-        return ArrayType
-
+    def list(self):
+        return self._items_w
 
 
 def s_cons(newhead, rest):
-    return W_InternalList(newhead, rest)
+    return W_Cons(newhead, rest)
 
 w_true = W_Bool(True)
 w_false = W_Bool(False)
@@ -193,7 +225,7 @@ def s_unwrap_int(w_int):
     >>> s_unwrap_int(W_Int(42))
     42
     """
-    return w_int.getIntValue()
+    return w_int.int()
 
 def s_unwrap_bool(w_bool):
     """
@@ -230,17 +262,16 @@ def s_eq(w_arg1, w_arg2):
     return w_true if s_unwrap_int(w_arg1) == s_unwrap_int(w_arg2) else w_false
 
 
-def invoke0(w_fn, arg1):
-    return w_fn.invoke0()
 
-def invoke1(w_fn, arg1):
-    return w_fn.invoke1(arg1)
-
-def invoke_args(w_fn, args_w):
-    if len(args_w) == 0:
-        return invoke0(w_fn)
-    if len(args_w) == 1:
-        return invoke1(w_fn, args_w[0])
+builtins = ResolveFrame({symbol("if"): IfExpr(),
+            symbol("+"): Add()})
 
 
+def eval(form_w, env_w = builtins):
+    frame = ResolveFrame(env_w, None)
+    res = form_w.eval(env_w, True)
 
+    while isinstance(res, W_Trampoline):
+        res = res.apply()
+
+    return res

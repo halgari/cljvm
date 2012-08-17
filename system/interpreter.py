@@ -27,6 +27,7 @@ def get_location(ip, func, interp):
 
 jitdriver = JitDriver(greens=['ip', 'func', 'interp'],
                       reds=['stack', 'stack1', 'args'],
+                      virtualizables=['args'],
                       get_printable_location = get_location
 )
 
@@ -97,7 +98,7 @@ class Interpreter(object):
         self._call_stack = self._call_stack.getNext()
 
     def cur_arg(self):
-        return W_Array([]) if self._arg_stack is nil else self._arg_stack.getFirst()
+        return [nil] if self._arg_stack is nil else self._arg_stack.getFirst().getList()
 
     def tos(self):
         return self._stack[self._sp - 1]
