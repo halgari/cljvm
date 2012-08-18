@@ -7,6 +7,7 @@ add_ = symbol("+")
 fn_ = symbol("fn")
 tmp = symbol("tmp")
 x = symbol("x")
+eq = symbol("=")
 
 class RunTest(unittest.TestCase):
     def test_data(self):
@@ -26,5 +27,11 @@ data = [
     [(add_, 1, 2), 3],
     [(add_, 1, 2, 3), 6],
     [(add_,), 0],
-    [((fn_, tmp, [x], x), 1), 1]
+    [((fn_, tmp, [x], x), 1), 1],
+    [(if_, (eq, 1, 1,), 1, 2), 1],
+    [(if_, (eq, 1, 2,), 1, 2), 2],
+    [((fn_, tmp, [x],
+        (if_, (eq, x, 10),
+            x,
+            (tmp, (add_, 1, x)))), 0), 10]
 ]

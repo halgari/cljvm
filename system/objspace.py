@@ -29,7 +29,7 @@ class FExpr(Object):
 
 class Expr(Object):
     """ An expression who's arguments are evaluated"""
-    def apply_to(self, frame, args_w, can_tail_call):
+    def apply_to(self, args_w, can_tail_call):
         return nil
 
 class IfExpr(FExpr):
@@ -44,7 +44,7 @@ class IfExpr(FExpr):
             return nil
 
 class Equals(Expr):
-    def apply_to(self, frame, args_w, can_tail_call):
+    def apply_to(self, args_w, can_tail_call):
         fst = args_w[0]
         for x in range(1, len(args_w)):
             if s_eq(fst, args_w[x]) is w_false:
@@ -52,7 +52,7 @@ class Equals(Expr):
         return w_true
 
 class Add(Expr):
-    def apply_to(self, frame, args_w, can_tail_call):
+    def apply_to(self, args_w, can_tail_call):
         accum = W_Int(0)
         for x in range(0, len(args_w)):
             accum = s_add(accum, args_w[x])
@@ -68,9 +68,7 @@ class W_Trampoline(Object):
         self._args_w = args_w
 
     def apply(self):
-        if isinstance(self._func_w, FExpr):
-            return self._func_w.apply_fexpr(nil, self._args_w, True)
-        return self._func_w.apply_to(None, self._args_w, True)
+        return self._func_w.apply_to(self._args_w, True)
 
 def interpret_seq(frame, sym, args_w, can_tail_call):
     if sym is sym_if:
@@ -182,18 +180,18 @@ class W_Cons(Object):
         s = self.next()
         for x in range(argc):
             if isinstance(fn, Expr):
-                args_w[x] = s.first().eval(args_w, can_tail_call)
+                args_w[x] = s.first().eval(frame, False)
             elif isinstance(fn, FExpr):
                 args_w[x] = s.first()
             s = s.next()
 
-        if can_tail_call:
+        if can_tail_call and not isinstance(fn, FExpr):
             tramp = W_Trampoline(fn, args_w)
             return tramp
         else:
             if isinstance(fn, FExpr):
                 return fn.apply_fexpr(frame, args_w, can_tail_call)
-            return fn.apply_to(frame, args_w, can_tail_call)
+            return fn.apply_to(args_w, can_tail_call)
 
 
 class W_Array(Object):
@@ -269,21 +267,18 @@ class FuncInstance(Expr):
         self._args = args
         self._body = body
 
-    def apply_to(self, frame, args_w, can_tail_call):
+    def apply_to(self, args_w, can_tail_call):
         assert len(args_w) == self._args.count()
-        locals = {}
+        locals = {self._name: self}
         s = self._args
         for x in range(len(args_w)):
             locals[s.first()] = args_w[x]
             s = s.next()
 
 
-        frame = ResolveFrame(locals, frame)
+        frame = ResolveFrame(locals, builtins)
         ret = nil
-        for x in range(len(self._body)):
-            form = self._body[x]
-            ret = eval(form, frame)
-        return ret
+        return self._body[0].eval(frame, True)
 
 class Func(FExpr):
     def __init__(self):
@@ -295,10 +290,21 @@ class Func(FExpr):
 
         return FuncInstance(nm, args, body)
 
+class Equals(Expr):
+    def apply_to(self, args_w, can_tail_call):
+        return s_eq(args_w[0], args_w[1])
+
+def make_list(*args):
+    s = nil
+    for x in range(len(args) -1, -1, -1):
+        s = s_cons(args[x], s)
+    return s
+
 
 builtins = ResolveFrame({symbol("if"): IfExpr(),
             symbol("+"): Add(),
-            symbol("fn"): Func()})
+            symbol("fn"): Func(),
+            symbol("="): Equals()})
 
 
 def eval(form_w, env_w = None):
