@@ -11,13 +11,15 @@ max = symbol("max")
 cur = symbol("cur")
 eq = symbol("=")
 
+def load_data():
+    expr = (fn_, tmp, [cur, max],
+             (if_, (eq, cur, max),
+              cur,
+              (tmp, (add_, 1, cur), max)))
+    globals()["expr"] = data_to_app(expr)
 
-expr = (fn_, tmp, [cur, max],
-         (if_, (eq, cur, max),
-          cur,
-          (tmp, (add_, 1, cur), max)))
+load_data()
 
-expr = data_to_app(expr)
 
 def run_benchmark(times):
     code = make_list(expr, W_Int(0), W_Int(int(times)))

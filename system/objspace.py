@@ -1,8 +1,15 @@
 import doctest
-#from pypy.rlib.jit import elidable
+from system.jit import *
 
 types = {}
 protofns = {}
+
+
+
+jitdriver = JitDriver(greens=['can_tail_call','form'],
+    reds=['frame'],
+#    get_printable_location = get_location
+)
 
 
 class Object(object):
@@ -174,6 +181,9 @@ class W_Cons(Object):
         return i
 
     def eval(self, frame, can_tail_call):
+        jitdriver.jit_merge_point(form = self,
+                                  frame = frame,
+                                  can_tail_call = can_tail_call)
         fn = self.first().eval(frame, False)
         argc = self.count() - 1
         args_w = [None] * argc
@@ -296,8 +306,9 @@ class Equals(Expr):
 
 def make_list(*args):
     s = nil
-    for x in range(len(args) -1, -1, -1):
-        s = s_cons(args[x], s)
+    argsl = list(args)
+    for x in range(len(argsl) -1, -1, -1):
+        s = s_cons(argsl[x], s)
     return s
 
 
