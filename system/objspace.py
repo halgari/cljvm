@@ -12,6 +12,7 @@ def get_location(can_tail_call, form):
 
 jitdriver = JitDriver(greens=['can_tail_call','form'],
     reds=['frame'],
+    #virtualizables=['frame'],
     get_printable_location = get_location
 )
 
@@ -20,19 +21,20 @@ class Object(object):
     pass
 
 
-class ResolveFrame(object):
-    def __init__(self, dict_w, prev = None):
-        self._dict_w = dict_w
-        self._prev = prev
+# class ResolveFrame(object):
+    # _virtualizable2_ = ['_dict_w[*]']
+    # def __init__(self, dict_w, prev = None):
+        # self._dict_w = dict_w
+        # self._prev = prev
 
-    @elidable
-    def resolve(self, sym):
-        if sym in self._dict_w:
-            return self._dict_w[sym]
-        if self._prev:
-            return self._prev.resolve(sym)
-        else:
-            return unknown
+    # @elidable
+    # def resolve(self, sym):
+        # if sym in self._dict_w:
+            # return self._dict_w[sym]
+        # if self._prev:
+            # return self._prev.resolve(sym)
+        # else:
+            # return unknown
 
 class FExpr(Object):
     """ An expression who's arguments are not evaluated """
@@ -78,9 +80,16 @@ class W_Trampoline(Object):
     def __init__(self, func_w, args_w):
         self._func_w = func_w
         self._args_w = args_w
+    def repr(self):
+	return "W_Trampoline(" + self._func_w.repr() + ")"
 
     def apply(self):
         return self._func_w.apply_to(self._args_w, True)
+
+    def set(self, func_w, args_w):
+        self._func_w = func_w
+        self._args_w = args_w
+	return self
 
 def interpret_seq(frame, sym, args_w, can_tail_call):
     if sym is sym_if:
@@ -100,9 +109,11 @@ class Symbol(Object):
         self._name = name
 
     def eval(self, frame, can_tail_call):
-        r = frame.resolve(self)
+	r = unknown
+	if frame is not noframe:
+	    r = frame.resolve(self)
         if r is unknown:
-            assert False
+	    return get_builtin(self)
         return r
 
     def repr(self):
@@ -161,6 +172,9 @@ class W_Bool(SelfEvaluating):
     def bool(self):
         return self.bool_value
 
+    def repr(self):
+        return self.string()
+	
     def string(self):
         return "true" if self.bool_value else "false"
 
@@ -174,6 +188,7 @@ class W_Nil(Object):
 nil = W_Nil()
 
 class W_Cons(Object):
+    _immutable_fields_ = ['_w_head', '_w_tail']
     def __init__(self, w_head, w_tail):
         self._w_head = w_head
         self._w_tail = w_tail
@@ -183,7 +198,8 @@ class W_Cons(Object):
 
     def next(self):
         return self._w_tail
-
+ 
+    @elidable
     def count(self):
         i = 0
         s = self
@@ -201,6 +217,7 @@ class W_Cons(Object):
 
         return "(" + " ".join(v) + ")"
 
+    @unroll_safe
     def eval(self, frame, can_tail_call):
         jitdriver.jit_merge_point(form = self,
                                   frame = frame,
@@ -217,8 +234,7 @@ class W_Cons(Object):
             s = s.next()
 
         if can_tail_call and not isinstance(fn, FExpr):
-            tramp = W_Trampoline(fn, args_w)
-            return tramp
+	    return trampoline.set(fn, args_w)
         else:
             if isinstance(fn, FExpr):
                 return fn.apply_fexpr(frame, args_w, can_tail_call)
@@ -292,6 +308,38 @@ def s_eq(w_arg1, w_arg2):
     """
     return w_true if s_unwrap_int(w_arg1) == s_unwrap_int(w_arg2) else w_false
 
+@elidable
+def get_arg_idx(arg_names_w, sym):
+    s = arg_names_w
+    x = 0
+    while s is not nil and s is not None:
+        if s.first() == sym:
+	    return x
+	s = s.next()
+	x += 1
+	    
+    return -1
+    
+class FuncResolveFrame(object):
+    #_virtualizable2_ = ['_args_w[*]']
+    def __init__(self, selfname, self_w, arg_names_w, args_w, prev):
+        self._arg_names_w = arg_names_w
+	self._args_w = args_w
+	self._prev = prev
+	self._self_w = self_w
+	self._self_name = selfname
+    
+    @elidable
+    def resolve(self, sym):
+	if sym == self._self_name:
+	    return self._self_w
+	idx = promote(get_arg_idx(self._arg_names_w, sym))
+	if idx == -1:
+	    if self._prev is noframe or self._prev is None:
+	        return unknown
+	    return self._prev.resolve(sym)
+	return self._args_w[idx]
+
 class FuncInstance(Expr):
     def __init__(self, name, args, body):
         self._name = name
@@ -300,14 +348,13 @@ class FuncInstance(Expr):
 
     def apply_to(self, args_w, can_tail_call):
         assert len(args_w) == self._args.count()
-        locals = {self._name: self}
-        s = self._args
-        for x in range(len(args_w)):
-            locals[s.first()] = args_w[x]
-            s = s.next()
+        #s = self._args
+        #for x in range(len(args_w)):
+        #    locals[s.first()] = args_w[x]
+        #    s = s.next()
 
 
-        frame = ResolveFrame(locals, builtins)
+        frame = FuncResolveFrame(self._name, self, self._args, args_w, None)
 
 
         ret = nil
@@ -334,20 +381,26 @@ def make_list(*args):
         s = s_cons(argsl[x], s)
     return s
 
+@elidable
+def get_builtin(sym):
+    if sym in builtins:
+        return builtins[sym]
+    return unknown
 
-builtins = ResolveFrame({symbol("if"): IfExpr(),
+builtins = {symbol("if"): IfExpr(),
             symbol("+"): Add(),
             symbol("fn"): Func(),
-            symbol("="): Equals()})
+            symbol("="): Equals()}
 
-
+noframe = FuncResolveFrame(None, None, None, [], None)
+trampoline = W_Trampoline(None, None)
+	    
 def eval(form_w, env_w = None):
-    if env_w == None:
-        env_w = builtins
-
+    env_w = noframe
     res = form_w.eval(env_w, True)
 
     while isinstance(res, W_Trampoline):
         res = res.apply()
+        jitdriver.can_enter_jit(can_tail_call = True, frame = noframe, form = res)
 
     return res
