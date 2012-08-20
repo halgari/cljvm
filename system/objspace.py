@@ -345,6 +345,9 @@ class FuncInstance(Expr):
         self._name = name
         self._args = args
         self._body = body
+	
+    def repr(self):
+        return "FuncInstance(" + self._name.repr() + ")"
 
     def apply_to(self, args_w, can_tail_call):
         assert len(args_w) == self._args.count()
