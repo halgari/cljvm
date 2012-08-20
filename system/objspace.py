@@ -5,10 +5,14 @@ types = {}
 protofns = {}
 
 
+def get_location(can_tail_call, form):
+    if form is nil or form is None:
+        return "nil"
+    return form.repr()
 
 jitdriver = JitDriver(greens=['can_tail_call','form'],
     reds=['frame'],
-#    get_printable_location = get_location
+    get_printable_location = get_location
 )
 
 
@@ -21,6 +25,7 @@ class ResolveFrame(object):
         self._dict_w = dict_w
         self._prev = prev
 
+    @elidable
     def resolve(self, sym):
         if sym in self._dict_w:
             return self._dict_w[sym]
@@ -100,6 +105,9 @@ class Symbol(Object):
             assert False
         return r
 
+    def repr(self):
+        return self._name
+
     def __eq__(self, other):
         if not isinstance(other, Symbol):
             return False
@@ -136,8 +144,12 @@ class W_Int(SelfEvaluating):
     def __init__(self, v):
         self.int_value = v
 
+    @elidable
     def int(self):
         return self.int_value
+
+    def repr(self):
+        return str(self.int())
 
     def string(self):
         return str(self.int_value)
@@ -179,6 +191,15 @@ class W_Cons(Object):
             i += 1
             s = s.next()
         return i
+
+    def repr(self):
+        s = self
+        v = []
+        while s is not None and s is not nil:
+            v.append(s.first().repr())
+            s = s.next()
+
+        return "(" + " ".join(v) + ")"
 
     def eval(self, frame, can_tail_call):
         jitdriver.jit_merge_point(form = self,
@@ -287,6 +308,8 @@ class FuncInstance(Expr):
 
 
         frame = ResolveFrame(locals, builtins)
+
+
         ret = nil
         return self._body[0].eval(frame, True)
 
