@@ -237,6 +237,7 @@ class W_Cons(Object):
         args_w = [None] * argc
         s = self.next()
         for x in range(argc):
+            promote(x)
             if isinstance(fn, Expr):
                 args_w[x] = promote(s._w_head).eval(frame, False)
             elif isinstance(fn, FExpr):
