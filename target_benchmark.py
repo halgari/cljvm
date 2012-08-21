@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append('/home/tim/pypy')
+#sys.path.append('/home/tim/pypy')
 
 def jitpolicy(driver):
     from pypy.jit.codewriter.policy import JitPolicy
