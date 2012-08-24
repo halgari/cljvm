@@ -1,6 +1,6 @@
 import system.rt as rt
 from core import Object
-from system.polymorphic_func import extend
+from system.rt import extend
 
 class W_Symbol(rt.Object):
     def __init__(self, _ns, _name):
@@ -21,6 +21,11 @@ class W_Symbol(rt.Object):
 
     def type(self):
         return symbol_type
+
+    def repr(self):
+        if self._ns is None:
+            return self._ns
+        return self._ns + "/" + self._name
 
 symbol_type = W_Symbol("system", "Symbol")
 

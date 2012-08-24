@@ -10,6 +10,15 @@ class Func(Object):
         if len(w_args) == 2:
             return self.invoke2(w_args[0], w_args[1])
 
+class FExpr(Object):
+    def invoke_args(self, w_args):
+        if len(w_args) == 0:
+            return self.invoke0()
+        if len(w_args) == 1:
+            return self.invoke1(w_args[0])
+        if len(w_args) == 2:
+            return self.invoke2(w_args[0], w_args[1])
+
 class VariadicFunc(Object):
     def invoke0(self):
         return self.invoke_args([])
@@ -19,6 +28,57 @@ class VariadicFunc(Object):
         return self.invoke_args([a, b])
     def invoke3(self, a, b, c):
         return self.invoke_args([a, b, c])
+
+class VariadicFExpr(Object):
+    def invoke0(self):
+        return self.invoke_args([])
+    def invoke1(self, a):
+        return self.invoke_args([a])
+    def invoke2(self, a, b):
+        return self.invoke_args([a, b])
+    def invoke3(self, a, b, c):
+        return self.invoke_args([a, b, c])
+
+import system.core as core
+
+class PolymorphicFunc(Func):
+    def __init__(self):
+        self._overrides = {}
+
+    def invoke1(self, a):
+        tp = core.type(a)
+        if tp not in self._overrides:
+            assert False, "No override for " + tp.repr()
+        return self._overrides[tp].invoke1(a)
+
+    def invoke2(self, a, b):
+        tp = core.type(a)
+        if tp not in self._overrides:
+            assert False, "No override for " + tp.repr()
+        return self._overrides[tp].invoke2(a, b)
+
+    def invoke3(self, a, b, c):
+        tp = core.type(a)
+        if tp not in self._overrides:
+            assert False, "No override for " + tp.repr()
+        return self._overrides[tp].invoke3(a, b, c)
+
+    def invoke4(self, a, b, c, d):
+        tp = core.type(a)
+        if tp not in self._overrides:
+            assert False, "No override for " + tp.repr()
+        return self._overrides[tp].invoke4(a, b, c, d)
+
+    def install(self, tp, func):
+        self._overrides[tp] = func
+
+
+def extend(func, tp):
+    def inner(f):
+        appfn = interp2app(f)
+        func.install(tp, appfn)
+        return appfn
+    return inner
 
 
 
@@ -65,7 +125,6 @@ cons = interp2app(lambda a, b: _cons.invoke2(b, a), "cons")
 assoc = interp2app(lambda a, b, c: _assoc.invoke3(a, b, c), "assoc")
 
 
-from system.polymorphic_func import PolymorphicFunc
 repr = PolymorphicFunc()
 eval = PolymorphicFunc()
 first = PolymorphicFunc()
@@ -74,3 +133,4 @@ count = PolymorphicFunc()
 _cons = PolymorphicFunc()
 _assoc = PolymorphicFunc()
 _get = PolymorphicFunc()
+equals = PolymorphicFunc()

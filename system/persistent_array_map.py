@@ -2,7 +2,7 @@ import system.rt as rt
 
 from system.core import Object, symbol, integer
 from system.bool import w_true, w_false
-from system.polymorphic_func import extend
+from system.rt import extend
 
 
 
