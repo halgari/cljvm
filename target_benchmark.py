@@ -15,7 +15,7 @@ def benchmark_fn(name):
 fn = benchmark_fn("basic_math")
 
 def entry_point(argv):
-    print fn(argv[1])
+    print fn(int(argv[1]))
     return 0
 
 # _____ Define and setup target ___

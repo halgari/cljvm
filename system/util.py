@@ -1,27 +1,38 @@
-from objspace import W_Int, nil, s_cons, w_false, w_true, Symbol
-
-def tuple_to_app(form):
-    lst = nil
-    for x in range(len(form) - 1, -1, -1):
-        lst = s_cons(data_to_app(form[x]), lst)
-    return lst
-
-def symbol_to_app(sym):
-    return sym
-
-def bool_to_app(b):
-    return w_true if b else w_false
-
-def data_to_app(form):
-    tp = type(form)
-    return mappers[tp](form)
+from rt import Func
 
 
+def interp2app(func, sym = None):
+    _symbol_ = sym if sym is not None else func.__name__
+    def invoke0(self):
+        return func()
+    def invoke1(self, a):
+        return func(a)
+    def invoke2(self, a, b):
+        return func(a, b)
+    def invoke3(self, a, b, c):
+        return func(a, b, c)
 
+    tp = {"invoke0" : invoke0,\
+          "invoke1" : invoke1,\
+          "invoke2" : invoke2,\
+          "invoke3" : invoke3, \
+          "_symbol_" : _symbol_}
+    for x in range(4):
+        if x != func.func_code.co_argcount:
+            del tp["invoke"+str(x)]
+    newtp = type(_symbol_, [Func], tp)
+    return newtp()
 
+class StringCache(object):
+    def __init__(self):
+        self._cache = {}
 
-mappers = {int: W_Int,
-           tuple: tuple_to_app,
-           Symbol: symbol_to_app,
-           bool: bool_to_app,
-           list: tuple_to_app}
+    def intern(self, string):
+        if string not in self._cache:
+            self._cache[string] = string
+        return self._cache[string]
+
+_string_cache = StringCache()
+
+def intern(string):
+    return _string_cache.intern(string)

@@ -1,4 +1,4 @@
-from system.objspace import W_Int, symbol, make_list
+from system.objspace import W_Int, symbol, list_to_cons
 
 class SplitReader(object):
     def __init__(self, string):
@@ -33,13 +33,13 @@ def is_int(string):
     return True
 
 def read_list(rdr):
-    s = None
-    while true:
+    s = []
+    while True:
         term = rdr.read()
         if term == ")":
-            return make_list(term)
+            return list_to_cons(s)
         rdr.back()
-        s = s_cons(read_term(rdr), s)
+        s.append(read_term(rdr))
 
 def read_term(rdr):
     term = rdr.read()
@@ -48,3 +48,7 @@ def read_term(rdr):
     if is_int(term):
         return W_Int(int(term))
     return symbol(term)
+
+def read_from_string(string):
+    rdr = SplitReader(string)
+    return read_term(rdr)
