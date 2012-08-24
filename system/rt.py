@@ -40,13 +40,29 @@ class List(VariadicFunc):
         from system.persistent_list import EMPTY
         s = EMPTY
         for x in range(len(w_args) - 1, -1, -1):
-            s = cons.invoke2(w_args[0], s)
+            s = cons.invoke2(w_args[x], s)
         return s
 
 list = List()
 
+
+class HashMap(VariadicFunc):
+    _symbol_ = "list"
+    def __init__(self):
+        pass
+    def invoke_args(self, args_w):
+        from system.persistent_array_map import EMPTY
+        s = EMPTY
+        for x in range(0, len(args_w), 2):
+            s = assoc.invoke3(s, args_w[x], args_w[x + 1])
+        return s
+
+hash_map = HashMap()
+
 from system.util import interp2app
 cons = interp2app(lambda a, b: _cons.invoke2(b, a), "cons")
+
+assoc = interp2app(lambda a, b, c: _assoc.invoke3(a, b, c), "assoc")
 
 
 from system.polymorphic_func import PolymorphicFunc
@@ -56,3 +72,5 @@ first = PolymorphicFunc()
 next = PolymorphicFunc()
 count = PolymorphicFunc()
 _cons = PolymorphicFunc()
+_assoc = PolymorphicFunc()
+_get = PolymorphicFunc()

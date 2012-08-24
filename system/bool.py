@@ -1,6 +1,6 @@
 import core
 
-class W_Bool(core.Object, core.SelfEvaluating):
+class W_Bool(core.Object):
     def __init__(self, v):
         self.bool_value = v
 
