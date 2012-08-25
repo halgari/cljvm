@@ -20,10 +20,11 @@ def interp2app(func, sym = None):
           "invoke3" : invoke3, \
           "invoke4" : invoke4, \
           "_symbol_" : _symbol_}
-    for x in range(4):
+    for x in range(5):
         if x != func.func_code.co_argcount:
             del tp["invoke"+str(x)]
     newtp = type(_symbol_, (Func,), tp)
+    newtp.__module__ = func.__module__
     return newtp()
 
 class StringCache(object):

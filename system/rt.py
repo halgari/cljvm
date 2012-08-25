@@ -9,6 +9,8 @@ class Func(Object):
             return self.invoke1(w_args[0])
         if len(w_args) == 2:
             return self.invoke2(w_args[0], w_args[1])
+    def invoke1(self, a):
+        assert False
 
 class FExpr(Object):
     def invoke_args(self, w_args):
@@ -48,28 +50,30 @@ class PolymorphicFunc(Func):
     def invoke1(self, a):
         tp = core.type(a)
         if tp not in self._overrides:
-            assert False, "No override for " + tp.repr()
+            assert False #, "No override for " + tp.repr()
         return self._overrides[tp].invoke1(a)
 
     def invoke2(self, a, b):
         tp = core.type(a)
         if tp not in self._overrides:
-            assert False, "No override for " + tp.repr()
+            assert False #, "No override for " + tp.repr()
         return self._overrides[tp].invoke2(a, b)
 
     def invoke3(self, a, b, c):
         tp = core.type(a)
         if tp not in self._overrides:
-            assert False, "No override for " + tp.repr()
+            assert False #, "No override for " + tp.repr()
         return self._overrides[tp].invoke3(a, b, c)
 
     def invoke4(self, a, b, c, d):
         tp = core.type(a)
         if tp not in self._overrides:
-            assert False, "No override for " + tp.repr()
+            assert False #, "No override for " + tp.repr()
         return self._overrides[tp].invoke4(a, b, c, d)
 
     def install(self, tp, func):
+        assert isinstance(tp, Object)
+        assert isinstance(func, Object)
         self._overrides[tp] = func
 
 
@@ -107,7 +111,7 @@ list = List()
 
 
 class HashMap(VariadicFunc):
-    _symbol_ = "list"
+    _symbol_ = "hash-map"
     def __init__(self):
         pass
     def invoke_args(self, args_w):
@@ -119,11 +123,13 @@ class HashMap(VariadicFunc):
 
 hash_map = HashMap()
 
+
 from system.util import interp2app
 cons = interp2app(lambda a, b: _cons.invoke2(b, a), "cons")
 
 assoc = interp2app(lambda a, b, c: _assoc.invoke3(a, b, c), "assoc")
 
+add = interp2app(lambda a, b: _add.invoke2(a, b), "+")
 
 repr = PolymorphicFunc()
 eval = PolymorphicFunc()
@@ -134,3 +140,27 @@ _cons = PolymorphicFunc()
 _assoc = PolymorphicFunc()
 _get = PolymorphicFunc()
 equals = PolymorphicFunc()
+_equals = PolymorphicFunc()
+_add = PolymorphicFunc()
+
+
+
+
+
+
+def init():
+    from system.core import symbol
+    from system.evaluation import ResolveFrame
+
+    names = []
+    values = []
+
+    for k in globals():
+        val = globals()[k]
+        if isinstance(val, Object) and hasattr(val, "_symbol_"):
+            names.append(symbol(None, val._symbol_))
+            values.append(val)
+
+
+    globals()["builtins"] = ResolveFrame(names, values)
+

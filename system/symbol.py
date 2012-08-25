@@ -20,24 +20,21 @@ class W_Symbol(rt.Object):
         return self.equal(other)
 
     def type(self):
-        return symbol_type
+        return _tp
 
     def repr(self):
         if self._ns is None:
             return self._ns
         return self._ns + "/" + self._name
 
-symbol_type = W_Symbol("system", "Symbol")
+_tp = W_Symbol("system", "Symbol")
 
 
-@extend(rt.repr, symbol_type)
+@extend(rt.repr, _tp)
 def symbol_repr(self, a):
     if a._ns is None:
         return a._ns
     return a._ns + "/" + a._name
 
-
-
-    core.repr.install(symbol_type, Repr())
 
 

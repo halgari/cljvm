@@ -13,4 +13,3 @@ def first(self):
 def equals(self, other):
     return rt.equals.invoke2(self, other)
 
-g

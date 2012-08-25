@@ -2,7 +2,7 @@ import core
 from system.bool import w_true, w_false
 import util
 from system.core import symbol
-from system.rt import extend, equals
+from system.rt import extend, equals, _add
 
 _tp_integer = symbol("system", "Integer")
 
@@ -28,4 +28,9 @@ def int_equals(self, other):
     if self.int() == other.int():
         return w_true
     return w_false
+
+@extend(_add, _tp_integer)
+def int_add(self, other):
+    assert core.type(other) == _tp_integer
+    return W_Integer(self.int() + other.int())
 

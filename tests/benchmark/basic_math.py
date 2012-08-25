@@ -1,8 +1,13 @@
 from system.rt import list, count
-from system.core import integer
+from system.core import integer, symbol
+from system.evaluation import eval
+import system.rt
+from system.helpers import *
+
+system.rt.init()
 
 def run_benchmark(times):
-    c = list.invoke_args([integer(times), integer(2), integer(3)])
+    c = list.invoke_args([symbol(None, "+"), integer(2), integer(3)])
 
-    return count.invoke1(c).int()
+    return eval(c).int()
 
