@@ -1,5 +1,5 @@
 import system.rt as rt
-
+from system.bool import w_true, w_false
 
 def count(self):
     return rt.count.invoke1(self)

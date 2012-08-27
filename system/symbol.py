@@ -2,22 +2,18 @@ import system.rt as rt
 from core import Object
 from system.rt import extend
 
+
 class W_Symbol(rt.Object):
     def __init__(self, _ns, _name):
         from util import intern
         self._ns = intern(_ns)
         self._name = intern(_name)
 
-    def equal(self, other):
-        if not isinstance(self, W_Symbol):
-            return False
-        if self._name is other._name \
-          and self._ns is other._ns:
-            return True
-        return False
+
 
     def __eq__(self, other):
-        return self.equal(other)
+        from system.helpers import equals, w_true
+        return equals(self, other) is w_true
 
     def type(self):
         return _tp
@@ -29,6 +25,15 @@ class W_Symbol(rt.Object):
 
 _tp = W_Symbol("system", "Symbol")
 
+@extend(rt.equals, _tp)
+def equal(self, other):
+    from system.helpers import w_true, w_false
+    if not isinstance(other, W_Symbol):
+        return w_false
+    if self._name is other._name\
+    and self._ns is other._ns:
+        return w_true
+    return w_false
 
 @extend(rt.repr, _tp)
 def symbol_repr(self, a):

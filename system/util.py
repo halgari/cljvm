@@ -43,7 +43,7 @@ def intern(string):
 
 
 def assertEqual(self, first, other):
-    import system.rt as rt
+    from system.helpers import equals
     from bool import w_true
 
-    self.assertTrue(rt.equals.invoke2(first, other) is w_true)
+    self.assertTrue(equals(first, other) is w_true)

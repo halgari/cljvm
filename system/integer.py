@@ -2,7 +2,9 @@ import core
 from system.bool import w_true, w_false
 import util
 from system.core import symbol
-from system.rt import extend, equals, _add
+import system.rt as rt
+from system.rt import extend
+from system.helpers import equals
 
 _tp_integer = symbol("system", "Integer")
 
@@ -21,7 +23,7 @@ def int_repr(self):
 
 #core.repr.install(core.symbol("system", "Integer"), util.interp2app(int_repr, "repr"))
 
-@extend(equals, _tp_integer)
+@extend(rt.equals, _tp_integer)
 def int_equals(self, other):
     if not core.type(other) == _tp_integer:
         return w_false
@@ -29,8 +31,8 @@ def int_equals(self, other):
         return w_true
     return w_false
 
-@extend(_add, _tp_integer)
+@extend(rt._add, _tp_integer)
 def int_add(self, other):
-    assert core.type(other) == _tp_integer
+    assert equals(core.type(other), _tp_integer)
     return W_Integer(self.int() + other.int())
 

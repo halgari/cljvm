@@ -1,4 +1,6 @@
-from system.objspace import W_Int, symbol, list_to_cons
+import system.rt as rt
+from pypy.rlib.streamio import open_file_as_stream
+from system.core import integer, symbol
 
 class SplitReader(object):
     def __init__(self, string):
@@ -16,15 +18,35 @@ class SplitReader(object):
     def has_more(self):
         return self._idx < len(self._splits)
 
+def replace(s, f, r):
+    res = []
+    for x in s:
+        if x == f:
+            res.append(r)
+        else:
+            res.append(x)
 
+    return "".join(res)
 
+def all_whitespace(x):
+    for s in x:
+        if s != ' ' and s != '\t' and s != '\n' and s != '\r':
+            return True
+    return False
 
 def split_all(string):
-    return string.replace("[", " ( ") \
-                 .replace("]", " ) ") \
-                 .replace("(", " ( ") \
-                 .replace(")", " ) ") \
-                 .split()
+    s = []
+    string = replace(string, "[", " ( ")
+    string = replace(string, "]", " ) ")
+    string = replace(string, "(", " ( ")
+    string = replace(string, ")", " ) ")
+
+    strs = string.split("\n\t ")
+    for x in strs:
+        if not all_whitespace(x):
+            s.append(x)
+    return s
+
 
 def is_int(string):
     for x in string:
@@ -37,7 +59,7 @@ def read_list(rdr):
     while True:
         term = rdr.read()
         if term == ")":
-            return list_to_cons(s)
+            return rt.list.invoke_args(s)
         rdr.back()
         s.append(read_term(rdr))
 
@@ -46,9 +68,14 @@ def read_term(rdr):
     if term == "(":
         return read_list(rdr)
     if is_int(term):
-        return W_Int(int(term))
-    return symbol(term)
+        return integer(int(term))
+    return symbol(None, term)
 
 def read_from_string(string):
     rdr = SplitReader(string)
     return read_term(rdr)
+
+def read_from_file(filename):
+    code = "( " + open_file_as_stream(filename).readall() + " )"
+    print code
+    return read_from_string(code)

@@ -15,7 +15,7 @@ tp_sym = symbol("system", "PersistentArrayMap")
 class PersistentArrayMap(Object):
     def __init__(self, data_w, w_meta):
         self._data_w = data_w
-        self._w_data = w_meta
+        self._w_meta = w_meta
     def type(self):
         return tp_sym
 

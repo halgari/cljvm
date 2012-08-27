@@ -3,7 +3,6 @@ from system.symbol import W_Symbol
 from system.core import Object
 from system.bool import w_true, w_false
 import system.integer
-from core import equal
 import system.rt as rt
 
 
@@ -20,7 +19,7 @@ class ResolveFrame(Object):
 
 def get_arg_idx(w_arg_names, sym):
     for x in range(len(w_arg_names)):
-        if equal(w_arg_names[x], sym):
+        if equals(w_arg_names[x], sym) is w_true:
             return x
     return -1
 
@@ -33,7 +32,7 @@ def resolve(self, globals, frame):
     if idx >= 0:
         return globals._w_args[idx]
     idx = get_arg_idx(rt.builtins._w_arg_names, self)
-    assert idx >= 0
+    assert idx >= 0, "finding " + self.repr()
     return rt.builtins._w_args[idx]
 
 

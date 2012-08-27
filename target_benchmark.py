@@ -15,6 +15,8 @@ def benchmark_fn(name):
 fn = benchmark_fn("basic_math")
 
 def entry_point(argv):
+    if len(argv) != 2:
+        print "Filename required"
     print fn(int(argv[1]))
     return 0
 
