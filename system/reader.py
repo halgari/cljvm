@@ -1,14 +1,23 @@
 import system.rt as rt
 from pypy.rlib.streamio import open_file_as_stream
-from system.core import integer, symbol
+from system.core import integer, symbol, Object
 
-class SplitReader(object):
-    def __init__(self, string):
-        self._splits = split_all(string)
+
+whitespace = '\t\r\n ,'
+
+class EOS(Object):
+    pass
+
+eos = EOS()
+
+
+class ChrReader(object):
+    def __init__(self, str):
+        self._str = str
         self._idx = 0
 
     def read(self):
-        s = self._splits[self._idx]
+        s = self._str[self._idx]
         self._idx += 1
         return s
 
@@ -16,36 +25,7 @@ class SplitReader(object):
         self._idx -= 1
 
     def has_more(self):
-        return self._idx < len(self._splits)
-
-def replace(s, f, r):
-    res = []
-    for x in s:
-        if x == f:
-            res.append(r)
-        else:
-            res.append(x)
-
-    return "".join(res)
-
-def all_whitespace(x):
-    for s in x:
-        if s != ' ' and s != '\t' and s != '\n' and s != '\r':
-            return True
-    return False
-
-def split_all(string):
-    s = []
-    string = replace(string, "[", " ( ")
-    string = replace(string, "]", " ) ")
-    string = replace(string, "(", " ( ")
-    string = replace(string, ")", " ) ")
-
-    strs = string.split("\n\t ")
-    for x in strs:
-        if not all_whitespace(x):
-            s.append(x)
-    return s
+        return self._idx < len(self._str)
 
 
 def is_int(string):
@@ -54,10 +34,13 @@ def is_int(string):
             return False
     return True
 
-def read_list(rdr):
+def read_list(rdr, chr):
     s = []
     while True:
         term = rdr.read()
+        while term in whitespace:
+            term = rdr.read()
+
         if term == ")":
             return rt.list.invoke_args(s)
         rdr.back()
@@ -65,17 +48,37 @@ def read_list(rdr):
 
 def read_term(rdr):
     term = rdr.read()
-    if term == "(":
-        return read_list(rdr)
+    while term in whitespace:
+        if not rdr.has_more():
+            return eos
+        term = rdr.read()
+
+    if term in reader_table:
+        return reader_table[term](rdr, term)
+
+    s = [term]
+    while True:
+        term = rdr.read()
+        if term in reader_table:
+            rdr.back()
+            break
+        s.append(term)
+        if term in whitespace:
+            break
+            
+    term = "".join(s).strip(' ')
     if is_int(term):
         return integer(int(term))
     return symbol(None, term)
 
 def read_from_string(string):
-    rdr = SplitReader(string)
+    rdr = ChrReader(string)
     return read_term(rdr)
 
 def read_from_file(filename):
     code = "( " + open_file_as_stream(filename).readall() + " )"
     print code
     return read_from_string(code)
+
+
+reader_table = {"(": read_list}

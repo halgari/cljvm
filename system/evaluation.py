@@ -54,7 +54,7 @@ def eval_form(self, globals, frame, can_tail_call):
 
     fn = eval_item.invoke4(first(self), globals, frame, w_false)
 
-    if isinstance(fn, rt.FExpr):
+    if isinstance(fn, rt.FExpr) or isinstance(fn, rt.VariadicFExpr):
         eval_args = False
     else:
         eval_args = True

@@ -50,13 +50,13 @@ class PolymorphicFunc(Func):
     def invoke1(self, a):
         tp = core.type(a)
         if tp not in self._overrides:
-            assert False #, "No override for " + tp.repr()
+            assert False , "No override for " + tp.repr()
         return self._overrides[tp].invoke1(a)
 
     def invoke2(self, a, b):
         tp = core.type(a)
         if tp not in self._overrides:
-            assert False #, "No override for " + tp.repr()
+            assert False , "No override for " + tp.repr()
         return self._overrides[tp].invoke2(a, b)
 
     def invoke3(self, a, b, c):
@@ -68,7 +68,7 @@ class PolymorphicFunc(Func):
     def invoke4(self, a, b, c, d):
         tp = core.type(a)
         if tp not in self._overrides:
-            assert False #, "No override for " + tp.repr()
+            assert False , "No override for " + tp.repr()
         return self._overrides[tp].invoke4(a, b, c, d)
 
     def install(self, tp, func):
@@ -108,6 +108,36 @@ class List(VariadicFunc):
         return s
 
 list = List()
+
+class FuncInstance(VariadicFunc):
+    def __init__(self, w_args, w_body):
+        self._w_args = w_args
+        self._w_body = w_body
+    def invoke_args(self, args_w):
+        assert len(self._w_args) == len(args_w)
+        from system.evaluation import ResolveFrame, eval_item
+        from system.bool import w_true
+        frame = ResolveFrame(self._w_args, args_w)
+        globals = ResolveFrame([], [])
+        return eval_item.invoke4(self._w_body, globals, frame, w_true)
+
+class Fn(VariadicFExpr):
+    _symbol_ = "fn"
+    def __init__(self):
+        pass
+    def invoke_args(self, args_w):
+        from system.helpers import first, next
+        args = []
+        s = args_w[0]
+        while s is not None:
+            args.append(first(s))
+            s = next(s)
+        body = args_w[1]
+        return FuncInstance(args, body)
+
+fn = Fn()
+
+
 
 
 class HashMap(VariadicFunc):

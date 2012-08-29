@@ -6,6 +6,7 @@ from system.rt import extend
 class W_Symbol(rt.Object):
     def __init__(self, _ns, _name):
         from util import intern
+        assert _name is not None
         self._ns = intern(_ns)
         self._name = intern(_name)
 
@@ -38,7 +39,7 @@ def equal(self, other):
 @extend(rt.repr, _tp)
 def symbol_repr(self, a):
     if a._ns is None:
-        return a._ns
+        return a._name
     return a._ns + "/" + a._name
 
 

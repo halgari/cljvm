@@ -1,23 +1,26 @@
 import sys
 
-#sys.path.append('/home/tim/pypy')
+sys.path.append('/home/tim/pypy')
+import system.rt
+
+system.rt.init()
 
 def jitpolicy(driver):
     from pypy.jit.codewriter.policy import JitPolicy
     return JitPolicy()
 
 
-def benchmark_fn(name):
-    if name == "basic_math":
-        import tests.benchmark.basic_math
-        return tests.benchmark.basic_math.run_benchmark
-
-fn = benchmark_fn("basic_math")
+def run_file(file):
+    from system.reader import read_from_file
+    f = read_from_file(file)
+    from system.evaluation import eval
+    from system.helpers import first
+    return eval(first(f)).int()
 
 def entry_point(argv):
     if len(argv) != 2:
         print "Filename required"
-    print fn(int(argv[1]))
+    print run_file(argv[1])
     return 0
 
 # _____ Define and setup target ___
