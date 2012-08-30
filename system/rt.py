@@ -36,15 +36,15 @@ class List(VariadicFunc):
 list = List()
 
 class FuncInstance(VariadicFunc):
-    def __init__(self,  w_args, w_body):
-        #self._w_name = w_name
-        self._w_args =  w_args
+    def __init__(self, w_name, w_args, w_body):
+        self._w_name = w_name
+        self._w_args = [w_name] + w_args
         self._w_body = w_body
     def invoke_args(self, args_w):
-        assert len(self._w_args) == len(args_w)
+        assert len(self._w_args) - 1 == len(args_w)
         from system.evaluation import ResolveFrame, eval_item
         from system.bool import w_true
-        args_w = args_w
+        args_w = [self] + args_w
         frame = ResolveFrame(self._w_args, args_w)
         globals = ResolveFrame([], [])
         return eval_item.invoke4(self._w_body, globals, frame, w_true)
@@ -56,12 +56,13 @@ class Fn(VariadicFExpr):
     def invoke_args(self, args_w):
         from system.helpers import first, next
         args = []
-        s = args_w[0]
+        name = args_w[0]
+        s = args_w[1]
         while s is not None:
             args.append(first(s))
             s = next(s)
-        body = args_w[1]
-        return FuncInstance(args, body)
+        body = args_w[2]
+        return FuncInstance(name ,args, body)
 
 fn = Fn()
 

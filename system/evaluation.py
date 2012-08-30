@@ -71,7 +71,7 @@ def eval_form(self, globals, frame, can_tail_call):
 
         s = next(s)
 
-    return dispatch_invoke(fn, args)
+    return fn.invoke_args(args)
 
 eval_item = PolymorphicFunc()
 
@@ -96,5 +96,3 @@ def eval(form):
     frame = ResolveFrame([], [])
     globals = ResolveFrame([], [])
     return eval_item.invoke4(form, globals, frame, w_true)
-
-

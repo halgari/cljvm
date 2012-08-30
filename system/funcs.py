@@ -14,16 +14,17 @@ def gen_func(arity):
         for x in range(arity):
             args.append(args_w.Subscript(tr.Const(x)))
         expr = self.Attr("invoke" + str(arity)) \
-                   .Call(*args)
+                   .Call(*args) \
+                   .Return()
         ln = tr.Global("len").Call(args_w)
-        cond = tr.Return(tr.If(tr.Equal(ln, tr.Const(arity)), expr))
+        cond = tr.If(tr.Equal(ln, tr.Const(arity)), expr)
         return cond
 
     blocks = []
     for x in range(arity):
         blocks.append(call_invoke(x, self, args_w))
     do = tr.Do(*blocks)
-    invoke_args = tr.Func([self, args_w], do).toFunc()
+    invoke_args = tr.Func([self, args_w], do).toFunc(globals())
 
     class FuncBase(Object):
         def type(self):
