@@ -1,4 +1,4 @@
-from rt import Func
+from funcs import Func
 
 
 def interp2app(func, sym = None):

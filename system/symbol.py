@@ -23,6 +23,8 @@ class W_Symbol(rt.Object):
         if self._ns is None:
             return self._ns
         return self._ns + "/" + self._name
+    def __repr__(self):
+        return self.repr()
 
 _tp = W_Symbol("system", "Symbol")
 
@@ -41,6 +43,3 @@ def symbol_repr(self, a):
     if a._ns is None:
         return a._name
     return a._ns + "/" + a._name
-
-
-
