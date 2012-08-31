@@ -16,6 +16,15 @@ class ResolveFrame(Object):
         self._w_arg_names = w_arg_names
         self._w_args = w_args
 
+class TailCallTrampoline(Object):
+    def __init__(self, w_fn, args_w):
+        self._w_fn = w_fn
+        self._args_w = args_w
+
+    def apply_to(self):
+        return self._w_fn.invoke_args(self._args_w)
+
+
 
 def get_arg_idx(w_arg_names, sym):
     for x in range(len(w_arg_names)):
@@ -71,6 +80,15 @@ def eval_form(self, globals, frame, can_tail_call):
 
         s = next(s)
 
+    if can_tail_call is w_true \
+       and eval_args is True:
+        return TailCallTrampoline(fn, args)
+
+    if eval_args is False:
+        #FExpr need context arguments
+        args = [globals, frame, can_tail_call] + args
+        return fn.invoke_args(args)
+
     return fn.invoke_args(args)
 
 eval_item = PolymorphicFunc()
@@ -95,4 +113,7 @@ eval_item.install(system.symbol._tp, interp2app(eval_symbol))
 def eval(form):
     frame = ResolveFrame([], [])
     globals = ResolveFrame([], [])
-    return eval_item.invoke4(form, globals, frame, w_true)
+    ret = eval_item.invoke4(form, globals, frame, w_true)
+    while isinstance(ret, TailCallTrampoline):
+        ret = ret.apply_to()
+    return ret

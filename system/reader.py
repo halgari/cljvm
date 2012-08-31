@@ -108,7 +108,7 @@ def read_number(rdr, initch):
 
     s = ''.join(sb)
     n = integer(int(s))
-    return
+    return n
 
 def interpret_token(s):
     from system.bool import w_true, w_false

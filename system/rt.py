@@ -1,4 +1,5 @@
 from core import Object
+from util import interp2app
 
 from funcs import *
 
@@ -21,6 +22,7 @@ class Equal(Func):
         return bool.w_false
 
 
+
 class List(VariadicFunc):
     _symbol_ = "list"
     def __init__(self):
@@ -35,18 +37,20 @@ class List(VariadicFunc):
 list = List()
 
 class FuncInstance(VariadicFunc):
-    def __init__(self, w_name, w_args, w_body):
+    def __init__(self, w_globals, w_name, w_args, w_body):
         self._w_name = w_name
         self._w_args = [w_name] + w_args
         self._w_body = w_body
+        self._w_globals = w_globals
     def invoke_args(self, args_w):
         assert len(self._w_args) - 1 == len(args_w)
-        from system.evaluation import ResolveFrame, eval_item
+        from system.evaluation import ResolveFrame, eval_item, TailCallTrampoline
         from system.bool import w_true
         args_w = [self] + args_w
         frame = ResolveFrame(self._w_args, args_w)
-        globals = ResolveFrame([], [])
-        return eval_item.invoke4(self._w_body, globals, frame, w_true)
+        ret = eval_item.invoke4(self._w_body, self._w_globals, frame, w_true)
+        return ret
+
 
 class Fn(VariadicFExpr):
     _symbol_ = "fn"
@@ -54,14 +58,13 @@ class Fn(VariadicFExpr):
         pass
     def invoke_args(self, args_w):
         from system.helpers import first, next
+        globals, frame, can_tail_call, name, s = args_w[:5]
+        body = args_w[5:][0]
         args = []
-        name = args_w[0]
-        s = args_w[1]
         while s is not None:
             args.append(first(s))
             s = next(s)
-        body = args_w[2]
-        return FuncInstance(name ,args, body)
+        return FuncInstance(globals, name ,args, body)
 
 fn = Fn()
 
