@@ -6,9 +6,8 @@ def extend(func, tp):
     def inner(f):
         appfn = interp2app(f)
         func.install(tp, appfn)
-        return appfn
+        return f
     return inner
-
 
 
 class Equal(Func):

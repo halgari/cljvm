@@ -17,6 +17,13 @@ class PersistentList(Object):
 
 EMPTY = PersistentList(None, None, 0, None)
 
+def from_pylist(lst):
+    s = EMPTY
+    for x in range(len(lst) - 1, - 1, -1):
+        s = persistent_list_cons(s, lst[x])
+    return s
+
+
 @extend(rt.first, _tp)
 def persistent_list_first(self):
     return self._w_head
@@ -34,7 +41,3 @@ def persistent_list_cons(self, other):
 @extend(rt.count, _tp)
 def persistent_list_count(self):
     return integer(self._count)
-
-
-
-
