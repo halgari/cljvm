@@ -1,7 +1,7 @@
 import system.rt as rt
 from core import Object
 from system.rt import extend
-
+from system.jit import *
 
 class W_Symbol(rt.Object):
     def __init__(self, _ns, _name):
@@ -21,7 +21,7 @@ class W_Symbol(rt.Object):
 
     def repr(self):
         if self._ns is None:
-            return self._ns
+            return self._name
         return self._ns + "/" + self._name
     def __repr__(self):
         return self.repr()
@@ -30,7 +30,12 @@ _tp = W_Symbol("system", "Symbol")
 
 @extend(rt.equals, _tp)
 def equal(self, other):
+    return symbol_equals(self, other)
+
+def symbol_equals(self, other):
     from system.helpers import w_true, w_false
+    if self is other:
+        return w_true
     if not isinstance(other, W_Symbol):
         return w_false
     if self._name is other._name\
@@ -39,6 +44,7 @@ def equal(self, other):
     return w_false
 
 @extend(rt.repr, _tp)
+@elidable
 def symbol_repr(self, a):
     if a._ns is None:
         return a._name

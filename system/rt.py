@@ -11,16 +11,6 @@ def extend(func, tp):
     return inner
 
 
-class Equal(Func):
-    _symbol_ = "="
-    def __init__(self):
-        pass
-    def invoke2(self, a, b):
-        import bool
-        if core.equal(a, b):
-            return bool.w_true
-        return bool.w_false
-
 
 
 class List(VariadicFunc):
@@ -42,12 +32,20 @@ class FuncInstance(VariadicFunc):
         self._w_args = [w_name] + w_args
         self._w_body = w_body
         self._w_globals = w_globals
+    def repr(self):
+        return "FuncInstance<" + self._w_name.repr() + ">"
     def invoke_args(self, args_w):
         assert len(self._w_args) - 1 == len(args_w)
         from system.evaluation import ResolveFrame, eval_item, TailCallTrampoline
         from system.bool import w_true
+        from system.evaluation import jitdriver
         args_w = [self] + args_w
         frame = ResolveFrame(self._w_args, args_w)
+
+        jitdriver.jit_merge_point(frame = frame,
+                                  globals = self._w_globals,
+                                  func = self)
+
         ret = eval_item.invoke4(self._w_body, self._w_globals, frame, w_true)
         return ret
 
@@ -69,6 +67,21 @@ class Fn(VariadicFExpr):
 fn = Fn()
 
 
+class If(FExpr):
+    _symbol_ = "if"
+    def __init__(self):
+        pass
+    def invoke6(self, globals, frame, ctc, cond, then, el):
+        from system.evaluation import eval_item, w_false
+        res = eval_item.invoke4(cond, globals, frame, w_false)
+        if res is not w_false and res is not None:
+            return eval_item.invoke4(then, globals, frame, ctc)
+        else:
+            return eval_item.invoke4(el, globals, frame, ctc)
+    def invoke5(self, globals, frame, ctc, cond, then):
+        return self.invoke6(globals, frame, ctc, cond, then, None)
+
+iffn = If()
 
 
 class HashMap(VariadicFunc):
@@ -100,8 +113,8 @@ count = PolymorphicFunc()
 _cons = PolymorphicFunc()
 _assoc = PolymorphicFunc()
 _get = PolymorphicFunc()
-equals = PolymorphicFunc()
-_equals = PolymorphicFunc()
+equals = PolymorphicFunc(symbol = "=")
+
 _add = PolymorphicFunc()
 
 

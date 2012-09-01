@@ -1,6 +1,6 @@
 import sys
 
-sys.path.append('/home/tim/pypy')
+#sys.path.append('/home/tim/pypy')
 import system.rt
 
 system.rt.init()

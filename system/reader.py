@@ -1,5 +1,15 @@
 import system.rt as rt
-from pypy.rlib.streamio import open_file_as_stream
+try:
+    from pypy.rlib.streamio import open_file_as_stream
+except:
+    class sio(object):
+        def __init__(self, nm):
+            self._nm = open(nm)
+        def readall(self):
+            return self._nm.read()
+
+    open_file_as_stream = sio
+
 from system.core import integer, symbol, Object
 
 

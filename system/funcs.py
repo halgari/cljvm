@@ -1,4 +1,6 @@
 from system.core import Object
+from system.jit import *
+
 import system.treadle.treadle as tr
 MAX_ARITY = 20
 
@@ -31,7 +33,22 @@ def gen_func(arity):
             import system.core
             return system.core.symbol("system", "Func")
 
-    return type("Func", (FuncBase,), {"invoke_args": invoke_args})
+    def gen_attr_error(arity):
+        args = [tr.Argument("self")]
+        for x in range(arity):
+            args.append(tr.Argument("arg" + str(x)))
+        fn = tr.Func(args, tr.Return(tr.Const(None))).toFunc()
+        fn.__name__ = "invoke" + str(arity)
+        return fn
+
+
+    members = {"invoke_args": invoke_args}
+    # pypy translator will complain without this:
+    for x in range(arity):
+        fn = gen_attr_error(x)
+        members[fn.__name__] = fn
+
+    return type("Func", (FuncBase,), members)
 
 Func = gen_func(MAX_ARITY)
 
@@ -75,9 +92,9 @@ def gen_polymorphicfunc(arity):
         for x in range(arity):
             arguments.append(tr.Argument("arg" + str(x)))
 
-        expr = self.Attr("_overrides") \
-                   .Subscript(tr.Global("core").Attr("type") \
-                                               .Call(arguments[0])) \
+        expr = self.Attr("get_override") \
+                   .Call(tr.Global("core").Attr("type") \
+                                          .Call(arguments[0])) \
                    .Attr("invoke"+str(arity)) \
                    .Call(*arguments)
 
@@ -85,14 +102,33 @@ def gen_polymorphicfunc(arity):
         fn.__name__ = "invoke"+str(arity)
         return fn
 
+    @unroll_safe
+    def get_override(overrides, tp):
+        from system.bool import w_true, w_false
+        from system.symbol import symbol_equals
+        for x in range(0, len(overrides), 2):
+            if symbol_equals(overrides[x], tp) is w_true:
+                return overrides[x + 1]
+        assert False
+
     class PolymorphicBase(Func):
-        def __init__(self, default = None):
+        def __init__(self, default = None, symbol = None):
+            if symbol:
+                self._symbol_ = symbol
             self._default = default
-            self._overrides = {}
+            self._overrides = []
+
+
+        def get_override(self, tp):
+            return promote(get_override(self._overrides, tp))
+
         def install(self, tp, func):
             assert isinstance(tp, Object)
             assert isinstance(func, Object)
-            self._overrides[tp] = func
+            import copy
+            self._overrides = self._overrides[:]
+            self._overrides.extend([tp, func])
+
         def type(self):
             import system.core
             return system.core.symbol("system", "Func")

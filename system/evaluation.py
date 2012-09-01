@@ -2,9 +2,21 @@ from system.rt import PolymorphicFunc, extend
 from system.symbol import W_Symbol
 from system.core import Object
 from system.bool import w_true, w_false
+from system.jit import elidable
 import system.integer
 import system.rt as rt
 
+from system.jit import *
+
+def get_printable_location(func):
+    if func is None:
+        return "nil"
+    return func.repr()
+
+jitdriver = JitDriver(greens=['func'],
+        reds=['globals', 'frame'],
+        virtualizables=['frame'],
+        get_printable_location = get_printable_location)
 
 
 from system.helpers import *
@@ -12,6 +24,7 @@ from system.helpers import *
 
 
 class ResolveFrame(Object):
+    _virtualizable2_ = ['_w_args_names', 'w_arg_names']
     def __init__(self, w_arg_names, w_args):
         self._w_arg_names = w_arg_names
         self._w_args = w_args
@@ -25,8 +38,10 @@ class TailCallTrampoline(Object):
         return self._w_fn.invoke_args(self._args_w)
 
 
-
+@unroll_safe
 def get_arg_idx(w_arg_names, sym):
+    w_arg_names = promote(w_arg_names)
+    sym = promote(sym)
     for x in range(len(w_arg_names)):
         if equals(w_arg_names[x], sym) is w_true:
             return x
@@ -34,13 +49,13 @@ def get_arg_idx(w_arg_names, sym):
 
 
 def resolve(self, globals, frame):
-    idx = get_arg_idx(frame._w_arg_names, self)
+    idx = promote(get_arg_idx(frame._w_arg_names, self))
     if idx >= 0:
         return frame._w_args[idx]
-    idx = get_arg_idx(globals._w_arg_names, self)
+    idx = promote(get_arg_idx(globals._w_arg_names, self))
     if idx >= 0:
         return globals._w_args[idx]
-    idx = get_arg_idx(rt.builtins._w_arg_names, self)
+    idx = promote(get_arg_idx(rt.builtins._w_arg_names, self))
     assert idx >= 0, "finding " + self.repr()
     return rt.builtins._w_args[idx]
 
@@ -57,11 +72,12 @@ def dispatch_invoke(fn, a):
     if len(a) == 4:
         return fn.invoke4(a[0], a[1], a[2], a[3])
 
+@unroll_safe
 def eval_form(self, globals, frame, can_tail_call):
     if count(self).int() == 0:
         return self
 
-    fn = eval_item.invoke4(first(self), globals, frame, w_false)
+    fn = eval_item.invoke4(promote(first(self)), globals, frame, w_false)
 
     if isinstance(fn, rt.FExpr) or isinstance(fn, rt.VariadicFExpr):
         eval_args = False
@@ -70,15 +86,17 @@ def eval_form(self, globals, frame, can_tail_call):
 
     args = []
 
-    s = next(self)
-    while s is not None:
-        itm = first(s)
+    s = promote(next(self))
+    argc = promote(count(s))
+    args = [None] * argc.int()
+    for x in range(argc.int()):
+        itm = promote(first(s))
         if eval_args:
-            args.append(eval_item.invoke4(itm, globals, frame, w_false))
+            args[x] = eval_item.invoke4(itm, globals, frame, w_false)
         else:
-            args.append(itm)
+            args[x] = itm
 
-        s = next(s)
+        s = promote(next(s))
 
     if can_tail_call is w_true \
        and eval_args is True:
@@ -91,7 +109,7 @@ def eval_form(self, globals, frame, can_tail_call):
 
     return fn.invoke_args(args)
 
-eval_item = PolymorphicFunc()
+_eval_item = PolymorphicFunc()
 
 
 
@@ -106,9 +124,16 @@ def eval_symbol(self, globals, frame, can_tail_call):
 from system.util import interp2app
 import system.persistent_list
 import system.symbol
-eval_item.install(system.integer._tp_integer, interp2app(self_evaluating))
-eval_item.install(system.persistent_list._tp, interp2app(eval_form))
-eval_item.install(system.symbol._tp, interp2app(eval_symbol))
+_eval_item.install(system.integer._tp_integer, interp2app(self_evaluating))
+_eval_item.install(system.persistent_list._tp, interp2app(eval_form))
+_eval_item.install(system.symbol._tp, interp2app(eval_symbol))
+
+class EvalItem(rt.Func):
+    def invoke4(self, form, globals, frame, can_tail_call):
+        return _eval_item.invoke4(form, globals, frame, can_tail_call)
+
+eval_item = EvalItem()
+
 
 def eval(form):
     frame = ResolveFrame([], [])

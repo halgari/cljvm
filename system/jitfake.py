@@ -4,6 +4,8 @@ print "WARNING: FAKING JIT...."
 
 def elidable(f):
     return f
+def elidable_promote(f):
+    return f
 
 def promote(f):
     return f

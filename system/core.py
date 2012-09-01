@@ -1,7 +1,8 @@
 
 
 class Object(object):
-    pass
+    _immutable_fields_ = ["int_value", "_w_head", "_w_tail", "_count", "_w_meta",
+                          "_name", "_ns"]
 
 
 def symbol(ns, name = None):
@@ -19,6 +20,3 @@ def type(a):
 def integer(i):
     from system.integer import W_Integer
     return W_Integer(i)
-
-
-

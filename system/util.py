@@ -1,4 +1,5 @@
 from funcs import Func
+from system.jit import elidable
 
 
 def interp2app(func, sym = None):

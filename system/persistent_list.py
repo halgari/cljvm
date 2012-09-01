@@ -2,6 +2,7 @@ from system.core import symbol, Object, integer
 import system.rt as rt
 from system.rt import extend
 
+from system.jit import elidable
 
 _tp = symbol("system", "PersistentList")
 
@@ -11,6 +12,18 @@ class PersistentList(Object):
         self._w_tail = w_tail
         self._count = count
         self._w_meta = w_meta
+
+    def repr(self):
+        from system.helpers import first, next
+        s = self
+        a = []
+        while s is not None:
+            if first(s) is None:
+                a.append("nil")
+            else:
+                a.append(first(s).repr())
+            s = next(s)
+        return "(" + " ".join(a) + ")"
 
     def type(self):
         return _tp
@@ -25,19 +38,23 @@ def from_pylist(lst):
 
 
 @extend(rt.first, _tp)
+@elidable
 def persistent_list_first(self):
     return self._w_head
 
 @extend(rt.next, _tp)
+@elidable
 def persistent_list_next(self):
     return self._w_tail
 
 @extend(rt._cons, _tp)
+@elidable
 def persistent_list_cons(self, other):
     if self is EMPTY:
         return PersistentList(other, None, 1, None)
     return PersistentList(other, self, self._count + 1, None)
 
 @extend(rt.count, _tp)
+@elidable
 def persistent_list_count(self):
     return integer(self._count)

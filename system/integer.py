@@ -5,6 +5,7 @@ from system.core import symbol
 import system.rt as rt
 from system.rt import extend
 from system.helpers import equals
+from system.jit import *
 
 _tp_integer = symbol("system", "Integer")
 
@@ -17,6 +18,9 @@ class W_Integer(core.Object):
 
     def type(self):
         return _tp_integer
+
+    def repr(self):
+        return str(self.int_value)
 
 def int_repr(self):
     return str(self.int())
@@ -35,4 +39,3 @@ def int_equals(self, other):
 def int_add(self, other):
     assert equals(core.type(other), _tp_integer)
     return W_Integer(self.int() + other.int())
-
