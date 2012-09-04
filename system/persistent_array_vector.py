@@ -31,8 +31,8 @@ def persistent_array_vector_count(self):
 def persistent_array_vector_nth(self, w_nth):
     return self.lst_w[w_nth.int()]
 
-@extend(rt.islist, _tp)
-def persistent_list_islist(self):
+@extend(rt.isvector, _tp)
+def persistent_list_isvector(self):
     from system.bool import w_true
     return w_true
 

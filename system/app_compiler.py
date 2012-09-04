@@ -12,26 +12,33 @@ from system.symbol import W_Symbol
 
 import copy
 
-def compile_impl(name, args, body, env):
-    methname = "invoke" + str(count(args).int())
+def compile_impl(name, argsv, body, env):
+    methname = "invoke" + str(count(argsv).int())
     self = tr.Argument("self")
-    args = {symbol(methname), self}
+    args = {symbol(methname): self}
     trarg = [self]
-    for x in range(count(args).int()):
-        s = nth(args, integer(x))
+    for x in range(count(argsv).int()):
+        s = nth(argsv, integer(x))
         args[s] = tr.Argument(s.repr())
         trarg.append(args[s])
 
     with merge_locals(env, args):
-        expr = tr.Func(trarg, compile_do(body, env)).toFunc()
-        return [methname, expr]
+        expr = tr.Func(trarg, compile_do(body, env))
+        return [tr.Const(methname), expr]
 
+def compile_do(forms, env):
+    s = forms
+    out = []
+    while s is not None:
+        out.append(compile(first(s), env))
+        s = next(s)
+    return tr.Do(*out)
 
 def compile_impls(name, impls, env):
     s = impls
     meths = []
-    while impls is not None:
-        meths.extend(compile_impl(name, first(impl), next(impl), env))
+    while s is not None:
+        meths.extend(compile_impl(name, first(first(s)), next(first(s)), env))
 
         s = next(s)
 

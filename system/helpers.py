@@ -19,3 +19,5 @@ def isvector(self):
 def islist(self):
     return rt.islist.invoke1(self)
 
+def nth(self, idx):
+    return rt.nth.invoke2(self, idx)
