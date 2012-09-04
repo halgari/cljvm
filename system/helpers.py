@@ -13,3 +13,9 @@ def first(self):
 def equals(self, other):
     return rt.equals.invoke2(self, other)
 
+def isvector(self):
+    return rt.isvector.invoke1(self)
+
+def islist(self):
+    return rt.islist.invoke1(self)
+

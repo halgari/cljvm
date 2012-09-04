@@ -238,6 +238,27 @@ class StoreLocal(AExpression):
         yield self.local
         yield self.expr
 
+class StoreToGlobal(AExpression):
+    def __init__(self, expr, local):
+        assertAllExpressions([local, expr])
+
+        self.local = local
+        self.expr = expr
+    def size(self, current, max_seen):
+        current, max_seen = self.expr.size(current, max_seen)
+
+        return current, max(max_seen, current + 1)
+
+    def emit(self, ctx):
+        if self.local not in ctx.varnames:
+            ctx.varnames[self.local] = len(ctx.varnames)
+
+        idx = ctx.varnames[self.local]
+
+        self.expr.emit(ctx)
+
+        ctx.stream.write(struct.pack("=BBH", DUP_TOP, STORE_GLOBAL, idx))
+
 
 class If(AExpression):
     def __init__(self, condition, thenexpr, elseexpr = None):
@@ -328,6 +349,8 @@ class Subtract(ABinaryOp):
     def __init__(self, a, b):
         ABinaryOp.__init__(self, a, b, BINARY_SUBTRACT)
 
+
+
 class Do(AExpression):
     def __init__(self, *exprs):
         if not exprs:
@@ -360,6 +383,25 @@ class Do(AExpression):
     def __iter__(self):
         for x in self.exprs:
             yield x
+
+class Class(AExpression):
+    def __init__(self, methods, inherits, name):
+        self.name = name
+        self.inherits = inherits
+        self.methods = methods
+
+    def size(self, current, max_count):
+        current, max_count = self.name.size(current, max_count)
+        current, max_count = self.inherits.size(current, max_count)
+        current, max_count = self.inerhits.size(current, max_count)
+        return current - 2, max_count
+
+    def emit(self, ctx):
+        self.name.emit(ctx)
+        self.inherits.emit(ctx)
+        self.methods.emit(ctx)
+
+        ctx.steam.write(struct.pack("=B", BUILD_CLASS))
 
 class Local(AExpression, IAssignable):
     def __init__(self, name):

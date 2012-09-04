@@ -54,7 +54,12 @@ def persistent_list_cons(self, other):
         return PersistentList(other, None, 1, None)
     return PersistentList(other, self, self._count + 1, None)
 
-@extend(rt.count, _tp)
+@extend(rt._count, _tp)
 @elidable
 def persistent_list_count(self):
     return integer(self._count)
+
+@extend(rt.islist, _tp)
+def persistent_list_islist(self):
+    from system.bool import w_true
+    return w_true

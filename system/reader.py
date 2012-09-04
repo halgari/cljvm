@@ -46,12 +46,22 @@ def list_reader(r, leftparen):
     s = from_pylist(lst)
     return s
 
+def vector_reader(r, leftparen):
+    from system.persistent_array_vector import from_pylist
+    lst = read_delimited_list(']', r, True)
+
+    s = from_pylist(lst)
+    return s
+
+
 def unmatched_delimiter_reader(reader, c):
     raise Exception("Unmatched delimter: " + c)
 
 
 macros = {"(" : list_reader,
           ")" : unmatched_delimiter_reader,
+          "[" : vector_reader,
+          "]" : unmatched_delimiter_reader
           }
 
 def is_whitespace(ch):

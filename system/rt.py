@@ -104,18 +104,29 @@ cons = interp2app(lambda a, b: _cons.invoke2(b, a), "cons")
 assoc = interp2app(lambda a, b, c: _assoc.invoke3(a, b, c), "assoc")
 
 add = interp2app(lambda a, b: _add.invoke2(a, b), "+")
+count = interp2app(lambda a: _count.invoke1(a), "count")
+nth = interp2app(lambda a, b: _nth.invoke2(a, b), "nth")
 
 repr = PolymorphicFunc()
 eval = PolymorphicFunc()
 first = PolymorphicFunc()
 next = PolymorphicFunc()
-count = PolymorphicFunc()
+_count = PolymorphicFunc()
 _cons = PolymorphicFunc()
 _assoc = PolymorphicFunc()
 _get = PolymorphicFunc()
 equals = PolymorphicFunc(symbol = "=")
 
+@interp2app
+def _default_false(self):
+    from system.bool import w_false
+    return w_false
+
+isvector = PolymorphicFunc(symbol = "vector?", default = _default_false)
+islist = PolymorphicFunc(symbol = "list?", default = _default_false)
+
 _add = PolymorphicFunc()
+_nth = PolymorphicFunc()
 
 
 

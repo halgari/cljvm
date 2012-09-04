@@ -16,6 +16,9 @@ class W_Symbol(rt.Object):
         from system.helpers import equals, w_true
         return equals(self, other) is w_true
 
+    def __hash__(self):
+        return hash((self._ns, self._name))
+
     def type(self):
         return _tp
 

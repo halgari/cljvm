@@ -103,13 +103,15 @@ def gen_polymorphicfunc(arity):
         return fn
 
     @unroll_safe
-    def get_override(overrides, tp):
+    def get_override(overrides, tp, default):
         from system.bool import w_true, w_false
         from system.symbol import symbol_equals
         for x in range(0, len(overrides), 2):
             if symbol_equals(overrides[x], tp) is w_true:
                 return overrides[x + 1]
-        assert False
+        if default is not None:
+            return default
+        assert False, "no override for " + tp._name
 
     class PolymorphicBase(Func):
         def __init__(self, default = None, symbol = None):
@@ -120,7 +122,7 @@ def gen_polymorphicfunc(arity):
 
 
         def get_override(self, tp):
-            return promote(get_override(self._overrides, tp))
+            return promote(get_override(self._overrides, tp, self._default))
 
         def install(self, tp, func):
             assert isinstance(tp, Object)
