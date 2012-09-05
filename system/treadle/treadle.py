@@ -393,7 +393,7 @@ class Class(AExpression):
     def size(self, current, max_count):
         current, max_count = self.name.size(current, max_count)
         current, max_count = self.inherits.size(current, max_count)
-        current, max_count = self.inerhits.size(current, max_count)
+        current, max_count = self.inherits.size(current, max_count)
         return current - 2, max_count
 
     def emit(self, ctx):
@@ -401,7 +401,7 @@ class Class(AExpression):
         self.inherits.emit(ctx)
         self.methods.emit(ctx)
 
-        ctx.steam.write(struct.pack("=B", BUILD_CLASS))
+        ctx.stream.write(struct.pack("=B", BUILD_CLASS))
 
 class Local(AExpression, IAssignable):
     def __init__(self, name):

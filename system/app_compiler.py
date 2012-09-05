@@ -36,7 +36,7 @@ def compile_do(forms, env):
 
 def compile_impls(name, impls, env):
     s = impls
-    meths = []
+    meths = [tr.Const("_symbol_"), tr.Const(name._name)]
     while s is not None:
         meths.extend(compile_impl(name, first(first(s)), next(first(s)), env))
 
@@ -44,11 +44,11 @@ def compile_impls(name, impls, env):
 
     meths = tr.Dict(*meths)
 
-    return meths.Class(tr.Const(Func).Tuple(), tr.Const(name._name))
+    return meths.Class(tr.Const(Func).Tuple(), tr.Const(name._name)).Call()
 
 def compile_fn(form, env):
     name = first(form)
-    s = form
+    s = next(form)
     if isvector(first(s)) is w_true:
         impls = pylist_to_list([s])
     else:
@@ -74,10 +74,13 @@ def compile_invoke(form, env):
     fn = compile(fn, env)
     args = []
     s = next(form)
+
+    attr = "invoke"+str(count(s).int())
+
     while s is not None:
         args.append(compile(first(s), env))
         s = next(s)
-    return fn.Call(*args)
+    return fn.Attr(attr).Call(*args)
 
 
 
@@ -97,7 +100,7 @@ def compile_in_module(form, module):
         a.append(compile(first(s), Ctx()))
         s = next(s)
 
-    return tr.Do(*a).toFunc()
+    return tr.Do(*a).toFunc(module.__dict__)
 
 
 

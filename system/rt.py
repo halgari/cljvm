@@ -136,6 +136,14 @@ _nth = PolymorphicFunc()
 def init():
     from system.core import symbol
     from system.evaluation import ResolveFrame
+    import sys
+
+    from system.reader import read_from_string
+    from system.app_compiler import compile_in_module
+
+    form = read_from_string("((fn baz [x y] (add x y)))")
+    comped = compile_in_module(form, sys.modules["system.rt"])
+    globals()["baz"] = comped()
 
     names = []
     values = []
