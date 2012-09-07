@@ -238,6 +238,32 @@ class StoreLocal(AExpression):
         yield self.local
         yield self.expr
 
+
+class StoreToLocal(AExpression):
+    def __init__(self, expr, local):
+        assertAllExpressions([local, expr])
+
+        self.local = local
+        self.expr = expr
+    def size(self, current, max_seen):
+        current, max_seen = self.expr.size(current, max_seen)
+
+        return current, max(max_seen, current + 1)
+
+    def emit(self, ctx):
+        if self.local not in ctx.varnames:
+            ctx.varnames[self.local] = len(ctx.varnames)
+
+        idx = ctx.varnames[self.local]
+
+        self.expr.emit(ctx)
+
+        ctx.stream.write(struct.pack("=BBH", DUP_TOP, STORE_FAST, idx))
+
+    def __iter__(self):
+        yield self.local
+        yield self.expr
+
 class StoreToGlobal(AExpression):
     def __init__(self, expr, local):
         assertAllExpressions([local, expr])

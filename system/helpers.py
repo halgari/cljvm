@@ -21,3 +21,9 @@ def islist(self):
 
 def nth(self, idx):
     return rt.nth.invoke2(self, idx)
+
+def keyword(ns, name = None):
+    if name is None:
+        name = ns
+        ns = None
+    return rt.keyword.invoke2(ns, name)

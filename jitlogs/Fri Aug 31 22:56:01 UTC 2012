@@ -1,0 +1,612 @@
+[1df66c8d4975] {jit-log-opt-loop
+# Loop 0 (FuncInstance<rec>) : entry bridge with 607 ops
+[p0, p1]
+debug_merge_point(0, 0, 'FuncInstance<rec>')
++54: p3 = getfield_gc(ConstPtr(ptr2), descr=<FieldP system.rt.FuncInstance.inst__w_body 72>)
++67: p4 = getfield_gc(ConstPtr(ptr2), descr=<FieldP system.rt.FuncInstance.inst__w_globals 80>)
++80: p6 = getfield_gc(ConstPtr(ptr5), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++88: guard_nonnull_class(p3, 9958808, descr=<Guard2>) [p1, p4, p3, p6]
++106: i11 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr9), 2955549, descr=<Calli 8 rri EF=4>)
++142: guard_no_exception(, descr=<Guard3>) [p1, p4, p3, i11, p6]
++157: i13 = int_and(i11, -9223372036854775808)
++173: i14 = int_is_true(i13)
+guard_false(i14, descr=<Guard4>) [p1, p4, p3, i11, p6]
++183: p15 = getfield_gc(p6, descr=<FieldP dicttable.entries 24>)
++187: p16 = getinteriorfield_gc(p15, i11, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++196: guard_class(p16, 9960512, descr=<Guard5>) [p1, p4, p3, p16]
++208: p19 = getfield_gc(ConstPtr(ptr18), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++216: i23 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr21), 2955549, descr=<Calli 8 rri EF=4>)
++252: guard_no_exception(, descr=<Guard6>) [p1, p4, p3, i23, p19]
++267: i25 = int_and(i23, -9223372036854775808)
++283: i26 = int_is_true(i25)
+guard_false(i26, descr=<Guard7>) [p1, p4, p3, i23, p19]
++293: p27 = getfield_gc(p19, descr=<FieldP dicttable.entries 24>)
++304: p28 = getinteriorfield_gc(p27, i23, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++313: guard_class(p28, 9962592, descr=<Guard8>) [p1, p4, p3, p28]
++325: p31 = call(ConstClass(persistent_list_count), p3, descr=<Callr 8 r EF=3>)
++348: guard_no_exception(, descr=<Guard9>) [p1, p4, p3, p31]
++363: i32 = getfield_gc(p31, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++367: i33 = int_is_zero(i32)
+guard_false(i33, descr=<Guard10>) [p1, p4, p3]
++377: p35 = getfield_gc(ConstPtr(ptr34), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++385: i39 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr37), 2955549, descr=<Calli 8 rri EF=4>)
++414: guard_no_exception(, descr=<Guard11>) [p1, p4, p3, i39, p35]
++429: i41 = int_and(i39, -9223372036854775808)
++445: i42 = int_is_true(i41)
+guard_false(i42, descr=<Guard12>) [p1, p4, p3, i39, p35]
++455: p43 = getfield_gc(p35, descr=<FieldP dicttable.entries 24>)
++466: p44 = getinteriorfield_gc(p43, i39, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++475: guard_class(p44, 9960208, descr=<Guard13>) [p1, p4, p3, p44]
++487: p47 = call(ConstClass(persistent_list_first), p3, descr=<Callr 8 r EF=0>)
++510: guard_nonnull_class(p47, 9954536, descr=<Guard14>) [p1, p4, p3, p47, p6]
++528: i52 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr50), 2884393, descr=<Calli 8 rri EF=4>)
++557: guard_no_exception(, descr=<Guard15>) [p1, p4, p3, p47, i52, p6]
++572: i54 = int_and(i52, -9223372036854775808)
++588: i55 = int_is_true(i54)
+guard_false(i55, descr=<Guard16>) [p1, p4, p3, p47, i52, p6]
++598: p56 = getinteriorfield_gc(p15, i52, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++614: guard_class(p56, 9960664, descr=<Guard17>) [p1, p4, p3, p47, p56]
++626: p58 = getfield_gc(p1, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++637: i60 = call(ConstClass(get_arg_idx), p58, p47, descr=<Calli 8 rr EF=3>)
++653: guard_no_exception(, descr=<Guard18>) [p1, p4, p3, i60, p47]
++668: guard_value(i60, -1, descr=<Guard19>) [p1, p4, p3, i60, p47]
++678: p62 = getfield_gc(p4, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++682: i64 = call(ConstClass(get_arg_idx), p62, p47, descr=<Calli 8 rr EF=3>)
++701: guard_no_exception(, descr=<Guard20>) [p1, p4, p3, i64, p47]
++716: guard_value(i64, -1, descr=<Guard21>) [p1, p4, p3, i64, p47]
++726: p67 = getfield_gc(ConstPtr(ptr66), descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++734: i69 = call(ConstClass(get_arg_idx), p67, p47, descr=<Calli 8 rr EF=3>)
++760: guard_no_exception(, descr=<Guard22>) [p1, p4, p3, i69, p47]
++775: guard_value(i69, 7, descr=<Guard23>) [p1, p4, p3, i69, p47]
++785: p72 = getfield_gc(ConstPtr(ptr71), descr=<FieldP system.core.Object.inst__w_args 48>)
++793: p73 = getarrayitem_gc_pure(p72, 7, descr=<ArrayP 8>)
++797: guard_nonnull_class(p73, 9962136, descr=<Guard24>) [p73, p1, p4, p3]
++815: p76 = getfield_gc(ConstPtr(ptr75), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++823: i80 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr78), 2955549, descr=<Calli 8 rri EF=4>)
++863: guard_no_exception(, descr=<Guard25>) [p73, p1, p4, p3, i80, p76]
++878: i82 = int_and(i80, -9223372036854775808)
++894: i83 = int_is_true(i82)
+guard_false(i83, descr=<Guard26>) [p73, p1, p4, p3, i80, p76]
++904: p84 = getfield_gc(p76, descr=<FieldP dicttable.entries 24>)
++915: p85 = getinteriorfield_gc(p84, i80, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++924: guard_class(p85, 9961088, descr=<Guard27>) [p73, p1, p4, p3, p85]
++936: p88 = call(ConstClass(persistent_list_next), p3, descr=<Callr 8 r EF=0>)
++959: guard_nonnull_class(p88, 9958808, descr=<Guard28>) [p88, p73, p1, p4, p19]
++977: i93 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr91), 2955549, descr=<Calli 8 rri EF=4>)
++1010: guard_no_exception(, descr=<Guard29>) [p88, p73, p1, p4, i93, p19]
++1025: i95 = int_and(i93, -9223372036854775808)
++1041: i96 = int_is_true(i95)
+guard_false(i96, descr=<Guard30>) [p88, p73, p1, p4, i93, p19]
++1051: p97 = getinteriorfield_gc(p27, i93, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++1067: guard_class(p97, 9962592, descr=<Guard31>) [p88, p73, p1, p4, p97]
++1079: p100 = call(ConstClass(persistent_list_count), p88, descr=<Callr 8 r EF=3>)
++1095: guard_no_exception(, descr=<Guard32>) [p88, p73, p1, p4, p100]
++1110: i101 = getfield_gc(p100, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++1114: i102 = int_force_ge_zero(i101)
+p103 = new_array(i102, descr=<ArrayP 8>)
++1171: i105 = int_ge(0, i101)
+guard_false(i105, descr=<Guard33>) [i101, p88, p103, p73, p1, p4]
++1185: i109 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr107), 2955549, descr=<Calli 8 rri EF=4>)
++1218: guard_no_exception(, descr=<Guard34>) [i101, p88, p103, p73, p1, p4, i109, p35]
++1233: i111 = int_and(i109, -9223372036854775808)
++1249: i112 = int_is_true(i111)
+guard_false(i112, descr=<Guard35>) [i101, p88, p103, p73, p1, p4, i109, p35]
++1259: p113 = getinteriorfield_gc(p43, i109, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++1275: guard_class(p113, 9960208, descr=<Guard36>) [i101, p88, p103, p73, p1, p4, p113]
++1287: p116 = call(ConstClass(persistent_list_first), p88, descr=<Callr 8 r EF=0>)
++1303: i120 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr118), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p103, 0, p116, descr=<ArrayP 8>)
++1382: guard_no_exception(, descr=<Guard37>) [i101, p103, p73, p1, p4, p88, i120, p76]
++1397: i122 = int_and(i120, -9223372036854775808)
++1413: i123 = int_is_true(i122)
+guard_false(i123, descr=<Guard38>) [i101, p103, p73, p1, p4, p88, i120, p76]
++1423: p124 = getinteriorfield_gc(p84, i120, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++1439: guard_class(p124, 9961088, descr=<Guard39>) [i101, p103, p73, p1, p4, p88, p124]
++1451: p127 = call(ConstClass(persistent_list_next), p88, descr=<Callr 8 r EF=0>)
++1467: i129 = int_ge(1, i101)
+guard_false(i129, descr=<Guard40>) [i101, p127, p103, p73, p1, p4]
++1481: guard_nonnull_class(p127, 9958808, descr=<Guard41>) [i101, p127, p103, p73, p1, p4, p35]
++1499: i134 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr132), 2955549, descr=<Calli 8 rri EF=4>)
++1532: guard_no_exception(, descr=<Guard42>) [i101, p127, p103, p73, p1, p4, i134, p35]
++1547: i136 = int_and(i134, -9223372036854775808)
++1563: i137 = int_is_true(i136)
+guard_false(i137, descr=<Guard43>) [i101, p127, p103, p73, p1, p4, i134, p35]
++1573: p138 = getinteriorfield_gc(p43, i134, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++1589: guard_class(p138, 9960208, descr=<Guard44>) [i101, p127, p103, p73, p1, p4, p138]
++1601: p141 = call(ConstClass(persistent_list_first), p127, descr=<Callr 8 r EF=0>)
++1617: i145 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr143), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p103, 1, p141, descr=<ArrayP 8>)
++1696: guard_no_exception(, descr=<Guard45>) [i101, p103, p73, p1, p4, p127, i145, p76]
++1711: i147 = int_and(i145, -9223372036854775808)
++1727: i148 = int_is_true(i147)
+guard_false(i148, descr=<Guard46>) [i101, p103, p73, p1, p4, p127, i145, p76]
++1737: p149 = getinteriorfield_gc(p84, i145, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++1753: guard_class(p149, 9961088, descr=<Guard47>) [i101, p103, p73, p1, p4, p127, p149]
++1765: p152 = call(ConstClass(persistent_list_next), p127, descr=<Callr 8 r EF=0>)
++1781: i154 = int_ge(2, i101)
+guard_false(i154, descr=<Guard48>) [i101, p152, p103, p73, p1, p4]
++1795: guard_nonnull_class(p152, 9958808, descr=<Guard49>) [i101, p152, p103, p73, p1, p4, p35]
++1813: i159 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr157), 2955549, descr=<Calli 8 rri EF=4>)
++1846: guard_no_exception(, descr=<Guard50>) [i101, p152, p103, p73, p1, p4, i159, p35]
++1861: i161 = int_and(i159, -9223372036854775808)
++1877: i162 = int_is_true(i161)
+guard_false(i162, descr=<Guard51>) [i101, p152, p103, p73, p1, p4, i159, p35]
++1887: p163 = getinteriorfield_gc(p43, i159, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++1903: guard_class(p163, 9960208, descr=<Guard52>) [i101, p152, p103, p73, p1, p4, p163]
++1915: p166 = call(ConstClass(persistent_list_first), p152, descr=<Callr 8 r EF=0>)
++1931: i170 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr168), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p103, 2, p166, descr=<ArrayP 8>)
++2010: guard_no_exception(, descr=<Guard53>) [i101, p103, p73, p1, p4, p152, i170, p76]
++2025: i172 = int_and(i170, -9223372036854775808)
++2041: i173 = int_is_true(i172)
+guard_false(i173, descr=<Guard54>) [i101, p103, p73, p1, p4, p152, i170, p76]
++2051: p174 = getinteriorfield_gc(p84, i170, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++2067: guard_class(p174, 9961088, descr=<Guard55>) [i101, p103, p73, p1, p4, p152, p174]
++2079: p177 = call(ConstClass(persistent_list_next), p152, descr=<Callr 8 r EF=0>)
++2095: i179 = int_ge(3, i101)
+guard_true(i179, descr=<Guard56>) [i101, p177, p103, p73, p1, p4]
++2109: i181 = int_add_ovf(3, i102)
+guard_no_overflow(, descr=<Guard57>) [p73, i181, i102, p103, p1, p4]
++2127: i182 = int_force_ge_zero(i181)
+p183 = new_array(i182, descr=<ArrayP 8>)
++2177: setarrayitem_gc(p183, 0, p4, descr=<ArrayP 8>)
++2181: setarrayitem_gc(p183, 1, p1, descr=<ArrayP 8>)
++2192: setarrayitem_gc(p183, 2, ConstPtr(ptr187), descr=<ArrayP 8>)
++2200: call(ConstClass(ll_arraycopy__arrayPtr_arrayPtr_Signed_Signed_Signed), p103, p183, 0, 3, i102, descr=<Callv 0 rriii EF=2 OS=1>)
++2243: i190 = int_is_zero(i182)
+guard_false(i190, descr=<Guard58>) [p183, p73, None, None]
++2257: i193 = int_eq(i182, 1)
+guard_false(i193, descr=<Guard59>) [p183, p73, None, None]
++2271: i195 = int_eq(i182, 2)
+guard_false(i195, descr=<Guard60>) [p183, p73, None, None]
++2285: i197 = int_eq(i182, 3)
+guard_false(i197, descr=<Guard61>) [p183, p73, None, None]
++2299: i199 = int_eq(i182, 4)
+guard_false(i199, descr=<Guard62>) [p183, p73, None, None]
++2313: i201 = int_eq(i182, 5)
+guard_false(i201, descr=<Guard63>) [p183, p73, None, None]
++2327: i203 = int_eq(i182, 6)
+guard_true(i203, descr=<Guard64>) [p183, p73, None, None]
++2341: p205 = getarrayitem_gc(p183, 0, descr=<ArrayP 8>)
++2352: p207 = getarrayitem_gc(p183, 1, descr=<ArrayP 8>)
++2356: p209 = getarrayitem_gc(p183, 2, descr=<ArrayP 8>)
++2360: p211 = getarrayitem_gc(p183, 3, descr=<ArrayP 8>)
++2364: p213 = getarrayitem_gc(p183, 4, descr=<ArrayP 8>)
++2368: p215 = getarrayitem_gc(p183, 5, descr=<ArrayP 8>)
++2372: guard_nonnull_class(p211, 9958808, descr=<Guard65>) [p215, p213, p209, p207, p205, p211, p6, None, None]
++2392: i220 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr218), 2955549, descr=<Calli 8 rri EF=4>)
++2435: guard_no_exception(, descr=<Guard66>) [p215, p213, p209, p207, p205, p211, i220, p6, None, None]
++2450: i222 = int_and(i220, -9223372036854775808)
++2466: i223 = int_is_true(i222)
+guard_false(i223, descr=<Guard67>) [p215, p213, p209, p207, p205, p211, i220, p6, None, None]
++2476: p224 = getinteriorfield_gc(p15, i220, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++2492: guard_class(p224, 9960512, descr=<Guard68>) [p215, p213, p209, p207, p205, p211, p224, None, None]
++2504: i229 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr227), 2955549, descr=<Calli 8 rri EF=4>)
++2530: guard_no_exception(, descr=<Guard69>) [p215, p213, p209, p207, p205, p211, i229, p19, None, None]
++2545: i231 = int_and(i229, -9223372036854775808)
++2561: i232 = int_is_true(i231)
+guard_false(i232, descr=<Guard70>) [p215, p213, p209, p207, p205, p211, i229, p19, None, None]
++2571: p233 = getinteriorfield_gc(p27, i229, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++2587: guard_class(p233, 9962592, descr=<Guard71>) [p215, p213, p209, p207, p205, p211, p233, None, None]
++2599: p236 = call(ConstClass(persistent_list_count), p211, descr=<Callr 8 r EF=3>)
++2611: guard_no_exception(, descr=<Guard72>) [p215, p213, p209, p207, p205, p211, p236, None, None]
++2626: i237 = getfield_gc(p236, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++2630: i238 = int_is_zero(i237)
+guard_false(i238, descr=<Guard73>) [p215, p213, p209, p207, p205, p211, None, None]
++2640: i242 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr240), 2955549, descr=<Calli 8 rri EF=4>)
++2666: guard_no_exception(, descr=<Guard74>) [p215, p213, p209, p207, p205, p211, i242, p35, None, None]
++2681: i244 = int_and(i242, -9223372036854775808)
++2697: i245 = int_is_true(i244)
+guard_false(i245, descr=<Guard75>) [p215, p213, p209, p207, p205, p211, i242, p35, None, None]
++2707: p246 = getinteriorfield_gc(p43, i242, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++2723: guard_class(p246, 9960208, descr=<Guard76>) [p215, p213, p209, p207, p205, p211, p246, None, None]
++2735: p249 = call(ConstClass(persistent_list_first), p211, descr=<Callr 8 r EF=0>)
++2747: guard_nonnull_class(p249, 9954536, descr=<Guard77>) [p215, p213, p209, p207, p205, p211, p249, p6, None, None]
++2765: i254 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr252), 2884393, descr=<Calli 8 rri EF=4>)
++2794: guard_no_exception(, descr=<Guard78>) [p215, p213, p209, p207, p205, p211, p249, i254, p6, None, None]
++2809: i256 = int_and(i254, -9223372036854775808)
++2825: i257 = int_is_true(i256)
+guard_false(i257, descr=<Guard79>) [p215, p213, p209, p207, p205, p211, p249, i254, p6, None, None]
++2835: p258 = getinteriorfield_gc(p15, i254, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++2851: guard_class(p258, 9960664, descr=<Guard80>) [p215, p213, p209, p207, p205, p211, p249, p258, None, None]
++2863: p260 = getfield_gc(p207, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++2874: i262 = call(ConstClass(get_arg_idx), p260, p249, descr=<Calli 8 rr EF=3>)
++2900: guard_no_exception(, descr=<Guard81>) [p215, p213, p209, p207, p205, p211, i262, p249, None, None]
++2915: guard_value(i262, -1, descr=<Guard82>) [p215, p213, p209, p207, p205, p211, i262, p249, None, None]
++2925: p264 = getfield_gc(p205, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++2929: i266 = call(ConstClass(get_arg_idx), p264, p249, descr=<Calli 8 rr EF=3>)
++2955: guard_no_exception(, descr=<Guard83>) [p215, p213, p209, p207, p205, p211, i266, p249, None, None]
++2970: guard_value(i266, -1, descr=<Guard84>) [p215, p213, p209, p207, p205, p211, i266, p249, None, None]
++2980: i269 = call(ConstClass(get_arg_idx), p67, p249, descr=<Calli 8 rr EF=3>)
++3003: guard_no_exception(, descr=<Guard85>) [p215, p213, p209, p207, p205, p211, i269, p249, None, None]
++3018: guard_value(i269, 3, descr=<Guard86>) [p215, p213, p209, p207, p205, p211, i269, p249, None, None]
++3028: p271 = getarrayitem_gc_pure(p72, 3, descr=<ArrayP 8>)
++3039: guard_nonnull_class(p271, 9956632, descr=<Guard87>) [p215, p213, p209, p207, p205, p271, p211, None, None]
++3057: i276 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr274), 2955549, descr=<Calli 8 rri EF=4>)
++3090: guard_no_exception(, descr=<Guard88>) [p215, p213, p209, p207, p205, p271, p211, i276, p76, None, None]
++3105: i278 = int_and(i276, -9223372036854775808)
++3121: i279 = int_is_true(i278)
+guard_false(i279, descr=<Guard89>) [p215, p213, p209, p207, p205, p271, p211, i276, p76, None, None]
++3131: p280 = getinteriorfield_gc(p84, i276, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++3147: guard_class(p280, 9961088, descr=<Guard90>) [p215, p213, p209, p207, p205, p271, p211, p280, None, None]
++3159: p283 = call(ConstClass(persistent_list_next), p211, descr=<Callr 8 r EF=0>)
++3171: guard_nonnull_class(p283, 9958808, descr=<Guard91>) [p215, p213, p209, p207, p205, p283, p271, p19, None, None]
++3189: i288 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr286), 2955549, descr=<Calli 8 rri EF=4>)
++3222: guard_no_exception(, descr=<Guard92>) [p215, p213, p209, p207, p205, p283, p271, i288, p19, None, None]
++3237: i290 = int_and(i288, -9223372036854775808)
++3253: i291 = int_is_true(i290)
+guard_false(i291, descr=<Guard93>) [p215, p213, p209, p207, p205, p283, p271, i288, p19, None, None]
++3263: p292 = getinteriorfield_gc(p27, i288, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++3279: guard_class(p292, 9962592, descr=<Guard94>) [p215, p213, p209, p207, p205, p283, p271, p292, None, None]
++3293: p295 = call(ConstClass(persistent_list_count), p283, descr=<Callr 8 r EF=3>)
++3309: guard_no_exception(, descr=<Guard95>) [p215, p213, p209, p207, p205, p283, p271, p295, None, None]
++3324: i296 = getfield_gc(p295, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++3328: i297 = int_force_ge_zero(i296)
+p298 = new_array(i297, descr=<ArrayP 8>)
++3379: i300 = int_ge(0, i296)
+guard_false(i300, descr=<Guard96>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, None, None]
++3393: i304 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr302), 2955549, descr=<Calli 8 rri EF=4>)
++3426: guard_no_exception(, descr=<Guard97>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, i304, p35, None, None]
++3441: i306 = int_and(i304, -9223372036854775808)
++3457: i307 = int_is_true(i306)
+guard_false(i307, descr=<Guard98>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, i304, p35, None, None]
++3467: p308 = getinteriorfield_gc(p43, i304, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++3483: guard_class(p308, 9960208, descr=<Guard99>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, p308, None, None]
++3495: p311 = call(ConstClass(persistent_list_first), p283, descr=<Callr 8 r EF=0>)
++3511: guard_nonnull_class(p311, 9954536, descr=<Guard100>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, p311, p6, None, None]
++3529: i316 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr314), 2884393, descr=<Calli 8 rri EF=4>)
++3558: guard_no_exception(, descr=<Guard101>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, p311, i316, p6, None, None]
++3573: i318 = int_and(i316, -9223372036854775808)
++3589: i319 = int_is_true(i318)
+guard_false(i319, descr=<Guard102>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, p311, i316, p6, None, None]
++3599: p320 = getinteriorfield_gc(p15, i316, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++3615: guard_class(p320, 9960664, descr=<Guard103>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, p311, p320, None, None]
++3627: i323 = call(ConstClass(get_arg_idx), p260, p311, descr=<Calli 8 rr EF=3>)
++3650: guard_no_exception(, descr=<Guard104>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, i323, p311, None, None]
++3665: guard_value(i323, 1, descr=<Guard105>) [p215, p213, p209, p207, p205, i296, p283, p298, p271, i323, p311, None, None]
++3675: p325 = getfield_gc(p207, descr=<FieldP system.core.Object.inst__w_args 48>)
++3686: p326 = getarrayitem_gc_pure(p325, 1, descr=<ArrayP 8>)
++3690: i330 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr328), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p298, 0, p326, descr=<ArrayP 8>)
++3776: guard_no_exception(, descr=<Guard106>) [p215, p213, p209, p207, p205, i296, p298, p271, p283, i330, p76, None, None]
++3791: i332 = int_and(i330, -9223372036854775808)
++3807: i333 = int_is_true(i332)
+guard_false(i333, descr=<Guard107>) [p215, p213, p209, p207, p205, i296, p298, p271, p283, i330, p76, None, None]
++3817: p334 = getinteriorfield_gc(p84, i330, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++3833: guard_class(p334, 9961088, descr=<Guard108>) [p215, p213, p209, p207, p205, i296, p298, p271, p283, p334, None, None]
++3846: p337 = call(ConstClass(persistent_list_next), p283, descr=<Callr 8 r EF=0>)
++3862: i339 = int_ge(1, i296)
+guard_false(i339, descr=<Guard109>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, None, None]
++3876: guard_nonnull_class(p337, 9958808, descr=<Guard110>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, p35, None, None]
++3894: i344 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr342), 2955549, descr=<Calli 8 rri EF=4>)
++3927: guard_no_exception(, descr=<Guard111>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, i344, p35, None, None]
++3942: i346 = int_and(i344, -9223372036854775808)
++3958: i347 = int_is_true(i346)
+guard_false(i347, descr=<Guard112>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, i344, p35, None, None]
++3968: p348 = getinteriorfield_gc(p43, i344, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++3984: guard_class(p348, 9960208, descr=<Guard113>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, p348, None, None]
++3996: p351 = call(ConstClass(persistent_list_first), p337, descr=<Callr 8 r EF=0>)
++4012: guard_nonnull_class(p351, 9954536, descr=<Guard114>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, p351, p6, None, None]
++4030: i356 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr354), 2884393, descr=<Calli 8 rri EF=4>)
++4059: guard_no_exception(, descr=<Guard115>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, p351, i356, p6, None, None]
++4074: i358 = int_and(i356, -9223372036854775808)
++4090: i359 = int_is_true(i358)
+guard_false(i359, descr=<Guard116>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, p351, i356, p6, None, None]
++4100: p360 = getinteriorfield_gc(p15, i356, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++4116: guard_class(p360, 9960664, descr=<Guard117>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, p351, p360, None, None]
++4128: i363 = call(ConstClass(get_arg_idx), p260, p351, descr=<Calli 8 rr EF=3>)
++4151: guard_no_exception(, descr=<Guard118>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, i363, p351, None, None]
++4166: guard_value(i363, 2, descr=<Guard119>) [p215, p213, p209, p207, p205, i296, p337, p298, p271, i363, p351, None, None]
++4176: p365 = getarrayitem_gc_pure(p325, 2, descr=<ArrayP 8>)
++4187: i369 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr367), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p298, 1, p365, descr=<ArrayP 8>)
++4266: guard_no_exception(, descr=<Guard120>) [p215, p213, p209, p207, p205, i296, p298, p271, p337, i369, p76, None, None]
++4281: i371 = int_and(i369, -9223372036854775808)
++4297: i372 = int_is_true(i371)
+guard_false(i372, descr=<Guard121>) [p215, p213, p209, p207, p205, i296, p298, p271, p337, i369, p76, None, None]
++4307: p373 = getinteriorfield_gc(p84, i369, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++4323: guard_class(p373, 9961088, descr=<Guard122>) [p215, p213, p209, p207, p205, i296, p298, p271, p337, p373, None, None]
++4336: p376 = call(ConstClass(persistent_list_next), p337, descr=<Callr 8 r EF=0>)
++4352: i378 = int_ge(2, i296)
+guard_true(i378, descr=<Guard123>) [p215, p213, p209, p207, p205, i296, p376, p298, p271, None, None]
++4366: i379 = int_is_zero(i297)
+guard_false(i379, descr=<Guard124>) [p215, p213, p209, p207, p205, p298, p271, None, None]
++4376: i381 = int_eq(i297, 1)
+guard_false(i381, descr=<Guard125>) [p215, p213, p209, p207, p205, p298, p271, None, None]
++4386: i383 = int_eq(i297, 2)
+guard_true(i383, descr=<Guard126>) [p215, p213, p209, p207, p205, p298, p271, None, None]
++4396: p384 = getfield_gc(p271, descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++4407: guard_nonnull_class(p326, 9954952, descr=<Guard127>) [p215, p213, p209, p207, p205, p365, p326, p384, None, None]
++4432: i389 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p384, ConstPtr(ptr387), 2954641, descr=<Calli 8 rri EF=4>)
++4454: guard_no_exception(, descr=<Guard128>) [p215, p213, p209, p207, p205, p365, p326, i389, p384, None, None]
++4469: i391 = int_and(i389, -9223372036854775808)
++4485: i392 = int_is_true(i391)
+guard_false(i392, descr=<Guard129>) [p215, p213, p209, p207, p205, p365, p326, i389, p384, None, None]
++4495: p393 = getfield_gc(p384, descr=<FieldP dicttable.entries 24>)
++4499: p394 = getinteriorfield_gc(p393, i389, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++4508: guard_class(p394, 9962440, descr=<Guard130>) [p215, p213, p209, p207, p205, p365, p326, p394, None, None]
++4520: guard_nonnull_class(p365, 9954952, descr=<Guard131>) [p215, p213, p209, p207, p205, p365, p326, None, None]
++4545: i397 = getfield_gc(p326, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++4556: i398 = getfield_gc(p365, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++4560: i399 = int_eq(i397, i398)
+guard_false(i399, descr=<Guard132>) [p215, p213, p209, p207, p205, None, None]
++4569: guard_nonnull_class(p215, 9958808, descr=<Guard133>) [p209, p207, p205, p215, p6, None, None]
++4596: i404 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr402), 2955549, descr=<Calli 8 rri EF=4>)
++4625: guard_no_exception(, descr=<Guard134>) [p209, p207, p205, p215, i404, p6, None, None]
++4640: i406 = int_and(i404, -9223372036854775808)
++4656: i407 = int_is_true(i406)
+guard_false(i407, descr=<Guard135>) [p209, p207, p205, p215, i404, p6, None, None]
++4666: p408 = getinteriorfield_gc(p15, i404, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++4682: guard_class(p408, 9960512, descr=<Guard136>) [p209, p207, p205, p215, p408, None, None]
++4694: i413 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr411), 2955549, descr=<Calli 8 rri EF=4>)
++4720: guard_no_exception(, descr=<Guard137>) [p209, p207, p205, p215, i413, p19, None, None]
++4735: i415 = int_and(i413, -9223372036854775808)
++4751: i416 = int_is_true(i415)
+guard_false(i416, descr=<Guard138>) [p209, p207, p205, p215, i413, p19, None, None]
++4761: p417 = getinteriorfield_gc(p27, i413, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++4777: guard_class(p417, 9962592, descr=<Guard139>) [p209, p207, p205, p215, p417, None, None]
++4789: p420 = call(ConstClass(persistent_list_count), p215, descr=<Callr 8 r EF=3>)
++4801: guard_no_exception(, descr=<Guard140>) [p209, p207, p205, p215, p420, None, None]
++4816: i421 = getfield_gc(p420, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++4820: i422 = int_is_zero(i421)
+guard_false(i422, descr=<Guard141>) [p209, p207, p205, p215, None, None]
++4830: i426 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr424), 2955549, descr=<Calli 8 rri EF=4>)
++4856: guard_no_exception(, descr=<Guard142>) [p209, p207, p205, p215, i426, p35, None, None]
++4871: i428 = int_and(i426, -9223372036854775808)
++4887: i429 = int_is_true(i428)
+guard_false(i429, descr=<Guard143>) [p209, p207, p205, p215, i426, p35, None, None]
++4897: p430 = getinteriorfield_gc(p43, i426, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++4913: guard_class(p430, 9960208, descr=<Guard144>) [p209, p207, p205, p215, p430, None, None]
++4925: p433 = call(ConstClass(persistent_list_first), p215, descr=<Callr 8 r EF=0>)
++4937: guard_nonnull_class(p433, 9954536, descr=<Guard145>) [p209, p207, p205, p215, p433, p6, None, None]
++4955: i438 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr436), 2884393, descr=<Calli 8 rri EF=4>)
++4984: guard_no_exception(, descr=<Guard146>) [p209, p207, p205, p215, p433, i438, p6, None, None]
++4999: i440 = int_and(i438, -9223372036854775808)
++5015: i441 = int_is_true(i440)
+guard_false(i441, descr=<Guard147>) [p209, p207, p205, p215, p433, i438, p6, None, None]
++5025: p442 = getinteriorfield_gc(p15, i438, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++5041: guard_class(p442, 9960664, descr=<Guard148>) [p209, p207, p205, p215, p433, p442, None, None]
++5053: i445 = call(ConstClass(get_arg_idx), p260, p433, descr=<Calli 8 rr EF=3>)
++5076: guard_no_exception(, descr=<Guard149>) [p209, p207, p205, p215, i445, p433, None, None]
++5091: guard_value(i445, 0, descr=<Guard150>) [p209, p207, p205, p215, i445, p433, None, None]
++5101: p447 = getarrayitem_gc_pure(p325, 0, descr=<ArrayP 8>)
++5112: guard_nonnull_class(p447, 9962744, descr=<Guard151>) [p447, p209, p207, p205, p215, None, None]
++5130: i452 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr450), 2955549, descr=<Calli 8 rri EF=4>)
++5163: guard_no_exception(, descr=<Guard152>) [p447, p209, p207, p205, p215, i452, p76, None, None]
++5178: i454 = int_and(i452, -9223372036854775808)
++5194: i455 = int_is_true(i454)
+guard_false(i455, descr=<Guard153>) [p447, p209, p207, p205, p215, i452, p76, None, None]
++5204: p456 = getinteriorfield_gc(p84, i452, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++5220: guard_class(p456, 9961088, descr=<Guard154>) [p447, p209, p207, p205, p215, p456, None, None]
++5232: p459 = call(ConstClass(persistent_list_next), p215, descr=<Callr 8 r EF=0>)
++5244: guard_nonnull_class(p459, 9958808, descr=<Guard155>) [p459, p447, p209, p207, p205, p19, None, None]
++5262: i464 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr462), 2955549, descr=<Calli 8 rri EF=4>)
++5295: guard_no_exception(, descr=<Guard156>) [p459, p447, p209, p207, p205, i464, p19, None, None]
++5310: i466 = int_and(i464, -9223372036854775808)
++5326: i467 = int_is_true(i466)
+guard_false(i467, descr=<Guard157>) [p459, p447, p209, p207, p205, i464, p19, None, None]
++5336: p468 = getinteriorfield_gc(p27, i464, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++5352: guard_class(p468, 9962592, descr=<Guard158>) [p459, p447, p209, p207, p205, p468, None, None]
++5366: p471 = call(ConstClass(persistent_list_count), p459, descr=<Callr 8 r EF=3>)
++5382: guard_no_exception(, descr=<Guard159>) [p459, p447, p209, p207, p205, p471, None, None]
++5397: i472 = getfield_gc(p471, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++5401: i473 = int_force_ge_zero(i472)
+p474 = new_array(i473, descr=<ArrayP 8>)
++5452: i476 = int_ge(0, i472)
+guard_false(i476, descr=<Guard160>) [i472, p459, p474, p447, p209, p207, p205, None, None]
++5466: i480 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr478), 2955549, descr=<Calli 8 rri EF=4>)
++5499: guard_no_exception(, descr=<Guard161>) [i472, p459, p474, p447, p209, p207, p205, i480, p35, None, None]
++5514: i482 = int_and(i480, -9223372036854775808)
++5530: i483 = int_is_true(i482)
+guard_false(i483, descr=<Guard162>) [i472, p459, p474, p447, p209, p207, p205, i480, p35, None, None]
++5540: p484 = getinteriorfield_gc(p43, i480, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++5556: guard_class(p484, 9960208, descr=<Guard163>) [i472, p459, p474, p447, p209, p207, p205, p484, None, None]
++5570: p487 = call(ConstClass(persistent_list_first), p459, descr=<Callr 8 r EF=0>)
++5586: guard_nonnull_class(p487, 9958808, descr=<Guard164>) [i472, p459, p474, p447, p209, p207, p205, p487, p6, None, None]
++5604: i492 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr490), 2955549, descr=<Calli 8 rri EF=4>)
++5633: guard_no_exception(, descr=<Guard165>) [i472, p459, p474, p447, p209, p207, p205, p487, i492, p6, None, None]
++5648: i494 = int_and(i492, -9223372036854775808)
++5664: i495 = int_is_true(i494)
+guard_false(i495, descr=<Guard166>) [i472, p459, p474, p447, p209, p207, p205, p487, i492, p6, None, None]
++5674: p496 = getinteriorfield_gc(p15, i492, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++5690: guard_class(p496, 9960512, descr=<Guard167>) [i472, p459, p474, p447, p209, p207, p205, p487, p496, None, None]
++5704: i501 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr499), 2955549, descr=<Calli 8 rri EF=4>)
++5730: guard_no_exception(, descr=<Guard168>) [i472, p459, p474, p447, p209, p207, p205, p487, i501, p19, None, None]
++5745: i503 = int_and(i501, -9223372036854775808)
++5761: i504 = int_is_true(i503)
+guard_false(i504, descr=<Guard169>) [i472, p459, p474, p447, p209, p207, p205, p487, i501, p19, None, None]
++5771: p505 = getinteriorfield_gc(p27, i501, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++5787: guard_class(p505, 9962592, descr=<Guard170>) [i472, p459, p474, p447, p209, p207, p205, p487, p505, None, None]
++5801: p508 = call(ConstClass(persistent_list_count), p487, descr=<Callr 8 r EF=3>)
++5817: guard_no_exception(, descr=<Guard171>) [i472, p459, p474, p447, p209, p207, p205, p487, p508, None, None]
++5832: i509 = getfield_gc(p508, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++5836: i510 = int_is_zero(i509)
+guard_false(i510, descr=<Guard172>) [i472, p459, p474, p447, p209, p207, p205, p487, None, None]
++5846: i514 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr512), 2955549, descr=<Calli 8 rri EF=4>)
++5872: guard_no_exception(, descr=<Guard173>) [i472, p459, p474, p447, p209, p207, p205, p487, i514, p35, None, None]
++5887: i516 = int_and(i514, -9223372036854775808)
++5903: i517 = int_is_true(i516)
+guard_false(i517, descr=<Guard174>) [i472, p459, p474, p447, p209, p207, p205, p487, i514, p35, None, None]
++5913: p518 = getinteriorfield_gc(p43, i514, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++5929: guard_class(p518, 9960208, descr=<Guard175>) [i472, p459, p474, p447, p209, p207, p205, p487, p518, None, None]
++5943: p521 = call(ConstClass(persistent_list_first), p487, descr=<Callr 8 r EF=0>)
++5959: guard_nonnull_class(p521, 9954536, descr=<Guard176>) [i472, p459, p474, p447, p209, p207, p205, p487, p521, p6, None, None]
++5977: i526 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr524), 2884393, descr=<Calli 8 rri EF=4>)
++6006: guard_no_exception(, descr=<Guard177>) [i472, p459, p474, p447, p209, p207, p205, p487, p521, i526, p6, None, None]
++6021: i528 = int_and(i526, -9223372036854775808)
++6037: i529 = int_is_true(i528)
+guard_false(i529, descr=<Guard178>) [i472, p459, p474, p447, p209, p207, p205, p487, p521, i526, p6, None, None]
++6047: p530 = getinteriorfield_gc(p15, i526, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++6063: guard_class(p530, 9960664, descr=<Guard179>) [i472, p459, p474, p447, p209, p207, p205, p487, p521, p530, None, None]
++6077: i533 = call(ConstClass(get_arg_idx), p260, p521, descr=<Calli 8 rr EF=3>)
++6100: guard_no_exception(, descr=<Guard180>) [i472, p459, p474, p447, p209, p207, p205, p487, i533, p521, None, None]
++6115: guard_value(i533, -1, descr=<Guard181>) [i472, p459, p474, p447, p209, p207, p205, p487, i533, p521, None, None]
++6125: i536 = call(ConstClass(get_arg_idx), p264, p521, descr=<Calli 8 rr EF=3>)
++6148: guard_no_exception(, descr=<Guard182>) [i472, p459, p474, p447, p209, p207, p205, p487, i536, p521, None, None]
++6163: guard_value(i536, -1, descr=<Guard183>) [i472, p459, p474, p447, p209, p207, p205, p487, i536, p521, None, None]
++6173: i539 = call(ConstClass(get_arg_idx), p67, p521, descr=<Calli 8 rr EF=3>)
++6196: guard_no_exception(, descr=<Guard184>) [i472, p459, p474, p447, p209, p207, p205, p487, i539, p521, None, None]
++6211: guard_value(i539, 2, descr=<Guard185>) [i472, p459, p474, p447, p209, p207, p205, p487, i539, p521, None, None]
++6221: p541 = getarrayitem_gc_pure(p72, 2, descr=<ArrayP 8>)
++6232: guard_nonnull_class(p541, 9961640, descr=<Guard186>) [i472, p459, p474, p447, p209, p207, p205, p541, p487, None, None]
++6250: i546 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr544), 2955549, descr=<Calli 8 rri EF=4>)
++6283: guard_no_exception(, descr=<Guard187>) [i472, p459, p474, p447, p209, p207, p205, p541, p487, i546, p76, None, None]
++6298: i548 = int_and(i546, -9223372036854775808)
++6314: i549 = int_is_true(i548)
+guard_false(i549, descr=<Guard188>) [i472, p459, p474, p447, p209, p207, p205, p541, p487, i546, p76, None, None]
++6324: p550 = getinteriorfield_gc(p84, i546, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++6340: guard_class(p550, 9961088, descr=<Guard189>) [i472, p459, p474, p447, p209, p207, p205, p541, p487, p550, None, None]
++6354: p553 = call(ConstClass(persistent_list_next), p487, descr=<Callr 8 r EF=0>)
++6370: guard_nonnull_class(p553, 9958808, descr=<Guard190>) [i472, p459, p474, p447, p209, p207, p205, p553, p541, p19, None, None]
++6388: i558 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p19, ConstPtr(ptr556), 2955549, descr=<Calli 8 rri EF=4>)
++6421: guard_no_exception(, descr=<Guard191>) [i472, p459, p474, p447, p209, p207, p205, p553, p541, i558, p19, None, None]
++6436: i560 = int_and(i558, -9223372036854775808)
++6452: i561 = int_is_true(i560)
+guard_false(i561, descr=<Guard192>) [i472, p459, p474, p447, p209, p207, p205, p553, p541, i558, p19, None, None]
++6462: p562 = getinteriorfield_gc(p27, i558, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++6478: guard_class(p562, 9962592, descr=<Guard193>) [i472, p459, p474, p447, p209, p207, p205, p553, p541, p562, None, None]
++6492: p565 = call(ConstClass(persistent_list_count), p553, descr=<Callr 8 r EF=3>)
++6508: guard_no_exception(, descr=<Guard194>) [i472, p459, p474, p447, p209, p207, p205, p553, p541, p565, None, None]
++6523: i566 = getfield_gc(p565, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++6527: i567 = int_force_ge_zero(i566)
+p568 = new_array(i567, descr=<ArrayP 8>)
++6578: i570 = int_ge(0, i566)
+guard_false(i570, descr=<Guard195>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, None, None]
++6592: i574 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr572), 2955549, descr=<Calli 8 rri EF=4>)
++6625: guard_no_exception(, descr=<Guard196>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, i574, p35, None, None]
++6640: i576 = int_and(i574, -9223372036854775808)
++6656: i577 = int_is_true(i576)
+guard_false(i577, descr=<Guard197>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, i574, p35, None, None]
++6666: p578 = getinteriorfield_gc(p43, i574, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++6682: guard_class(p578, 9960208, descr=<Guard198>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, p578, None, None]
++6694: p581 = call(ConstClass(persistent_list_first), p553, descr=<Callr 8 r EF=0>)
++6710: guard_nonnull_class(p581, 9954952, descr=<Guard199>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, p581, p6, None, None]
++6728: i586 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr584), 2954641, descr=<Calli 8 rri EF=4>)
++6757: guard_no_exception(, descr=<Guard200>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, p581, i586, p6, None, None]
++6772: i588 = int_and(i586, -9223372036854775808)
++6788: i589 = int_is_true(i588)
+guard_false(i589, descr=<Guard201>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, p581, i586, p6, None, None]
++6798: p590 = getinteriorfield_gc(p15, i586, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++6814: guard_class(p590, 9960360, descr=<Guard202>) [i472, p459, p474, p447, p209, p207, p205, i566, p553, p568, p541, p581, p590, None, None]
++6826: i595 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr593), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p568, 0, p581, descr=<ArrayP 8>)
++6898: guard_no_exception(, descr=<Guard203>) [i472, p459, p474, p447, p209, p207, p205, i566, p568, p541, p553, i595, p76, None, None]
++6913: i597 = int_and(i595, -9223372036854775808)
++6929: i598 = int_is_true(i597)
+guard_false(i598, descr=<Guard204>) [i472, p459, p474, p447, p209, p207, p205, i566, p568, p541, p553, i595, p76, None, None]
++6939: p599 = getinteriorfield_gc(p84, i595, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++6955: guard_class(p599, 9961088, descr=<Guard205>) [i472, p459, p474, p447, p209, p207, p205, i566, p568, p541, p553, p599, None, None]
++6968: p602 = call(ConstClass(persistent_list_next), p553, descr=<Callr 8 r EF=0>)
++6984: i604 = int_ge(1, i566)
+guard_false(i604, descr=<Guard206>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, None, None]
++6998: guard_nonnull_class(p602, 9958808, descr=<Guard207>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, p35, None, None]
++7016: i609 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr607), 2955549, descr=<Calli 8 rri EF=4>)
++7049: guard_no_exception(, descr=<Guard208>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, i609, p35, None, None]
++7064: i611 = int_and(i609, -9223372036854775808)
++7080: i612 = int_is_true(i611)
+guard_false(i612, descr=<Guard209>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, i609, p35, None, None]
++7090: p613 = getinteriorfield_gc(p43, i609, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++7106: guard_class(p613, 9960208, descr=<Guard210>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, p613, None, None]
++7118: p616 = call(ConstClass(persistent_list_first), p602, descr=<Callr 8 r EF=0>)
++7134: guard_nonnull_class(p616, 9954536, descr=<Guard211>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, p616, p6, None, None]
++7152: i621 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr619), 2884393, descr=<Calli 8 rri EF=4>)
++7181: guard_no_exception(, descr=<Guard212>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, p616, i621, p6, None, None]
++7196: i623 = int_and(i621, -9223372036854775808)
++7212: i624 = int_is_true(i623)
+guard_false(i624, descr=<Guard213>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, p616, i621, p6, None, None]
++7222: p625 = getinteriorfield_gc(p15, i621, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++7238: guard_class(p625, 9960664, descr=<Guard214>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, p616, p625, None, None]
++7250: i628 = call(ConstClass(get_arg_idx), p260, p616, descr=<Calli 8 rr EF=3>)
++7273: guard_no_exception(, descr=<Guard215>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, i628, p616, None, None]
++7288: guard_value(i628, 1, descr=<Guard216>) [i472, p459, p474, p447, p209, p207, p205, i566, p602, p568, p541, i628, p616, None, None]
++7298: i633 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr631), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p568, 1, p326, descr=<ArrayP 8>)
++7363: guard_no_exception(, descr=<Guard217>) [i472, p459, p474, p447, p209, p207, p205, i566, p568, p541, p602, i633, p76, None, None]
++7378: i635 = int_and(i633, -9223372036854775808)
++7394: i636 = int_is_true(i635)
+guard_false(i636, descr=<Guard218>) [i472, p459, p474, p447, p209, p207, p205, i566, p568, p541, p602, i633, p76, None, None]
++7404: p637 = getinteriorfield_gc(p84, i633, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++7420: guard_class(p637, 9961088, descr=<Guard219>) [i472, p459, p474, p447, p209, p207, p205, i566, p568, p541, p602, p637, None, None]
++7432: p640 = call(ConstClass(persistent_list_next), p602, descr=<Callr 8 r EF=0>)
++7448: i642 = int_ge(2, i566)
+guard_true(i642, descr=<Guard220>) [i472, p459, p474, p447, p209, p207, p205, i566, p640, p568, p541, None, None]
++7462: i643 = int_is_zero(i567)
+guard_false(i643, descr=<Guard221>) [i472, p459, p474, p447, p209, p207, p205, p568, p541, None, None]
++7472: i645 = int_eq(i567, 1)
+guard_false(i645, descr=<Guard222>) [i472, p459, p474, p447, p209, p207, p205, p568, p541, None, None]
++7482: i647 = int_eq(i567, 2)
+guard_true(i647, descr=<Guard223>) [i472, p459, p474, p447, p209, p207, p205, p568, p541, None, None]
++7492: p649 = getfield_gc(ConstPtr(ptr648), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++7500: i653 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p649, ConstPtr(ptr651), 2954641, descr=<Calli 8 rri EF=4>)
++7522: guard_no_exception(, descr=<Guard224>) [i472, p459, p474, p447, p209, p207, p205, p326, p581, i653, p649, None, None]
++7537: i655 = int_and(i653, -9223372036854775808)
++7553: i656 = int_is_true(i655)
+guard_false(i656, descr=<Guard225>) [i472, p459, p474, p447, p209, p207, p205, p326, p581, i653, p649, None, None]
++7563: p657 = getfield_gc(p649, descr=<FieldP dicttable.entries 24>)
++7568: p658 = getinteriorfield_gc(p657, i653, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++7577: guard_class(p658, 9962992, descr=<Guard226>) [i472, p459, p474, p447, p209, p207, p205, p326, p581, p658, None, None]
++7589: p661 = getfield_gc(ConstPtr(ptr660), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++7597: i665 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p661, ConstPtr(ptr663), 2884393, descr=<Calli 8 rri EF=4>)
++7626: guard_no_exception(, descr=<Guard227>) [i472, p459, p474, p447, p209, p207, p205, p326, p581, i665, p661, None, None]
++7641: i667 = int_and(i665, -9223372036854775808)
++7657: i668 = int_is_true(i667)
+guard_false(i668, descr=<Guard228>) [i472, p459, p474, p447, p209, p207, p205, p326, p581, i665, p661, None, None]
++7667: p669 = getfield_gc(p661, descr=<FieldP dicttable.entries 24>)
++7678: p670 = getinteriorfield_gc(p669, i665, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++7687: guard_class(p670, 9962288, descr=<Guard229>) [i472, p459, p474, p447, p209, p207, p205, p326, p581, p670, None, None]
++7699: p673 = getfield_gc(ConstPtr(ptr672), descr=<FieldP system.core.Object.inst__name 24>)
++7699: p674 = getfield_gc(ConstPtr(ptr672), descr=<FieldP system.core.Object.inst__ns 32>)
++7699: i675 = getfield_gc(p581, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++7710: i676 = int_add(i675, i397)
++7717: i680 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr678), 2955549, descr=<Calli 8 rri EF=4>)
++7750: guard_no_exception(, descr=<Guard230>) [i472, p474, p447, p209, p207, p205, p459, i680, p76, i676, None, None]
++7765: i682 = int_and(i680, -9223372036854775808)
++7781: i683 = int_is_true(i682)
+guard_false(i683, descr=<Guard231>) [i472, p474, p447, p209, p207, p205, p459, i680, p76, i676, None, None]
++7791: p684 = getinteriorfield_gc(p84, i680, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++7807: guard_class(p684, 9961088, descr=<Guard232>) [i472, p474, p447, p209, p207, p205, p459, p684, i676, None, None]
++7819: p687 = call(ConstClass(persistent_list_next), p459, descr=<Callr 8 r EF=0>)
++7835: i689 = int_ge(1, i472)
+guard_false(i689, descr=<Guard233>) [i472, p687, p474, p447, p209, p207, p205, i676, None, None]
++7849: guard_nonnull_class(p687, 9958808, descr=<Guard234>) [i472, p687, p474, p447, p209, p207, p205, p35, i676, None, None]
++7867: i694 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p35, ConstPtr(ptr692), 2955549, descr=<Calli 8 rri EF=4>)
++7900: guard_no_exception(, descr=<Guard235>) [i472, p687, p474, p447, p209, p207, p205, i694, p35, i676, None, None]
++7915: i696 = int_and(i694, -9223372036854775808)
++7931: i697 = int_is_true(i696)
+guard_false(i697, descr=<Guard236>) [i472, p687, p474, p447, p209, p207, p205, i694, p35, i676, None, None]
++7941: p698 = getinteriorfield_gc(p43, i694, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++7957: guard_class(p698, 9960208, descr=<Guard237>) [i472, p687, p474, p447, p209, p207, p205, p698, i676, None, None]
++7969: p701 = call(ConstClass(persistent_list_first), p687, descr=<Callr 8 r EF=0>)
++7985: guard_nonnull_class(p701, 9954536, descr=<Guard238>) [i472, p687, p474, p447, p209, p207, p205, p701, p6, i676, None, None]
++8003: i706 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p6, ConstPtr(ptr704), 2884393, descr=<Calli 8 rri EF=4>)
++8032: guard_no_exception(, descr=<Guard239>) [i472, p687, p474, p447, p209, p207, p205, p701, i706, p6, i676, None, None]
++8047: i708 = int_and(i706, -9223372036854775808)
++8063: i709 = int_is_true(i708)
+guard_false(i709, descr=<Guard240>) [i472, p687, p474, p447, p209, p207, p205, p701, i706, p6, i676, None, None]
++8073: p710 = getinteriorfield_gc(p15, i706, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++8089: guard_class(p710, 9960664, descr=<Guard241>) [i472, p687, p474, p447, p209, p207, p205, p701, p710, i676, None, None]
+p713 = new_with_vtable(9954952)
++8164: setfield_gc(p713, i676, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
+setarrayitem_gc(p474, 0, p713, descr=<ArrayP 8>)
++8214: i715 = call(ConstClass(get_arg_idx), p260, p701, descr=<Calli 8 rr EF=3>)
++8237: guard_no_exception(, descr=<Guard242>) [i472, p687, p474, p447, p209, p207, p205, i715, p701]
++8252: guard_value(i715, 2, descr=<Guard243>) [i472, p687, p474, p447, p209, p207, p205, i715, p701]
++8262: i720 = call(ConstClass(ll_dict_lookup_trampoline__v65___simple_call__function_ll), p76, ConstPtr(ptr718), 2955549, descr=<Calli 8 rri EF=4>)
+setarrayitem_gc(p474, 1, p365, descr=<ArrayP 8>)
++8334: guard_no_exception(, descr=<Guard244>) [i472, p474, p447, p209, p207, p205, p687, i720, p76]
++8349: i722 = int_and(i720, -9223372036854775808)
++8365: i723 = int_is_true(i722)
+guard_false(i723, descr=<Guard245>) [i472, p474, p447, p209, p207, p205, p687, i720, p76]
++8375: p724 = getinteriorfield_gc(p84, i720, descr=<InteriorFieldDescr <FieldP dictentry.value 8>>)
++8391: guard_class(p724, 9961088, descr=<Guard246>) [i472, p474, p447, p209, p207, p205, p687, p724]
++8403: p727 = call(ConstClass(persistent_list_next), p687, descr=<Callr 8 r EF=0>)
++8419: i729 = int_ge(2, i472)
+guard_true(i729, descr=<Guard247>) [i472, p727, p474, p447, p209, p207, p205]
++8433: i731 = instance_ptr_eq(p209, ConstPtr(ptr730))
+guard_true(i731, descr=<Guard248>) [p474, p447, p209, p207, p205]
+p733 = new_with_vtable(9954760)
++8513: setfield_gc(p733, p447, descr=<FieldP system.evaluation.TailCallTrampoline.inst__w_fn 80>)
++8524: setfield_gc(p733, p474, descr=<FieldP system.evaluation.TailCallTrampoline.inst__args_w 72>)
++8535: finish(p733, descr=<DoneWithThisFrameDescrRef object at 0x9af820>)
++8572: --end of the loop--
+[1df66cc08456] jit-log-opt-loop}

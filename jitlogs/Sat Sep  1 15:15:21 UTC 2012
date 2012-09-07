@@ -1,0 +1,319 @@
+[dce100082a0] {jit-log-opt-loop
+# Loop 0 (FuncInstance<rec>) : entry bridge with 314 ops
+[p0, p1]
+debug_merge_point(0, 0, 'FuncInstance<rec>')
++54: p3 = getfield_gc(ConstPtr(ptr2), descr=<FieldP system.rt.FuncInstance.inst__w_body 72>)
++67: p4 = getfield_gc(ConstPtr(ptr2), descr=<FieldP system.rt.FuncInstance.inst__w_globals 80>)
++80: guard_nonnull_class(p3, 10007648, descr=<Guard2>) [p1, p4, p3]
++98: p7 = getfield_gc(ConstPtr(ptr6), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++106: p10 = call(ConstClass(get_override), p7, ConstPtr(ptr9), descr=<Callr 8 rr EF=3>)
++137: guard_no_exception(, descr=<Guard3>) [p1, p4, p3, p10]
++152: guard_class(p10, 10009416, descr=<Guard4>) [p1, p4, p3, p10]
++164: p13 = getfield_gc(ConstPtr(ptr12), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++172: p16 = call(ConstClass(get_override), p13, ConstPtr(ptr15), descr=<Callr 8 rr EF=3>)
++189: guard_no_exception(, descr=<Guard5>) [p1, p4, p3, p16]
++204: guard_class(p16, 10011496, descr=<Guard6>) [p1, p4, p3, p16]
++216: p19 = call(ConstClass(persistent_list_count), p3, descr=<Callr 8 r EF=3>)
++232: guard_no_exception(, descr=<Guard7>) [p1, p4, p3, p19]
++247: i20 = getfield_gc(p19, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++251: i21 = int_is_zero(i20)
+guard_false(i21, descr=<Guard8>) [p1, p4, p3]
++261: p23 = getfield_gc(ConstPtr(ptr22), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++269: p26 = call(ConstClass(get_override), p23, ConstPtr(ptr25), descr=<Callr 8 rr EF=3>)
++286: guard_no_exception(, descr=<Guard9>) [p1, p4, p3, p26]
++301: guard_class(p26, 10009112, descr=<Guard10>) [p1, p4, p3, p26]
++313: p29 = call(ConstClass(persistent_list_first), p3, descr=<Callr 8 r EF=0>)
++329: guard_value(p29, ConstPtr(ptr30), descr=<Guard11>) [p29, p1, p4, p3]
++348: p33 = call(ConstClass(get_override), p7, ConstPtr(ptr32), descr=<Callr 8 rr EF=3>)
++365: guard_no_exception(, descr=<Guard12>) [p1, p4, p3, p33]
++380: guard_class(p33, 10009568, descr=<Guard13>) [p1, p4, p3, p33]
++392: p35 = getfield_gc(p1, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++403: guard_value(p35, ConstPtr(ptr36), descr=<Guard14>) [p1, p4, p3, p35]
++422: p38 = getfield_gc(ConstPtr(ptr37), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++430: p41 = call(ConstClass(get_override), p38, ConstPtr(ptr40), descr=<Callr 8 rr EF=3>)
++447: guard_no_exception(, descr=<Guard15>) [p1, p4, p3, p41]
++462: guard_class(p41, 10011192, descr=<Guard16>) [p1, p4, p3, p41]
++474: p44 = getfield_gc(ConstPtr(ptr43), descr=<FieldP system.core.Object.inst__name 24>)
++487: p45 = getfield_gc(ConstPtr(ptr30), descr=<FieldP system.core.Object.inst__name 24>)
++500: i46 = ptr_eq(p44, p45)
+guard_false(i46, descr=<Guard17>) [p1, p4, p3]
++509: p48 = getfield_gc(ConstPtr(ptr47), descr=<FieldP system.core.Object.inst__name 24>)
++522: i49 = ptr_eq(p48, p45)
+guard_false(i49, descr=<Guard18>) [p1, p4, p3]
++531: p51 = getfield_gc(ConstPtr(ptr50), descr=<FieldP system.core.Object.inst__name 24>)
++544: i52 = ptr_eq(p51, p45)
+guard_false(i52, descr=<Guard19>) [p1, p4, p3]
++553: p53 = getfield_gc(p4, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++557: guard_value(p53, ConstPtr(ptr54), descr=<Guard20>) [p1, p4, p3, p53]
++576: p56 = getfield_gc(ConstPtr(ptr55), descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++584: guard_value(p56, ConstPtr(ptr57), descr=<Guard21>) [p1, p4, p3, p56]
++597: p59 = getfield_gc(ConstPtr(ptr58), descr=<FieldP system.core.Object.inst__name 24>)
++605: i60 = ptr_eq(p59, p45)
+guard_false(i60, descr=<Guard22>) [p1, p4, p3]
++614: p62 = getfield_gc(ConstPtr(ptr61), descr=<FieldP system.core.Object.inst__name 24>)
++622: i63 = ptr_eq(p62, p45)
+guard_false(i63, descr=<Guard23>) [p1, p4, p3]
++631: p65 = getfield_gc(ConstPtr(ptr64), descr=<FieldP system.core.Object.inst__name 24>)
++639: i66 = ptr_eq(p65, p45)
+guard_false(i66, descr=<Guard24>) [p1, p4, p3]
++648: p68 = getfield_gc(ConstPtr(ptr67), descr=<FieldP system.core.Object.inst__name 24>)
++656: i69 = ptr_eq(p68, p45)
+guard_false(i69, descr=<Guard25>) [p1, p4, p3]
++665: p71 = getfield_gc(ConstPtr(ptr70), descr=<FieldP system.core.Object.inst__name 24>)
++673: i72 = ptr_eq(p71, p45)
+guard_false(i72, descr=<Guard26>) [p1, p4, p3]
++682: p74 = getfield_gc(ConstPtr(ptr73), descr=<FieldP system.core.Object.inst__name 24>)
++690: i75 = ptr_eq(p74, p45)
+guard_false(i75, descr=<Guard27>) [p1, p4, p3]
++699: p77 = getfield_gc(ConstPtr(ptr76), descr=<FieldP system.core.Object.inst__name 24>)
++707: i78 = ptr_eq(p77, p45)
+guard_false(i78, descr=<Guard28>) [p1, p4, p3]
++716: p80 = getfield_gc(ConstPtr(ptr79), descr=<FieldP system.core.Object.inst__name 24>)
++724: i81 = ptr_eq(p80, p45)
+guard_true(i81, descr=<Guard29>) [p1, p4, p3]
++733: p82 = getfield_gc(ConstPtr(ptr79), descr=<FieldP system.core.Object.inst__ns 32>)
++741: p83 = getfield_gc(ConstPtr(ptr30), descr=<FieldP system.core.Object.inst__ns 32>)
++754: i84 = ptr_eq(p82, p83)
+guard_true(i84, descr=<Guard30>) [p1, p4, p3]
++763: p86 = getfield_gc(ConstPtr(ptr85), descr=<FieldP system.core.Object.inst__w_args 48>)
++771: p88 = getarrayitem_gc_pure(p86, 7, descr=<ArrayP 8>)
++775: guard_nonnull_class(p88, 10011040, descr=<Guard31>) [p88, p1, p4, p3]
++793: p91 = getfield_gc(ConstPtr(ptr90), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++801: p94 = call(ConstClass(get_override), p91, ConstPtr(ptr93), descr=<Callr 8 rr EF=3>)
++860: guard_no_exception(, descr=<Guard32>) [p88, p1, p4, p3, p94]
++875: guard_class(p94, 10009992, descr=<Guard33>) [p88, p1, p4, p3, p94]
++887: p97 = call(ConstClass(persistent_list_next), p3, descr=<Callr 8 r EF=0>)
++903: guard_value(p97, ConstPtr(ptr98), descr=<Guard34>) [p97, p88, p1, p4]
++922: i100 = getfield_gc(ConstPtr(ptr99), descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++935: i101 = int_force_ge_zero(i100)
+p102 = new_array(i101, descr=<ArrayP 8>)
++989: i104 = int_ge(0, i100)
+guard_false(i104, descr=<Guard35>) [i100, p102, p88, p1, p4]
++1003: setarrayitem_gc(p102, 0, ConstPtr(ptr105), descr=<ArrayP 8>)
++1017: i107 = int_ge(1, i100)
+guard_false(i107, descr=<Guard36>) [i100, p102, p88, p1, p4]
++1031: setarrayitem_gc(p102, 1, ConstPtr(ptr108), descr=<ArrayP 8>)
++1045: i110 = int_ge(2, i100)
+guard_false(i110, descr=<Guard37>) [i100, p102, p88, p1, p4]
++1059: setarrayitem_gc(p102, 2, ConstPtr(ptr111), descr=<ArrayP 8>)
++1073: i113 = int_ge(3, i100)
+guard_true(i113, descr=<Guard38>) [i100, p102, p88, p1, p4]
++1087: i115 = int_add_ovf(3, i101)
+guard_no_overflow(, descr=<Guard39>) [p88, i115, i101, p102, p1, p4]
++1105: i116 = int_force_ge_zero(i115)
+p117 = new_array(i116, descr=<ArrayP 8>)
++1163: setarrayitem_gc(p117, 0, p4, descr=<ArrayP 8>)
++1167: setarrayitem_gc(p117, 1, p1, descr=<ArrayP 8>)
++1178: setarrayitem_gc(p117, 2, ConstPtr(ptr121), descr=<ArrayP 8>)
++1186: call(ConstClass(ll_arraycopy__arrayPtr_arrayPtr_Signed_Signed_Signed), p102, p117, 0, 3, i101, descr=<Callv 0 rriii EF=2 OS=1>)
++1229: i124 = int_is_zero(i116)
+guard_false(i124, descr=<Guard40>) [p117, p88, p1, None]
++1243: i127 = int_eq(i116, 1)
+guard_false(i127, descr=<Guard41>) [p117, p88, p1, None]
++1257: i129 = int_eq(i116, 2)
+guard_false(i129, descr=<Guard42>) [p117, p88, p1, None]
++1271: i131 = int_eq(i116, 3)
+guard_false(i131, descr=<Guard43>) [p117, p88, p1, None]
++1285: i133 = int_eq(i116, 4)
+guard_false(i133, descr=<Guard44>) [p117, p88, p1, None]
++1299: i135 = int_eq(i116, 5)
+guard_false(i135, descr=<Guard45>) [p117, p88, p1, None]
++1313: i137 = int_eq(i116, 6)
+guard_true(i137, descr=<Guard46>) [p117, p88, p1, None]
++1327: p139 = getarrayitem_gc(p117, 0, descr=<ArrayP 8>)
++1338: p141 = getarrayitem_gc(p117, 1, descr=<ArrayP 8>)
++1342: p143 = getarrayitem_gc(p117, 2, descr=<ArrayP 8>)
++1346: p145 = getarrayitem_gc(p117, 3, descr=<ArrayP 8>)
++1350: p147 = getarrayitem_gc(p117, 4, descr=<ArrayP 8>)
++1354: p149 = getarrayitem_gc(p117, 5, descr=<ArrayP 8>)
++1358: guard_nonnull_class(p145, 10007648, descr=<Guard47>) [p149, p147, p143, p141, p139, p145, p1, None]
++1376: p152 = call(ConstClass(persistent_list_count), p145, descr=<Callr 8 r EF=3>)
++1430: guard_no_exception(, descr=<Guard48>) [p149, p147, p143, p141, p139, p145, p152, p1, None]
++1445: i153 = getfield_gc(p152, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++1449: i154 = int_is_zero(i153)
+guard_false(i154, descr=<Guard49>) [p149, p147, p143, p141, p139, p145, p1, None]
++1459: p156 = call(ConstClass(persistent_list_first), p145, descr=<Callr 8 r EF=0>)
++1475: guard_value(p156, ConstPtr(ptr157), descr=<Guard50>) [p149, p147, p143, p141, p139, p156, p145, p1, None]
++1494: p158 = getfield_gc(p141, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++1505: guard_value(p158, ConstPtr(ptr159), descr=<Guard51>) [p149, p147, p143, p141, p139, p145, p158, p1, None]
++1524: p160 = getfield_gc(ConstPtr(ptr157), descr=<FieldP system.core.Object.inst__name 24>)
++1537: i161 = ptr_eq(p44, p160)
+guard_false(i161, descr=<Guard52>) [p149, p147, p143, p141, p139, p145, p1, None]
++1550: i162 = ptr_eq(p48, p160)
+guard_false(i162, descr=<Guard53>) [p149, p147, p143, p141, p139, p145, p1, None]
++1563: i163 = ptr_eq(p51, p160)
+guard_false(i163, descr=<Guard54>) [p149, p147, p143, p141, p139, p145, p1, None]
++1572: p164 = getfield_gc(p139, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++1583: guard_value(p164, ConstPtr(ptr165), descr=<Guard55>) [p149, p147, p143, p141, p139, p145, p164, p1, None]
++1602: i166 = ptr_eq(p59, p160)
+guard_false(i166, descr=<Guard56>) [p149, p147, p143, p141, p139, p145, p1, None]
++1611: i167 = ptr_eq(p62, p160)
+guard_true(i167, descr=<Guard57>) [p149, p147, p143, p141, p139, p145, p1, None]
++1624: p169 = getfield_gc(ConstPtr(ptr168), descr=<FieldP system.core.Object.inst__ns 32>)
++1632: p170 = getfield_gc(ConstPtr(ptr157), descr=<FieldP system.core.Object.inst__ns 32>)
++1645: i171 = ptr_eq(p169, p170)
+guard_true(i171, descr=<Guard58>) [p149, p147, p143, p141, p139, p145, p1, None]
++1654: p173 = getarrayitem_gc_pure(p86, 1, descr=<ArrayP 8>)
++1658: guard_nonnull_class(p173, 10005464, descr=<Guard59>) [p149, p147, p143, p141, p139, p173, p145, p1, None]
++1677: p176 = call(ConstClass(persistent_list_next), p145, descr=<Callr 8 r EF=0>)
++1700: guard_value(p176, ConstPtr(ptr177), descr=<Guard60>) [p149, p147, p143, p141, p139, p176, p173, p1, None]
++1719: i179 = getfield_gc(ConstPtr(ptr178), descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++1732: i180 = int_force_ge_zero(i179)
+p181 = new_array(i180, descr=<ArrayP 8>)
++1790: i183 = int_ge(0, i179)
+guard_false(i183, descr=<Guard61>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1804: p185 = getfield_gc(ConstPtr(ptr184), descr=<FieldP system.core.Object.inst__name 24>)
++1817: i186 = ptr_eq(p44, p185)
+guard_false(i186, descr=<Guard62>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1830: i187 = ptr_eq(p48, p185)
+guard_true(i187, descr=<Guard63>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1843: p189 = getfield_gc(ConstPtr(ptr188), descr=<FieldP system.core.Object.inst__ns 32>)
++1856: p190 = getfield_gc(ConstPtr(ptr184), descr=<FieldP system.core.Object.inst__ns 32>)
++1869: i191 = ptr_eq(p189, p190)
+guard_true(i191, descr=<Guard64>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1878: p192 = getfield_gc(p141, descr=<FieldP system.core.Object.inst__w_args 48>)
++1889: p194 = getarrayitem_gc_pure(p192, 1, descr=<ArrayP 8>)
++1893: setarrayitem_gc(p181, 0, p194, descr=<ArrayP 8>)
++1897: i196 = int_ge(1, i179)
+guard_false(i196, descr=<Guard65>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1911: p198 = getfield_gc(ConstPtr(ptr197), descr=<FieldP system.core.Object.inst__name 24>)
++1924: i199 = ptr_eq(p44, p198)
+guard_false(i199, descr=<Guard66>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1937: i200 = ptr_eq(p48, p198)
+guard_false(i200, descr=<Guard67>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1950: i201 = ptr_eq(p51, p198)
+guard_true(i201, descr=<Guard68>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1959: p203 = getfield_gc(ConstPtr(ptr202), descr=<FieldP system.core.Object.inst__ns 32>)
++1972: p204 = getfield_gc(ConstPtr(ptr197), descr=<FieldP system.core.Object.inst__ns 32>)
++1985: i205 = ptr_eq(p203, p204)
+guard_true(i205, descr=<Guard69>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++1994: p207 = getarrayitem_gc_pure(p192, 2, descr=<ArrayP 8>)
++1998: setarrayitem_gc(p181, 1, p207, descr=<ArrayP 8>)
++2002: i209 = int_ge(2, i179)
+guard_true(i209, descr=<Guard70>) [p149, p147, p143, p141, p139, i179, p181, p173, p1, None]
++2016: i210 = int_is_zero(i180)
+guard_false(i210, descr=<Guard71>) [p149, p147, p143, p141, p139, p181, p173, p1, None]
++2030: i212 = int_eq(i180, 1)
+guard_false(i212, descr=<Guard72>) [p149, p147, p143, p141, p139, p181, p173, p1, None]
++2044: i214 = int_eq(i180, 2)
+guard_true(i214, descr=<Guard73>) [p149, p147, p143, p141, p139, p181, p173, p1, None]
++2058: guard_nonnull_class(p194, 10003848, descr=<Guard74>) [p149, p147, p143, p141, p139, p207, p194, p173, p1, None]
++2076: p216 = getfield_gc(p173, descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++2087: p219 = call(ConstClass(get_override), p216, ConstPtr(ptr218), descr=<Callr 8 rr EF=3>)
++2139: guard_no_exception(, descr=<Guard75>) [p149, p147, p143, p141, p139, p207, p194, p219, p1, None]
++2154: guard_class(p219, 10011344, descr=<Guard76>) [p149, p147, p143, p141, p139, p207, p194, p219, p1, None]
++2166: guard_nonnull_class(p207, 10003848, descr=<Guard77>) [p149, p147, p143, p141, p139, p207, p194, p1, None]
++2191: i222 = getfield_gc(p194, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++2202: i223 = getfield_gc(p207, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++2206: i224 = int_eq(i222, i223)
+guard_false(i224, descr=<Guard78>) [p149, p147, p143, p141, p139, p1, None]
++2215: guard_nonnull_class(p149, 10007648, descr=<Guard79>) [p143, p141, p139, p149, p1, None]
++2241: p227 = call(ConstClass(persistent_list_count), p149, descr=<Callr 8 r EF=3>)
++2260: guard_no_exception(, descr=<Guard80>) [p143, p141, p139, p149, p227, p1, None]
++2275: i228 = getfield_gc(p227, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++2279: i229 = int_is_zero(i228)
+guard_false(i229, descr=<Guard81>) [p143, p141, p139, p149, p1, None]
++2289: p231 = call(ConstClass(persistent_list_first), p149, descr=<Callr 8 r EF=0>)
++2305: guard_value(p231, ConstPtr(ptr232), descr=<Guard82>) [p231, p143, p141, p139, p149, p1, None]
++2324: p233 = getfield_gc(ConstPtr(ptr232), descr=<FieldP system.core.Object.inst__name 24>)
++2337: i234 = ptr_eq(p44, p233)
+guard_true(i234, descr=<Guard83>) [p143, p141, p139, p149, p1, None]
++2350: p236 = getfield_gc(ConstPtr(ptr235), descr=<FieldP system.core.Object.inst__ns 32>)
++2363: p237 = getfield_gc(ConstPtr(ptr232), descr=<FieldP system.core.Object.inst__ns 32>)
++2376: i238 = ptr_eq(p236, p237)
+guard_true(i238, descr=<Guard84>) [p143, p141, p139, p149, p1, None]
++2385: p240 = getarrayitem_gc_pure(p192, 0, descr=<ArrayP 8>)
++2396: guard_nonnull_class(p240, 10011648, descr=<Guard85>) [p240, p143, p141, p139, p149, p1, None]
++2415: p243 = call(ConstClass(persistent_list_next), p149, descr=<Callr 8 r EF=0>)
++2438: guard_value(p243, ConstPtr(ptr244), descr=<Guard86>) [p243, p240, p143, p141, p139, p1, None]
++2457: i246 = getfield_gc(ConstPtr(ptr245), descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++2470: i247 = int_force_ge_zero(i246)
+p248 = new_array(i247, descr=<ArrayP 8>)
++2521: i250 = int_ge(0, i246)
+guard_false(i250, descr=<Guard87>) [i246, p248, p240, p143, p141, p139, p1, None]
++2535: i252 = getfield_gc(ConstPtr(ptr251), descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++2548: i253 = int_is_zero(i252)
+guard_false(i253, descr=<Guard88>) [i246, p248, p240, p143, p141, p139, p1, None]
++2558: p255 = getfield_gc(ConstPtr(ptr254), descr=<FieldP system.core.Object.inst__name 24>)
++2571: i256 = ptr_eq(p44, p255)
+guard_false(i256, descr=<Guard89>) [i246, p248, p240, p143, p141, p139, p1, None]
++2584: i257 = ptr_eq(p48, p255)
+guard_false(i257, descr=<Guard90>) [i246, p248, p240, p143, p141, p139, p1, None]
++2597: i258 = ptr_eq(p51, p255)
+guard_false(i258, descr=<Guard91>) [i246, p248, p240, p143, p141, p139, p1, None]
++2606: i259 = ptr_eq(p59, p255)
+guard_false(i259, descr=<Guard92>) [i246, p248, p240, p143, p141, p139, p1, None]
++2615: i260 = ptr_eq(p62, p255)
+guard_false(i260, descr=<Guard93>) [i246, p248, p240, p143, p141, p139, p1, None]
++2628: i261 = ptr_eq(p65, p255)
+guard_false(i261, descr=<Guard94>) [i246, p248, p240, p143, p141, p139, p1, None]
++2641: i262 = ptr_eq(p68, p255)
+guard_true(i262, descr=<Guard95>) [i246, p248, p240, p143, p141, p139, p1, None]
++2654: p264 = getfield_gc(ConstPtr(ptr263), descr=<FieldP system.core.Object.inst__ns 32>)
++2662: p265 = getfield_gc(ConstPtr(ptr254), descr=<FieldP system.core.Object.inst__ns 32>)
++2675: i266 = ptr_eq(p264, p265)
+guard_true(i266, descr=<Guard96>) [i246, p248, p240, p143, p141, p139, p1, None]
++2684: p268 = getarrayitem_gc_pure(p86, 3, descr=<ArrayP 8>)
++2688: guard_nonnull_class(p268, 10010544, descr=<Guard97>) [i246, p248, p240, p143, p141, p139, p268, p1, None]
++2706: i271 = getfield_gc(ConstPtr(ptr270), descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++2719: i272 = int_force_ge_zero(i271)
+p273 = new_array(i272, descr=<ArrayP 8>)
++2777: i275 = int_ge(0, i271)
+guard_false(i275, descr=<Guard98>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p1, None]
++2787: p278 = call(ConstClass(get_override), p7, ConstPtr(ptr277), descr=<Callr 8 rr EF=3>)
++2811: guard_no_exception(, descr=<Guard99>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p278, p1, None]
++2826: guard_class(p278, 10009264, descr=<Guard100>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p278, p1, None]
+setarrayitem_gc(p273, 0, ConstPtr(ptr280), descr=<ArrayP 8>)
++2887: i282 = int_ge(1, i271)
+guard_false(i282, descr=<Guard101>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p1, None]
++2897: p284 = getfield_gc(ConstPtr(ptr283), descr=<FieldP system.core.Object.inst__name 24>)
++2910: i285 = ptr_eq(p44, p284)
+guard_false(i285, descr=<Guard102>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p1, None]
++2923: i286 = ptr_eq(p48, p284)
+guard_true(i286, descr=<Guard103>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p1, None]
++2936: p287 = getfield_gc(ConstPtr(ptr283), descr=<FieldP system.core.Object.inst__ns 32>)
++2949: i288 = ptr_eq(p189, p287)
+guard_true(i288, descr=<Guard104>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p1, None]
+setarrayitem_gc(p273, 1, p194, descr=<ArrayP 8>)
++3001: i290 = int_ge(2, i271)
+guard_true(i290, descr=<Guard105>) [i246, p248, p240, p143, p141, p139, i271, p273, p268, p1, None]
++3011: i291 = int_is_zero(i272)
+guard_false(i291, descr=<Guard106>) [i246, p248, p240, p143, p141, p139, p273, p268, p1, None]
++3025: i293 = int_eq(i272, 1)
+guard_false(i293, descr=<Guard107>) [i246, p248, p240, p143, p141, p139, p273, p268, p1, None]
++3039: i295 = int_eq(i272, 2)
+guard_true(i295, descr=<Guard108>) [i246, p248, p240, p143, p141, p139, p273, p268, p1, None]
++3053: p297 = getfield_gc(ConstPtr(ptr296), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++3061: p300 = call(ConstClass(get_override), p297, ConstPtr(ptr299), descr=<Callr 8 rr EF=3>)
++3078: guard_no_exception(, descr=<Guard109>) [i246, p248, p240, p143, p141, p139, p194, p300, p1, None]
++3093: guard_class(p300, 10011896, descr=<Guard110>) [i246, p248, p240, p143, p141, p139, p194, p300, p1, None]
++3105: p303 = getfield_gc(ConstPtr(ptr302), descr=<FieldP system.core.Object.inst__name 24>)
++3105: p304 = getfield_gc(ConstPtr(ptr302), descr=<FieldP system.core.Object.inst__ns 32>)
++3105: i305 = getfield_gc(ConstPtr(ptr280), descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++3118: i306 = int_add(i305, i222)
++3125: i308 = int_ge(1, i246)
+guard_false(i308, descr=<Guard111>) [i246, p248, p240, p143, p141, p139, p1, i306, None]
++3139: p310 = getfield_gc(ConstPtr(ptr309), descr=<FieldP system.core.Object.inst__name 24>)
++3152: i311 = ptr_eq(p44, p310)
+guard_false(i311, descr=<Guard112>) [i246, p248, p240, p143, p141, p139, p1, i306, None]
++3165: i312 = ptr_eq(p48, p310)
+guard_false(i312, descr=<Guard113>) [i246, p248, p240, p143, p141, p139, p1, i306, None]
++3178: i313 = ptr_eq(p51, p310)
+guard_true(i313, descr=<Guard114>) [i246, p248, p240, p143, p141, p139, p1, i306, None]
++3187: p314 = getfield_gc(ConstPtr(ptr309), descr=<FieldP system.core.Object.inst__ns 32>)
++3200: i315 = ptr_eq(p203, p314)
+guard_true(i315, descr=<Guard115>) [i246, p248, p240, p143, p141, p139, p1, i306, None]
+setarrayitem_gc(p248, 1, p207, descr=<ArrayP 8>)
++3262: i317 = int_ge(2, i246)
+guard_true(i317, descr=<Guard116>) [i246, p248, p240, p143, p141, p139, p1, i306, None]
++3276: i319 = instance_ptr_eq(p143, ConstPtr(ptr318))
+guard_true(i319, descr=<Guard117>) [p248, p240, p143, p141, p139, p1, i306, None]
+p321 = new_with_vtable(10003656)
+p323 = new_with_vtable(10003848)
++3377: setfield_gc(p323, i306, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
+setarrayitem_gc(p248, 0, p323, descr=<ArrayP 8>)
++3423: setfield_gc(p321, p248, descr=<FieldP system.evaluation.TailCallTrampoline.inst__args_w 72>)
++3427: setfield_gc(p321, p240, descr=<FieldP system.evaluation.TailCallTrampoline.inst__w_fn 80>)
++3438: finish(p321, descr=<DoneWithThisFrameDescrRef object at 0x9b7500>)
++3475: --end of the loop--
+[dce10194423] jit-log-opt-loop}

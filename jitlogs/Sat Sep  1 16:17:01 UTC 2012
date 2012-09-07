@@ -1,0 +1,86 @@
+[1b4082136266] {jit-log-opt-loop
+# Loop 0 (FuncInstance<rec>) : entry bridge with 81 ops
+[p0, p1]
+debug_merge_point(0, 0, 'FuncInstance<rec>')
++54: p3 = getfield_gc(ConstPtr(ptr2), descr=<FieldP system.rt.FuncInstance.inst__w_body 72>)
++67: p4 = getfield_gc(ConstPtr(ptr2), descr=<FieldP system.rt.FuncInstance.inst__w_globals 80>)
++80: guard_nonnull_class(p3, 10011776, descr=<Guard2>) [p1, p4, p3]
++98: p7 = getfield_gc(ConstPtr(ptr6), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++106: p10 = call(ConstClass(get_override), p7, ConstPtr(ptr9), descr=<Callr 8 rr EF=3>)
++137: guard_no_exception(, descr=<Guard3>) [p1, p4, p3, p10]
++152: guard_class(p10, 10013392, descr=<Guard4>) [p1, p4, p3, p10]
++164: p13 = getfield_gc(ConstPtr(ptr12), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++172: p16 = call(ConstClass(get_override), p13, ConstPtr(ptr15), descr=<Callr 8 rr EF=3>)
++189: guard_no_exception(, descr=<Guard5>) [p1, p4, p3, p16]
++204: guard_class(p16, 10015624, descr=<Guard6>) [p1, p4, p3, p16]
++216: p19 = call(ConstClass(persistent_list_count), p3, descr=<Callr 8 r EF=3>)
++232: guard_no_exception(, descr=<Guard7>) [p1, p4, p3, p19]
++247: i20 = getfield_gc_pure(p19, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++251: i21 = int_is_zero(i20)
+guard_false(i21, descr=<Guard8>) [p1, p4, p3]
++261: p23 = getfield_gc(ConstPtr(ptr22), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++269: p26 = call(ConstClass(get_override), p23, ConstPtr(ptr25), descr=<Callr 8 rr EF=3>)
++286: guard_no_exception(, descr=<Guard9>) [p1, p4, p3, p26]
++301: guard_class(p26, 10013240, descr=<Guard10>) [p1, p4, p3, p26]
++313: p29 = call(ConstClass(persistent_list_first), p3, descr=<Callr 8 r EF=0>)
++329: guard_value(p29, ConstPtr(ptr30), descr=<Guard11>) [p29, p1, p4, p3]
++348: p33 = call(ConstClass(get_override), p7, ConstPtr(ptr32), descr=<Callr 8 rr EF=3>)
++365: guard_no_exception(, descr=<Guard12>) [p1, p4, p3, p33]
++380: guard_class(p33, 10013544, descr=<Guard13>) [p1, p4, p3, p33]
++392: p35 = getfield_gc(p1, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++403: guard_value(p35, ConstPtr(ptr36), descr=<Guard14>) [p1, p4, p3, p35]
++422: p38 = getfield_gc(ConstPtr(ptr37), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++430: p41 = call(ConstClass(get_override), p38, ConstPtr(ptr40), descr=<Callr 8 rr EF=3>)
++447: guard_no_exception(, descr=<Guard15>) [p1, p4, p3, p41]
++462: guard_class(p41, 10015320, descr=<Guard16>) [p1, p4, p3, p41]
++474: p43 = getfield_gc(p4, descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++478: guard_value(p43, ConstPtr(ptr44), descr=<Guard17>) [p1, p4, p3, p43]
++497: p46 = getfield_gc(ConstPtr(ptr45), descr=<FieldP system.core.Object.inst__w_arg_names 40>)
++505: guard_value(p46, ConstPtr(ptr47), descr=<Guard18>) [p1, p4, p3, p46]
++518: p49 = getfield_gc(ConstPtr(ptr48), descr=<FieldP system.core.Object.inst__w_args 48>)
++526: p51 = getarrayitem_gc_pure(p49, 7, descr=<ArrayP 8>)
++530: guard_nonnull_class(p51, 10015168, descr=<Guard19>) [p51, p1, p4, p3]
++548: p54 = getfield_gc(ConstPtr(ptr53), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++556: p57 = call(ConstClass(get_override), p54, ConstPtr(ptr56), descr=<Callr 8 rr EF=3>)
++584: guard_no_exception(, descr=<Guard20>) [p51, p1, p4, p3, p57]
++599: guard_class(p57, 10014120, descr=<Guard21>) [p51, p1, p4, p3, p57]
++611: p60 = call(ConstClass(persistent_list_next), p3, descr=<Callr 8 r EF=0>)
++627: guard_value(p60, ConstPtr(ptr61), descr=<Guard22>) [p60, p51, p1, p4]
++646: p63 = getarrayitem_gc_pure(p49, 1, descr=<ArrayP 8>)
++657: guard_nonnull_class(p63, 10009592, descr=<Guard23>) [p1, p4, p63]
++675: p65 = getfield_gc(p1, descr=<FieldP system.core.Object.inst__w_args 48>)
++686: p67 = getarrayitem_gc_pure(p65, 1, descr=<ArrayP 8>)
++690: p69 = getarrayitem_gc_pure(p65, 2, descr=<ArrayP 8>)
++694: guard_nonnull_class(p67, 10007848, descr=<Guard24>) [p1, p4, p69, p67, p63]
++714: p71 = getfield_gc(p63, descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++718: p74 = call(ConstClass(get_override), p71, ConstPtr(ptr73), descr=<Callr 8 rr EF=3>)
++739: guard_no_exception(, descr=<Guard25>) [p1, p4, p69, p67, p74]
++754: guard_class(p74, 10015472, descr=<Guard26>) [p1, p4, p69, p67, p74]
++766: guard_nonnull_class(p69, 10007848, descr=<Guard27>) [p1, p4, p69, p67]
++791: i77 = getfield_gc_pure(p67, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++796: i78 = getfield_gc_pure(p69, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++800: i79 = int_eq(i77, i78)
+guard_false(i79, descr=<Guard28>) [p1, p4]
++809: p81 = getarrayitem_gc_pure(p65, 0, descr=<ArrayP 8>)
++813: guard_nonnull_class(p81, 10015776, descr=<Guard29>) [p81, p1, p4]
++833: p84 = getarrayitem_gc_pure(p49, 3, descr=<ArrayP 8>)
++844: guard_nonnull_class(p84, 10014672, descr=<Guard30>) [p81, p1, p4, p84]
++862: p88 = call(ConstClass(get_override), p7, ConstPtr(ptr87), descr=<Callr 8 rr EF=3>)
++893: guard_no_exception(, descr=<Guard31>) [p81, p1, p4, p84, p88]
++908: guard_class(p88, 10013696, descr=<Guard32>) [p81, p1, p4, p84, p88]
++920: p91 = getfield_gc(ConstPtr(ptr90), descr=<FieldP system.funcs.PolymorphicFn.inst__overrides 72>)
++928: p94 = call(ConstClass(get_override), p91, ConstPtr(ptr93), descr=<Callr 8 rr EF=3>)
++945: guard_no_exception(, descr=<Guard33>) [p81, p1, p4, p67, p94]
++960: guard_class(p94, 10016024, descr=<Guard34>) [p81, p1, p4, p67, p94]
++972: i97 = int_add(1, i77)
+p99 = new_with_vtable(10007944)
+p101 = new_array(2, descr=<ArrayP 8>)
+p103 = new_with_vtable(10007848)
++1088: setfield_gc(p99, p81, descr=<FieldP system.evaluation.TailCallTrampoline.inst__w_fn 80>)
++1092: setfield_gc(p103, i97, descr=<FieldS system.integer.W_Integer.inst_int_value 72>)
++1104: setarrayitem_gc(p101, 0, p103, descr=<ArrayP 8>)
++1108: setarrayitem_gc(p101, 1, p69, descr=<ArrayP 8>)
++1119: setfield_gc(p99, p101, descr=<FieldP system.evaluation.TailCallTrampoline.inst__args_w 72>)
++1123: finish(p99, descr=<DoneWithThisFrameDescrRef object at 0x9b8540>)
++1160: --end of the loop--
+[1b40821ca429] jit-log-opt-loop}

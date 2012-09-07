@@ -2,6 +2,7 @@ import system.rt as rt
 from core import Object
 from system.rt import extend
 from system.jit import *
+from system.util import interp2app
 
 class W_Symbol(rt.Object):
     def __init__(self, _ns, _name):
@@ -45,6 +46,11 @@ def symbol_equals(self, other):
     and self._ns is other._ns:
         return w_true
     return w_false
+
+@interp2app
+def keyword(ns, name):
+    from system.keywords import keyword
+    return keyword(ns, name)
 
 @extend(rt.repr, _tp)
 @elidable

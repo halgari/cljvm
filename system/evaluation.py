@@ -3,6 +3,8 @@ from system.symbol import W_Symbol
 from system.core import Object
 from system.bool import w_true, w_false
 from system.jit import elidable
+from system.util import interp2app
+from system.funcs import AFn
 import system.integer
 import system.rt as rt
 
@@ -35,7 +37,10 @@ class TailCallTrampoline(Object):
         self._args_w = args_w
 
     def apply_to(self):
-        return self._w_fn.invoke_args(self._args_w)
+        if isinstance(self._w_fn, AFn):
+            return self._w_fn.invoke_args(self._args_w)
+        else:
+            return rt.invoke.invoke_args([self._w_fn] + self._args_w)
 
 
 @unroll_safe
@@ -107,7 +112,11 @@ def eval_form(self, globals, frame, can_tail_call):
         args = [globals, frame, can_tail_call] + args
         return fn.invoke_args(args)
 
-    return fn.invoke_args(args)
+    if isinstance(fn, AFn):
+        return fn.invoke_args(args)
+    else:
+        return rt.invoke.invoke_args([fn] + args)
+
 
 _eval_item = PolymorphicFunc()
 
@@ -123,14 +132,17 @@ def eval_symbol(self, globals, frame, can_tail_call):
 
 from system.util import interp2app
 import system.persistent_list
+import system.persistent_array_vector
 import system.symbol
 _eval_item.install(system.integer._tp_integer, interp2app(self_evaluating))
 _eval_item.install(system.persistent_list._tp, interp2app(eval_form))
+_eval_item.install(system.persistent_array_vector._tp, interp2app(self_evaluating))
 _eval_item.install(system.symbol._tp, interp2app(eval_symbol))
 
 class EvalItem(rt.Func):
     def invoke4(self, form, globals, frame, can_tail_call):
         return _eval_item.invoke4(form, globals, frame, can_tail_call)
+
 
 eval_item = EvalItem()
 

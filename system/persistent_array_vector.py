@@ -36,5 +36,9 @@ def persistent_list_isvector(self):
     from system.bool import w_true
     return w_true
 
+@extend(rt.invoke, _tp)
+def persistent_array_vector_invoke(self, idx):
+    return rt._nth.invoke2(self, idx)
+
 def from_pylist(lst):
     return PersistentArrayVector(lst[:], None)

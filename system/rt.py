@@ -95,6 +95,11 @@ class HashMap(VariadicFunc):
             s = assoc.invoke3(s, args_w[x], args_w[x + 1])
         return s
 
+@interp2app
+def keyword(ns, name):
+    from system.keywords import keyword
+    return keyword(ns, name)
+
 hash_map = HashMap()
 
 
@@ -116,6 +121,8 @@ _cons = PolymorphicFunc()
 _assoc = PolymorphicFunc()
 _get = PolymorphicFunc()
 equals = PolymorphicFunc(symbol = "=")
+
+invoke = PolymorphicFunc(symbol = "invoke")
 
 @interp2app
 def _default_false(self):
